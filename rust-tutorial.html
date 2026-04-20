@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rust + Tauri 2 — an interactive tutorial</title>
-<meta name="description" content="Learn Rust by building a real Tauri 2 text editor. Twin-track, ADHD-aware, beginner-friendly.">
+<meta name="description" content="Learn Rust by building a real Tauri 2 text editor. Twin-track, attention-friendly, beginner-friendly.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
@@ -785,7 +785,7 @@ pre.code-block.compact {
 }
 
 /* ============================================================ */
-/* ADHD retrofit — .tldr / .trap / .boss-fight / .badge-strip   */
+/* pedagogy retrofit — .tldr / .trap / .boss-fight / .badge-strip */
 /* .micro-playground / .compare-table / .toc-sub  */
 /* ============================================================ */
 
@@ -1271,17 +1271,21 @@ kbd {
     <li><a href="#sidebar-lifetimes"><span class="lang-en">→ lifetimes &amp; elision</span><span class="lang-tr">→ yaşam süreleri ve elizyon</span></a></li>
     <li><a href="#sidebar-smart-ptrs"><span class="lang-en">→ Box, Rc, Arc</span><span class="lang-tr">→ Box, Rc, Arc</span></a></li>
     <li><a href="#sidebar-send-sync"><span class="lang-en">→ Send &amp; Sync</span><span class="lang-tr">→ Send ve Sync</span></a></li>
+    <li><a href="#sidebar-async-intro"><span class="lang-en">→ async / .await</span><span class="lang-tr">→ async / .await</span></a></li>
+    <li><a href="#sidebar-channels"><span class="lang-en">→ channels (mpsc)</span><span class="lang-tr">→ kanallar (mpsc)</span></a></li>
   </ul>
 </li>
 <li><a href="#ch12" data-ch="12"><span class="lang-en">12 · Dirty tracking</span><span class="lang-tr">12 · Değişiklik takibi</span></a>
   <ul class="toc-sub">
     <li><a href="#sidebar-methods"><span class="lang-en">→ impl methods</span><span class="lang-tr">→ impl metotları</span></a></li>
     <li><a href="#sidebar-testing"><span class="lang-en">→ #[test] &amp; cargo test</span><span class="lang-tr">→ #[test] ve cargo test</span></a></li>
+    <li><a href="#sidebar-doctests"><span class="lang-en">→ doctests: /// + cargo test --doc</span><span class="lang-tr">→ doctest'ler: /// + cargo test --doc</span></a></li>
   </ul>
 </li>
 <li><a href="#ch13" data-ch="13"><span class="lang-en">13 · Save vs Save As</span><span class="lang-tr">13 · Kaydet ve Farklı Kaydet</span></a>
   <ul class="toc-sub">
     <li><a href="#sidebar-match"><span class="lang-en">→ match &amp; exhaustiveness</span><span class="lang-tr">→ match ve tüketicilik</span></a></li>
+    <li><a href="#sidebar-pattern-depth"><span class="lang-en">→ patterns: if let, let else, destructuring</span><span class="lang-tr">→ desenler: if let, let else, yapı-sökme</span></a></li>
   </ul>
 </li>
 <li><a href="#ch14" data-ch="14" class="checkpoint-link"><span class="lang-en">14 · 🎉 Checkpoint</span><span class="lang-tr">14 · 🎉 Kontrol noktası</span></a></li>
@@ -1289,6 +1293,8 @@ kbd {
   <ul class="toc-sub">
     <li><a href="#sidebar-enums"><span class="lang-en">→ enums-with-data</span><span class="lang-tr">→ veri taşıyan enum'lar</span></a></li>
     <li><a href="#sidebar-macros"><span class="lang-en">→ macros: ! and #[derive]</span><span class="lang-tr">→ makrolar: ! ve #[derive]</span></a></li>
+    <li><a href="#sidebar-from-into"><span class="lang-en">→ From / Into &amp; the ? coercion</span><span class="lang-tr">→ From / Into ve ? dönüşümü</span></a></li>
+    <li><a href="#sidebar-anyhow-vs-thiserror"><span class="lang-en">→ anyhow vs thiserror</span><span class="lang-tr">→ anyhow vs thiserror</span></a></li>
   </ul>
 </li>
 <li><a href="#ch16" data-ch="16"><span class="lang-en">16 · Recent files</span><span class="lang-tr">16 · Son dosyalar</span></a>
@@ -1306,8 +1312,16 @@ kbd {
   </ul>
 </li>
 <li><a href="#ch18" data-ch="18" class="checkpoint-link"><span class="lang-en">18 · 🎉 Checkpoint</span><span class="lang-tr">18 · 🎉 Kontrol noktası</span></a></li>
-<li><a href="#ch19" data-ch="19"><span class="lang-en">19 · Bundle and ship</span><span class="lang-tr">19 · Paketle ve yayımla</span></a></li>
-<li><a href="#ch20" data-ch="20"><span class="lang-en">20 · Where next</span><span class="lang-tr">20 · Sırada ne var</span></a></li>
+<li><a href="#ch19" data-ch="19"><span class="lang-en">19 · Bundle and ship</span><span class="lang-tr">19 · Paketle ve yayımla</span></a>
+  <ul class="toc-sub">
+    <li><a href="#sidebar-cfg-features"><span class="lang-en">→ #[cfg] + Cargo features</span><span class="lang-tr">→ #[cfg] + Cargo özellikleri</span></a></li>
+  </ul>
+</li>
+<li><a href="#ch20" data-ch="20"><span class="lang-en">20 · Where next</span><span class="lang-tr">20 · Sırada ne var</span></a>
+  <ul class="toc-sub">
+    <li><a href="#sidebar-unsafe-primer"><span class="lang-en">→ unsafe: the 5 superpowers</span><span class="lang-tr">→ unsafe: 5 süper güç</span></a></li>
+  </ul>
+</li>
 </ol>
 </div>
 </nav>
@@ -4120,6 +4134,273 @@ Derleyici veri yarışını tür kontrolü zamanında yakaladı. Geri al.
 </section>
 
 <!-- ==================================================================== -->
+<details class="sidebar" id="sidebar-async-intro">
+<summary><span class="lang-en">Rust: async / .await — not threads, a scheduler</span><span class="lang-tr">Rust: async / .await — iş parçacığı değil, bir zamanlayıcı</span></summary>
+
+<p class="lang-en"><strong>The hook.</strong> <code>async</code> is not threads. It's cooperative multitasking with a scheduler you opt into. A thread is a hardware-backed worker the OS preempts whenever it feels like it. An async task is a function that can <em>pause itself</em> at marked points; a runtime juggles many such tasks on a small pool of threads.</p>
+<p class="lang-tr"><strong>Kanca.</strong> <code>async</code>, iş parçacığı değildir. Senin gönüllü olarak kabul ettiğin, işbirlikçi çoklu görev ve onun bir zamanlayıcısıdır. İş parçacığı, işletim sisteminin canı istediğinde araya girdiği, donanım destekli bir işçidir. Async görevi ise işaretli noktalarda <em>kendini duraklatabilen</em> bir fonksiyondur; bir çalışma zamanı, küçük bir iş parçacığı havuzunda bu görevlerden çoğunu aynı anda yönetir.</p>
+
+<p class="lang-en"><strong>One line, big consequence.</strong> An <code>async fn</code> does not run when you call it. It returns a <em>Future</em> — a value that isn't ready yet, and won't compute anything until something polls it. <code>.await</code> is that poll: it says "pause me here until this future resolves; in the meantime the runtime can run other tasks on this thread."</p>
+<p class="lang-tr"><strong>Tek satır, büyük sonuç.</strong> Bir <code>async fn</code>, onu çağırdığında çalışmaz. Bir <em>Future</em> döndürür — henüz hazır olmayan bir değer; bir şey onu yoklamadıkça hiçbir şey hesaplamaz. <code>.await</code> işte o yoklamadır: "bu future çözülene kadar beni burada duraklat; bu sırada çalışma zamanı bu iş parçacığında başka görevler çalıştırabilir" der.</p>
+
+<pre class="sample"><code class="language-rust">async fn fetch(url: &amp;str) -&gt; String {
+    // pretend this talks to the network
+    format!("body of {url}")
+}
+// `fetch("x")` is NOT a String. It's a Future&lt;Output = String&gt;.
+// Nothing runs until something .awaits it.</code></pre>
+
+<p class="lang-en"><strong>You need a runtime.</strong> Async code in Rust is <em>inert</em> on its own. The language gives you the syntax; a <em>runtime</em> is the library that actually calls <code>.poll()</code> on your futures, parks them when they're waiting on I/O, and wakes them back up. The common ones: <code>tokio</code> (big, mature, ecosystem default), <code>async-std</code>, and <code>smol</code> (tiny).</p>
+<p class="lang-tr"><strong>Bir çalışma zamanına ihtiyacın var.</strong> Rust'ta async kod tek başına <em>ölü</em>dür. Dil sana söz dizimini verir; <em>çalışma zamanı</em> ise future'larının üzerinde gerçekten <code>.poll()</code> çağıran, I/O beklerken onları park eden ve tekrar uyandıran kütüphanedir. Yaygın olanlar: <code>tokio</code> (büyük, olgun, ekosistemin varsayılanı), <code>async-std</code> ve <code>smol</code> (minik).</p>
+
+<p class="lang-en"><strong>Run this and feel it.</strong> Two async functions that <code>.await</code> each other, driven by tokio.</p>
+<p class="lang-tr"><strong>Bunu çalıştır, hisset.</strong> Birbirini <code>.await</code> eden, tokio tarafından sürülen iki async fonksiyon.</p>
+
+<pre class="sample"><code class="language-rust">#[tokio::main]
+async fn main() {
+    let a = greet("Ada").await;
+    let b = greet("Bob").await;
+    println!("{a} / {b}");
+}
+
+async fn greet(name: &amp;str) -&gt; String {
+    // every .await is a possible pause point
+    tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+    format!("hi {name}")
+}</code></pre>
+<button class="playground-btn">Run in Playground</button>
+
+<p class="lang-en">The <code>#[tokio::main]</code> attribute does one job: it rewrites your <code>async fn main</code> into a normal <code>fn main</code> that builds a tokio runtime and blocks on the future. Without that (or an equivalent), your <code>async fn main</code> would just return a Future that nobody runs.</p>
+<p class="lang-tr"><code>#[tokio::main]</code> özniteliğinin tek bir işi var: <code>async fn main</code>'ini, bir tokio çalışma zamanı kuran ve future üzerinde bloklayan normal bir <code>fn main</code>'e dönüştürür. O olmadan (veya eşdeğeri olmadan), <code>async fn main</code>'in sadece kimsenin çalıştırmadığı bir Future döndürür.</p>
+
+<p class="lang-en"><strong>Threads vs async tasks at a glance.</strong></p>
+<p class="lang-tr"><strong>Bir bakışta iş parçacıkları ve async görevleri.</strong></p>
+
+<table class="compare-table lang-en">
+<thead><tr><th>Question</th><th>Thread</th><th>async task</th></tr></thead>
+<tbody>
+  <tr><td class="concept">What runs it?</td><td>the OS scheduler</td><td>a runtime (tokio, async-std, smol)</td></tr>
+  <tr><td class="concept">Scheduled when?</td><td>preemptively — OS can interrupt anywhere</td><td>cooperatively — only at <code>.await</code> points</td></tr>
+  <tr><td class="concept">Blocking I/O inside?</td><td>fine, just this thread waits</td><td><strong>poison</strong> — it blocks the whole runtime thread and starves other tasks</td></tr>
+  <tr><td class="concept">Context-switch cost</td><td>kernel crossing, expensive</td><td>just a function return, cheap</td></tr>
+  <tr><td class="concept">Memory per unit</td><td>MBs of stack (default ~2 MB on Linux)</td><td>KBs — a small state machine on the heap</td></tr>
+</tbody>
+</table>
+<table class="compare-table lang-tr">
+<thead><tr><th>Soru</th><th>İş parçacığı</th><th>async görev</th></tr></thead>
+<tbody>
+  <tr><td class="concept">Onu ne çalıştırır?</td><td>İşletim sisteminin zamanlayıcısı</td><td>bir çalışma zamanı (tokio, async-std, smol)</td></tr>
+  <tr><td class="concept">Ne zaman zamanlanır?</td><td>önceden-kesmeli — OS her yerde araya girebilir</td><td>işbirlikçi — yalnızca <code>.await</code> noktalarında</td></tr>
+  <tr><td class="concept">İçinde bloklayan I/O?</td><td>sorun değil, yalnızca bu iş parçacığı bekler</td><td><strong>zehir</strong> — tüm çalışma zamanı iş parçacığını bloklar ve diğer görevleri aç bırakır</td></tr>
+  <tr><td class="concept">Bağlam değişim maliyeti</td><td>çekirdek geçişi, pahalı</td><td>sadece fonksiyon dönüşü, ucuz</td></tr>
+  <tr><td class="concept">Birim başına bellek</td><td>MB'larca yığın (Linux'ta varsayılan ~2 MB)</td><td>KB'lar — heap üzerinde küçük bir durum makinesi</td></tr>
+</tbody>
+</table>
+
+<aside class="callout lang-en">
+<p><strong>A runtime is not optional.</strong> An async function on its own is a description of work, not the work itself. Something has to drive it. In a plain Rust binary, you set that up yourself (the <code>#[tokio::main]</code> attribute, or <code>Runtime::new().block_on(fut)</code>). In <strong>Tauri</strong>, the runtime is already there — Tauri bundles tokio. You can write <code>#[tauri::command] async fn load_file(…) -&gt; Result&lt;…&gt;</code> and Tauri will <code>.await</code> it on tokio for you. That's why async commands are useful for file I/O, HTTP, database calls — anything that would otherwise make a worker thread sit and wait.</p>
+</aside>
+<aside class="callout lang-tr">
+<p><strong>Çalışma zamanı opsiyonel değildir.</strong> Tek başına bir async fonksiyon, işin kendisi değil, işin tarifidir. Birinin onu sürmesi gerekir. Sade bir Rust ikilisinde bunu kendin kurarsın (<code>#[tokio::main]</code> özniteliği ya da <code>Runtime::new().block_on(fut)</code>). <strong>Tauri</strong>'de çalışma zamanı zaten oradadır — Tauri tokio'yu paketler. <code>#[tauri::command] async fn load_file(…) -&gt; Result&lt;…&gt;</code> yazabilirsin ve Tauri onu senin için tokio üzerinde <code>.await</code> eder. Async komutların dosya I/O'su, HTTP, veritabanı çağrıları için — kısacası bir işçi iş parçacığını oturup bekletecek her iş için — faydalı olmasının sebebi budur.</p>
+</aside>
+
+<p class="lang-en"><strong>Cooperative means you have to cooperate.</strong> A task only gives the runtime a chance to switch at an <code>.await</code>. If you do a CPU-heavy loop with no awaits inside an <code>async fn</code>, every other task on that runtime thread sits frozen until you're done. The fix: either break up the work with <code>tokio::task::yield_now().await</code>, or move it to <code>tokio::task::spawn_blocking(|| heavy_work())</code>, which runs it on a separate thread pool reserved for this.</p>
+<p class="lang-tr"><strong>İşbirlikçi demek, senin de işbirliği yapman gerek demek.</strong> Bir görev, çalışma zamanına geçiş şansı yalnızca bir <code>.await</code>'te verir. Bir <code>async fn</code> içinde await'siz, CPU-yoğun bir döngü çalıştırırsan, o çalışma zamanı iş parçacığındaki diğer tüm görevler sen işini bitirene kadar donmuş oturur. Çözüm: ya işi <code>tokio::task::yield_now().await</code> ile bölersin ya da <code>tokio::task::spawn_blocking(|| heavy_work())</code> ile bunun için ayrılmış farklı bir iş parçacığı havuzuna taşırsın.</p>
+
+<p class="lang-en"><strong>Threads and tasks are different things.</strong> You can comfortably run 10,000 async tasks on 4 OS threads — they're just state machines on the heap. Try to spawn 10,000 OS threads and your process falls over (stack alone is ~20 GB of address space). Rule of thumb: threads for CPU-bound parallelism, async tasks for I/O-bound concurrency.</p>
+<p class="lang-tr"><strong>İş parçacıkları ve görevler farklı şeylerdir.</strong> 4 OS iş parçacığı üzerinde 10.000 async görevi rahatça çalıştırabilirsin — bunlar heap üzerindeki sadece durum makineleridir. 10.000 OS iş parçacığı başlatmaya çalış, işlemin çöker (yalnız yığın için ~20 GB adres alanı). Pratik kural: CPU-bağımlı paralellik için iş parçacığı, I/O-bağımlı eşzamanlılık için async görev.</p>
+
+<p class="lang-en"><strong><code>.await</code> vs <code>std::thread::spawn</code>.</strong> <code>thread::spawn(move || work())</code> launches a new OS thread right now and returns a <code>JoinHandle</code>. <code>some_async_fn().await</code> pauses the current task inside the current runtime until that future is ready — no new thread is necessarily involved. Use threads when you want true parallelism for CPU work; use <code>.await</code> when you're waiting for something (network, disk, timer) and want the runtime to do other useful work meanwhile.</p>
+<p class="lang-tr"><strong><code>.await</code> ile <code>std::thread::spawn</code>.</strong> <code>thread::spawn(move || work())</code> şimdi yeni bir OS iş parçacığı başlatır ve bir <code>JoinHandle</code> döndürür. <code>some_async_fn().await</code> ise mevcut çalışma zamanının içindeki mevcut görevi, o future hazır olana kadar duraklatır — yeni bir iş parçacığı mutlaka devreye girmez. CPU işi için gerçek paralellik istiyorsan iş parçacığı kullan; bir şeyi beklerken (ağ, disk, zamanlayıcı) çalışma zamanının bu arada başka faydalı iş yapmasını istiyorsan <code>.await</code> kullan.</p>
+
+<div class="try-breaking lang-en">
+<strong>Try breaking it.</strong> Forget the <code>.await</code> and watch the type go sideways:
+<pre class="code-block rustc-input" data-file="src/main.rs"><code class="language-rust">async fn answer() -&gt; u32 { 42 }
+
+#[tokio::main]
+async fn main() {
+    let x: u32 = answer(); // no .await
+    println!("{x}");
+}</code></pre>
+<code>cargo check</code>:
+<pre class="code-block rustc" data-file="rustc"><code>error[E0308]: mismatched types
+  |
+  |     let x: u32 = answer();
+  |            ---   ^^^^^^^^ expected `u32`, found `impl Future`
+  |            |
+  |            expected due to this
+help: consider `.await`ing on the `Future`
+  |
+  |     let x: u32 = answer().await;
+  |                         ++++++</code></pre>
+The call returned a Future that never runs. Put the <code>.await</code> back.
+</div>
+<div class="try-breaking lang-tr">
+<strong>Kırmayı dene.</strong> <code>.await</code>'i unut ve türün nasıl yampiriye gittiğini izle:
+<pre class="code-block rustc-input" data-file="src/main.rs"><code class="language-rust">async fn answer() -&gt; u32 { 42 }
+
+#[tokio::main]
+async fn main() {
+    let x: u32 = answer(); // .await yok
+    println!("{x}");
+}</code></pre>
+<code>cargo check</code>:
+<pre class="code-block rustc" data-file="rustc"><code>error[E0308]: mismatched types
+  |
+  |     let x: u32 = answer();
+  |            ---   ^^^^^^^^ expected `u32`, found `impl Future`
+  |            |
+  |            expected due to this
+help: consider `.await`ing on the `Future`
+  |
+  |     let x: u32 = answer().await;
+  |                         ++++++</code></pre>
+Çağrı, asla çalışmayan bir Future döndürdü. <code>.await</code>'i geri koy.
+</div>
+
+<p class="lang-en"><strong>Common gotcha — the forgotten <code>.await</code>.</strong> The compiler will warn ("unused <code>impl Future</code> that must be used; futures do nothing unless you <code>.await</code> or poll them"). In a long chain of method calls people miss it and spend half an hour debugging code that was never executed in the first place. If a function is doing nothing at all, the first thing to check is: did I call it? Did I <code>.await</code> it?</p>
+<p class="lang-tr"><strong>Sık yapılan tuzak — unutulmuş <code>.await</code>.</strong> Derleyici uyarır ("unused <code>impl Future</code> that must be used; futures do nothing unless you <code>.await</code> or poll them"). Uzun metot zincirlerinde insanlar bunu kaçırır ve hiç çalıştırılmamış bir kodu yarım saat debug eder. Bir fonksiyon tamamen hiçbir şey yapmıyorsa, ilk bakılacak şey şu: onu çağırdım mı, <code>.await</code> ettim mi?</p>
+
+<p class="lang-en"><strong>See also.</strong> <a href="#sidebar-mutex">Mutex / shared state</a> (use <code>tokio::sync::Mutex</code> if you must hold a lock across <code>.await</code>) · <a href="#sidebar-channels">channels (mpsc)</a> (send values between async tasks without sharing memory).</p>
+<p class="lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-mutex">Mutex / paylaşılan durum</a> (bir kilidi <code>.await</code> boyunca tutman gerekiyorsa <code>tokio::sync::Mutex</code> kullan) · <a href="#sidebar-channels">kanallar (mpsc)</a> (bellek paylaşmadan async görevler arasında değer gönder).</p>
+
+<p class="lang-en"><a class="back-link" href="#ch11">⟵ back to the main track</a></p>
+<p class="lang-tr"><a class="back-link" href="#ch11">⟵ ana yola dön</a></p>
+</details>
+
+<details class="sidebar" id="sidebar-channels">
+<summary><span class="lang-en">Rust: channels (mpsc) — threads talking without a Mutex</span><span class="lang-tr">Rust: kanallar (mpsc) — Mutex'siz konuşan iş parçacıkları</span></summary>
+
+<p class="lang-en"><strong>The one-liner.</strong> Channels are how Rust threads send messages instead of sharing a Mutex. The sender <em>moves</em> a value in; the receiver owns it out. No lock, no race by construction — ownership does the synchronising for you.</p>
+<p class="lang-tr"><strong>Tek cümlelik.</strong> Kanallar, Rust iş parçacıklarının Mutex paylaşmak yerine mesajlaşma yoludur. Gönderici değeri içeri <em>taşır</em>; alıcı onu dışarı sahiplenir. Kilit yok, tasarım gereği yarış yok — senkronizasyonu sahiplik yapar.</p>
+
+<p class="lang-en">The Mutex sidebar showed one answer to shared mutable state: <em>wrap the data, hand out a lock</em>. Channels are the other answer: <em>don't share the data at all, pass it along</em>. Same problem, opposite direction. Rust lets you mix both — but when a value only needs one reader at a time, a channel is usually simpler to reason about.</p>
+<p class="lang-tr">Mutex yan çubuğu, paylaşılan mutable duruma bir cevabı gösterdi: <em>veriyi sar, bir kilit dağıt</em>. Kanallar diğer cevaptır: <em>veriyi hiç paylaşma, elden ele geçir</em>. Aynı sorun, zıt yön. Rust ikisini karıştırmana izin verir — ama bir değerin bir seferde tek okuyucuya ihtiyacı varsa, kanal genelde düşünmesi daha kolay olur.</p>
+
+<p class="lang-en"><code>std::sync::mpsc</code> stands for <em>multi-producer, single-consumer</em>. You get one receiver. You can have as many senders as you want — you clone them.</p>
+<p class="lang-tr"><code>std::sync::mpsc</code>, <em>multi-producer, single-consumer</em> anlamına gelir. Tek bir alıcın olur. İstediğin kadar göndericin olabilir — onları klonlarsın.</p>
+
+<p class="lang-en"><strong>Run this and feel it.</strong></p>
+<p class="lang-tr"><strong>Bunu çalıştır, hisset.</strong></p>
+
+<pre class="sample"><code class="language-rust">use std::sync::mpsc;
+use std::thread;
+
+fn main() {
+    let (tx, rx) = mpsc::channel();
+
+    for i in 0..3 {
+        let tx = tx.clone();                 // one sender per producer
+        thread::spawn(move || {
+            tx.send(format!("hello from {i}")).unwrap();
+        });
+    }
+    drop(tx);                                // drop the original so rx can finish
+
+    for msg in &amp;rx {                         // iterate until channel is closed
+        println!("got: {msg}");
+    }
+}</code></pre>
+<button class="playground-btn">Run in Playground</button>
+
+<p class="lang-en">Three producer threads each send one string. The main thread loops over <code>&amp;rx</code> and prints whatever shows up, in whatever order the OS scheduled the threads. When all senders are dropped, the <code>for</code> loop ends on its own.</p>
+<p class="lang-tr">Üç üretici iş parçacığı, birer string gönderir. Ana iş parçacığı <code>&amp;rx</code> üzerinde döner ve işletim sistemi iş parçacıklarını hangi sırada zamanladıysa o sırada gelen ne varsa yazdırır. Tüm göndericiler düşürüldüğünde <code>for</code> döngüsü kendiliğinden biter.</p>
+
+<p class="lang-en"><strong>The pieces.</strong></p>
+<p class="lang-tr"><strong>Parçalar.</strong></p>
+
+<ul class="lang-en">
+  <li><code>let (tx, rx) = mpsc::channel();</code> — unbounded channel. <code>tx</code> is a <code>Sender&lt;T&gt;</code>, <code>rx</code> is a <code>Receiver&lt;T&gt;</code>.</li>
+  <li><code>tx.clone()</code> — make another producer. Every clone can send; the receiver sees them all merged into one stream.</li>
+  <li><code>tx.send(value)</code> — moves <code>value</code> into the channel. Returns <code>Err(SendError)</code> if every receiver has been dropped (nobody is listening).</li>
+  <li><code>rx.recv()</code> — blocks until a message arrives. Returns <code>Err(RecvError)</code> when all senders are dropped (nobody will ever send again).</li>
+  <li><code>rx.try_recv()</code> — non-blocking. Returns <code>Err(TryRecvError::Empty)</code> immediately if no message is waiting, or <code>Err(TryRecvError::Disconnected)</code> if all senders are gone.</li>
+  <li><code>for msg in &amp;rx { … }</code> — idiomatic consumer loop. Ends when the channel closes. This is the most common shape.</li>
+</ul>
+<ul class="lang-tr">
+  <li><code>let (tx, rx) = mpsc::channel();</code> — sınırsız kanal. <code>tx</code> bir <code>Sender&lt;T&gt;</code>, <code>rx</code> bir <code>Receiver&lt;T&gt;</code>'dir.</li>
+  <li><code>tx.clone()</code> — başka bir üretici yap. Her klon gönderebilir; alıcı hepsini tek bir akışta birleşmiş görür.</li>
+  <li><code>tx.send(value)</code> — <code>value</code>'yu kanala taşır. Tüm alıcılar düşürülmüşse (kimse dinlemiyorsa) <code>Err(SendError)</code> döner.</li>
+  <li><code>rx.recv()</code> — mesaj gelene kadar bloklar. Tüm göndericiler düşürüldüğünde (kimse bir daha göndermeyecek) <code>Err(RecvError)</code> döner.</li>
+  <li><code>rx.try_recv()</code> — bloklamayan. Bekleyen mesaj yoksa hemen <code>Err(TryRecvError::Empty)</code>, tüm göndericiler gitmişse <code>Err(TryRecvError::Disconnected)</code> döner.</li>
+  <li><code>for msg in &amp;rx { … }</code> — deyimsel tüketici döngüsü. Kanal kapanınca biter. En yaygın şekil budur.</li>
+</ul>
+
+<p class="lang-en"><strong>Closing the channel = dropping the last Sender.</strong> A channel isn't closed by a function call. It's closed by ownership: when the last <code>Sender</code> goes out of scope (or you call <code>drop(tx)</code>), the receiver's <code>recv()</code> returns <code>Err</code> and the <code>for msg in &amp;rx</code> loop ends. This is why the example above explicitly <code>drop</code>s the original <code>tx</code> — otherwise main still holds a sender, the channel is still "open," and the consumer loop would hang forever waiting for a message that will never come.</p>
+<p class="lang-tr"><strong>Kanalı kapatmak = son Sender'ı düşürmek.</strong> Bir kanal bir fonksiyon çağrısıyla kapanmaz. Sahiplikle kapanır: son <code>Sender</code> scope'tan çıktığında (veya <code>drop(tx)</code> çağırdığında) alıcının <code>recv()</code>'i <code>Err</code> döner ve <code>for msg in &amp;rx</code> döngüsü biter. Yukarıdaki örneğin orijinal <code>tx</code>'i açıkça <code>drop</code> etmesinin sebebi budur — yoksa main hâlâ bir göndericiyi tutar, kanal hâlâ "açık"tır ve tüketici döngüsü asla gelmeyecek bir mesajı sonsuza kadar bekler.</p>
+
+<table class="compare-table lang-en">
+<thead><tr><th>You want…</th><th>Shared-state approach</th><th>Channel approach</th></tr></thead>
+<tbody>
+  <tr><td class="concept">send a result back from a worker thread</td><td><code>Arc&lt;Mutex&lt;Option&lt;T&gt;&gt;&gt;</code> + condvar, or <code>Arc&lt;Mutex&lt;Vec&lt;T&gt;&gt;&gt;</code></td><td><code>mpsc::channel()</code>, worker <code>send</code>s, main <code>recv</code>s — done</td></tr>
+  <tr><td class="concept">broadcast one value to many consumers</td><td><code>Arc&lt;RwLock&lt;T&gt;&gt;</code>, readers poll</td><td><code>mpsc</code> can't — reach for <code>tokio::sync::broadcast</code> or <code>crossbeam-channel</code> with multiple receivers</td></tr>
+  <tr><td class="concept">bounded queue (backpressure)</td><td>manual: <code>Mutex&lt;VecDeque&gt;</code> + <code>Condvar</code> pair</td><td><code>mpsc::sync_channel(N)</code> — <code>send</code> blocks when full</td></tr>
+  <tr><td class="concept">shutdown signal to a worker</td><td><code>AtomicBool</code> flag the worker polls</td><td>drop the sender; the worker's <code>for msg in &amp;rx</code> loop ends naturally</td></tr>
+</tbody>
+</table>
+<table class="compare-table lang-tr">
+<thead><tr><th>İstediğin…</th><th>Paylaşılan-durum yaklaşımı</th><th>Kanal yaklaşımı</th></tr></thead>
+<tbody>
+  <tr><td class="concept">bir işçi iş parçacığından sonuç geri göndermek</td><td><code>Arc&lt;Mutex&lt;Option&lt;T&gt;&gt;&gt;</code> + condvar veya <code>Arc&lt;Mutex&lt;Vec&lt;T&gt;&gt;&gt;</code></td><td><code>mpsc::channel()</code>; işçi <code>send</code> eder, main <code>recv</code> eder — bitti</td></tr>
+  <tr><td class="concept">tek değeri çok tüketiciye yayınlamak</td><td><code>Arc&lt;RwLock&lt;T&gt;&gt;</code>, okuyucular yoklar</td><td><code>mpsc</code> yapamaz — çok alıcılı <code>crossbeam-channel</code>'a veya <code>tokio::sync::broadcast</code>'a uzan</td></tr>
+  <tr><td class="concept">sınırlı kuyruk (backpressure)</td><td>elle: <code>Mutex&lt;VecDeque&gt;</code> + <code>Condvar</code> ikilisi</td><td><code>mpsc::sync_channel(N)</code> — dolu olduğunda <code>send</code> bloklar</td></tr>
+  <tr><td class="concept">bir işçiye kapanış sinyali</td><td>işçinin yokladığı bir <code>AtomicBool</code> bayrak</td><td>göndericiyi düşür; işçinin <code>for msg in &amp;rx</code> döngüsü doğal olarak biter</td></tr>
+</tbody>
+</table>
+
+<aside class="callout lang-en">
+<p><strong>Bounded vs unbounded.</strong> <code>mpsc::channel()</code> is unbounded — every <code>send</code> returns immediately, the message sits in an internal queue. If your producers are faster than your consumer, that queue grows forever and you eat all of memory. <code>mpsc::sync_channel(N)</code> is bounded: the queue holds at most <code>N</code> messages, and <code>send</code> blocks when full. That's backpressure — the slow consumer slows down the producers for free. Special case: <code>sync_channel(0)</code> is a <em>rendezvous channel</em> — <code>send</code> blocks until a receiver is actually ready to take it, so producer and consumer meet in the middle with nothing buffered. Rule of thumb: prefer <code>sync_channel</code>. Reach for unbounded only when you're sure the producer is rate-limited some other way.</p>
+</aside>
+<aside class="callout lang-tr">
+<p><strong>Sınırlı ve sınırsız.</strong> <code>mpsc::channel()</code> sınırsızdır — her <code>send</code> hemen döner, mesaj iç bir kuyrukta oturur. Üreticilerin tüketiciden hızlıysa, o kuyruk sonsuza kadar büyür ve tüm belleği yer. <code>mpsc::sync_channel(N)</code> sınırlıdır: kuyruk en fazla <code>N</code> mesaj tutar ve dolunca <code>send</code> bloklar. Bu backpressure'dır — yavaş tüketici, bedavaya üreticileri yavaşlatır. Özel durum: <code>sync_channel(0)</code> bir <em>randevu kanalı</em>'dır — <code>send</code>, bir alıcı onu almaya gerçekten hazır olana kadar bloklar; böylece üretici ile tüketici, hiçbir şey tamponlanmadan ortada buluşur. Genel kural: <code>sync_channel</code>'ı tercih et. Sınırsıza, yalnızca üreticinin başka bir yolla hız sınırlı olduğundan eminsen uzan.</p>
+</aside>
+
+<div class="try-breaking lang-en">
+<strong>Try breaking it.</strong> Drop the sender before the receiver calls <code>recv</code> and see what "channel closed" looks like.
+<pre class="sample"><code class="language-rust">use std::sync::mpsc;
+
+fn main() {
+    let (tx, rx) = mpsc::channel::&lt;i32&gt;();
+    drop(tx);                         // no more senders exist
+
+    match rx.recv() {
+        Ok(v)  =&gt; println!("got {v}"),
+        Err(e) =&gt; println!("closed: {e}"),   // RecvError — no more messages, ever
+    }
+}</code></pre>
+<button class="playground-btn">Run in Playground</button>
+Output: <code>closed: receiving on a closed channel</code>. That <code>Err(RecvError)</code> is the consumer loop's exit condition — it's not a bug, it's the "we're done" signal. Now comment the <code>drop(tx)</code> line out: the program hangs forever, because main still owns a sender and the channel is still open waiting for a message nobody will ever send.
+</div>
+<div class="try-breaking lang-tr">
+<strong>Kırmayı dene.</strong> Alıcı <code>recv</code> çağırmadan önce göndericiyi düşür ve "kanal kapalı"nın nasıl göründüğüne bak.
+<pre class="sample"><code class="language-rust">use std::sync::mpsc;
+
+fn main() {
+    let (tx, rx) = mpsc::channel::&lt;i32&gt;();
+    drop(tx);                         // artık gönderici kalmadı
+
+    match rx.recv() {
+        Ok(v)  =&gt; println!("geldi {v}"),
+        Err(e) =&gt; println!("kapalı: {e}"),   // RecvError — bir daha asla mesaj yok
+    }
+}</code></pre>
+<button class="playground-btn">Run in Playground</button>
+Çıktı: <code>kapalı: receiving on a closed channel</code>. O <code>Err(RecvError)</code>, tüketici döngüsünün çıkış koşuludur — bir hata değil, "işimiz bitti" sinyalidir. Şimdi <code>drop(tx)</code> satırını yorum satırına al: program sonsuza dek asılı kalır, çünkü main hâlâ bir göndericiye sahiptir ve kanal, kimsenin asla göndermeyeceği bir mesajı beklemek için hâlâ açıktır.
+</div>
+
+<p class="lang-en"><strong>Common trap — <code>&amp;tx</code> is not how you make more producers.</strong> Channels are multi-producer by name, but you get more producers by <em>cloning</em> the sender, not by sharing a reference to it. <code>tx.clone()</code> is cheap (it bumps a refcount). Passing <code>&amp;tx</code> into a <code>thread::spawn(move || …)</code> won't compile, because the reference would need to outlive the spawning scope and the borrow checker won't let it. Clone one sender per thread.</p>
+<p class="lang-tr"><strong>Sık yapılan tuzak — <code>&amp;tx</code> daha fazla üretici elde etme yolu değildir.</strong> Kanallar adları gereği çok-üreticilidir, ama daha fazla üreticiyi, göndericiye referans paylaşarak değil, onu <em>klonlayarak</em> elde edersin. <code>tx.clone()</code> ucuzdur (bir refcount'u artırır). <code>&amp;tx</code>'i <code>thread::spawn(move || …)</code>'e geçirmek derlenmez; çünkü referansın, spawn eden scope'tan daha uzun yaşaması gerekir ve ödünç kontrolü buna izin vermez. İş parçacığı başına tek gönderici klonla.</p>
+
+<p class="lang-en"><strong>When to reach for something else.</strong> <code>std::sync::mpsc</code> is fine and it's in the standard library. But it's single-consumer and the implementation is older than the rest of Rust's concurrency story. For multi-consumer work-stealing, or when benchmarks say you need it, <a href="https://docs.rs/crossbeam-channel">crossbeam-channel</a> is a drop-in upgrade: same <code>Sender</code>/<code>Receiver</code> shape, <code>select!</code> macro across channels, multi-consumer supported, faster. For <code>async</code> code (Tauri commands, <code>tokio</code> tasks), use <a href="https://docs.rs/tokio/latest/tokio/sync/mpsc/index.html"><code>tokio::sync::mpsc</code></a> — its <code>send</code> is <code>.await</code>able, so a full bounded channel parks the task instead of blocking a whole OS thread. Same mental model throughout: sender moves a value in, receiver takes it out, channel closes when the senders drop.</p>
+<p class="lang-tr"><strong>Ne zaman başkasına uzanmalı.</strong> <code>std::sync::mpsc</code> iş görür ve standart kütüphanededir. Ama tek tüketicilidir ve uygulaması, Rust'ın eşzamanlılık hikâyesinin geri kalanından eskidir. Çok tüketicili iş-çalma için veya benchmark'lar ihtiyacı söylediğinde <a href="https://docs.rs/crossbeam-channel">crossbeam-channel</a> doğrudan bir yükseltmedir: aynı <code>Sender</code>/<code>Receiver</code> şekli, kanallar arası <code>select!</code> makrosu, çok tüketici desteği, daha hızlı. <code>async</code> kod için (Tauri komutları, <code>tokio</code> görevleri) <a href="https://docs.rs/tokio/latest/tokio/sync/mpsc/index.html"><code>tokio::sync::mpsc</code></a>'yi kullan — <code>send</code>'i <code>.await</code>'lenebilir, böylece dolu sınırlı bir kanal, tüm bir işletim sistemi iş parçacığını bloklamak yerine görevi park eder. Aynı zihinsel model baştan sona: gönderici değeri içeri taşır, alıcı dışarı alır, kanal göndericiler düşünce kapanır.</p>
+
+<p class="lang-en"><em>See also:</em> <a href="#sidebar-mutex">Mutex / shared state</a> · <a href="#sidebar-send-sync">Send &amp; Sync</a>.</p>
+<p class="lang-tr"><em>Ayrıca bkz:</em> <a href="#sidebar-mutex">Mutex / paylaşılan durum</a> · <a href="#sidebar-send-sync">Send ve Sync</a>.</p>
+
+<p class="lang-en"><a class="back-link" href="#ch11">⟵ back to the main track</a></p>
+<p class="lang-tr"><a class="back-link" href="#ch11">⟵ ana yola dön</a></p>
+</details>
+
 <section class="chapter" id="ch12" data-chapter="12">
 <header>
   <span class="chapter-num lang-en">Chapter 12</span>
@@ -4456,6 +4737,126 @@ Add the <code>&amp;mut</code> back. The method signature is the contract; the co
 </section>
 
 <!-- ==================================================================== -->
+<details class="sidebar" id="sidebar-doctests">
+<summary><span class="lang-en">Rust: doctests — <code>///</code>, <code>cargo test --doc</code></span><span class="lang-tr">Rust: doctest'ler — <code>///</code>, <code>cargo test --doc</code></span></summary>
+
+<p class="lang-en"><strong>The hook.</strong> Your docs can run as tests. Rustdoc actually compiles the examples in <code>///</code> comments, runs them, and fails the build if they drift from reality.</p>
+<p class="lang-tr"><strong>Kanca.</strong> Dokümantasyonun test olarak çalışabilir. Rustdoc, <code>///</code> yorumlarındaki örnekleri gerçekten derler, çalıştırır ve gerçeklikle uyumsuzlaşırlarsa derlemeyi düşürür.</p>
+
+<p class="lang-en">Triple-slash <code>///</code> is a doc comment. Drop a fenced <code>rust</code> code block inside it and <code>cargo test --doc</code> will compile that block as a standalone program and run it. <code>assert_eq!</code> is the usual shape — same macro you already use in <code>#[test]</code>.</p>
+<p class="lang-tr">Üçlü eğik çizgi <code>///</code> bir doc yorumudur. İçine <code>rust</code> çitli kod bloğu koy, <code>cargo test --doc</code> o bloğu bağımsız bir program olarak derleyip çalıştırır. <code>assert_eq!</code> her zamanki kalıptır — <code>#[test]</code>'te zaten kullandığın aynı makro.</p>
+
+<pre class="sample"><code class="language-rust">/// Collapse `.`, trim trailing slashes, leave one leading `/` alone.
+///
+/// ```rust
+/// use demo::normalize;
+/// assert_eq!(normalize("/a/./b/"), "/a/b");
+/// assert_eq!(normalize("./x"),     "x");
+/// assert_eq!(normalize("/"),       "/");
+/// ```
+pub fn normalize(path: &str) -&gt; String {
+    if path == "/" { return "/".into(); }
+    let parts: Vec&lt;&amp;str&gt; = path
+        .split('/')
+        .filter(|p| !p.is_empty() &amp;&amp; *p != ".")
+        .collect();
+    let leading = if path.starts_with('/') { "/" } else { "" };
+    format!("{leading}{}", parts.join("/"))
+}
+
+fn main() { println!("{}", normalize("/a/./b/")); }</code></pre>
+<button class="playground-btn">Run in Playground</button>
+
+<p class="lang-en"><strong>Hidden setup.</strong> Lines that start with <code># </code> (hash-space) inside a doctest are compiled but not rendered to the reader. That lets you write a fuller program — imports, a <code>fn main</code>, scaffolding — while the rendered docs show only the interesting lines.</p>
+<p class="lang-tr"><strong>Gizli kurulum.</strong> Bir doctest içinde <code># </code> (kare-boşluk) ile başlayan satırlar derlenir ama okuyucuya gösterilmez. Böylece daha dolu bir program yazabilirsin — import'lar, bir <code>fn main</code>, iskele kod — ama render edilen dokümanlarda yalnızca ilgi çekici satırlar görünür.</p>
+
+<pre class="sample"><code class="language-rust">/// ```rust
+/// # use demo::normalize;
+/// # fn helper(s: &amp;str) -&gt; String { normalize(s) }
+/// assert_eq!(helper("/a/./b"), "/a/b");
+/// ```
+pub fn normalize(path: &str) -&gt; String {
+    path.split('/').filter(|p| !p.is_empty() &amp;&amp; *p != ".").collect::&lt;Vec&lt;_&gt;&gt;().join("/")
+}
+
+fn main() {}</code></pre>
+<button class="playground-btn">Run in Playground</button>
+
+<p class="lang-en"><strong>Attribute-level controls.</strong> After the opening triple-backtick you can tag the block with fence attributes that tweak how rustdoc treats it.</p>
+<p class="lang-tr"><strong>Öznitelik düzeyi kontroller.</strong> Açılış üçlü-backtick'inden sonra bloğu, rustdoc'un onu nasıl ele alacağını değiştiren çit öznitelikleriyle etiketleyebilirsin.</p>
+
+<table class="compare-table lang-en">
+  <thead><tr><th>Attribute</th><th>What it does</th><th>When to use</th></tr></thead>
+  <tbody>
+    <tr><td><code>ignore</code></td><td>Shown in docs, not compiled and not run.</td><td>Pseudo-code, or an example that needs a runtime you can't assume (network, GPU).</td></tr>
+    <tr><td><code>no_run</code></td><td>Compiled (type-checked), but not executed.</td><td>The example would block, open a window, or touch the filesystem — you still want it to stay compilable.</td></tr>
+    <tr><td><code>should_panic</code></td><td>Passes only if the example panics at runtime.</td><td>Demonstrating a precondition or a <code>.unwrap()</code> on <code>None</code>.</td></tr>
+    <tr><td><code>compile_fail</code></td><td>Passes only if the example fails to compile.</td><td>Showing that a misuse is rejected by the borrow checker or type system.</td></tr>
+  </tbody>
+</table>
+<table class="compare-table lang-tr">
+  <thead><tr><th>Öznitelik</th><th>Ne yapar</th><th>Ne zaman kullan</th></tr></thead>
+  <tbody>
+    <tr><td><code>ignore</code></td><td>Dokümanlarda gösterilir, derlenmez ve çalıştırılmaz.</td><td>Sözde kod veya varsayamayacağın bir çalışma zamanı gerektiren örnek (ağ, GPU).</td></tr>
+    <tr><td><code>no_run</code></td><td>Derlenir (tür denetimi yapılır) ama çalıştırılmaz.</td><td>Örnek bloklanır, pencere açar ya da dosya sistemine dokunur — yine de derlenebilir kalmasını istersin.</td></tr>
+    <tr><td><code>should_panic</code></td><td>Yalnızca örnek çalışma zamanında panic yaparsa geçer.</td><td>Bir önkoşulu ya da <code>None</code> üzerinde <code>.unwrap()</code>'i gösterirken.</td></tr>
+    <tr><td><code>compile_fail</code></td><td>Yalnızca örnek derlenemezse geçer.</td><td>Bir kötüye kullanımın borrow checker veya tür sistemi tarafından reddedildiğini göstermek için.</td></tr>
+  </tbody>
+</table>
+
+<p class="lang-en"><strong>Why bother.</strong> Doctests catch drift — the moment someone renames a parameter or changes a return type, the doc example stops compiling and CI screams. Docs that lie are worse than no docs; doctests make lying impossible without a red build.</p>
+<p class="lang-tr"><strong>Neden uğraş.</strong> Doctest'ler kaymayı yakalar — biri bir parametreyi yeniden adlandırdığı ya da dönüş tipini değiştirdiği an, dokümandaki örnek derlenmeyi bırakır ve CI çığlık atar. Yalan söyleyen dokümanlar, hiç olmayan dokümanlardan beterdir; doctest'ler kırmızı bir derleme olmadan yalan söylemeyi imkânsız kılar.</p>
+
+<p class="lang-en"><strong>How they differ from <code>#[test]</code>.</strong> Each doctest is compiled as its own tiny binary — one per fenced block. That's great for isolation and for teaching, but it's slow: hundreds of doctests mean hundreds of invocations of the compiler. <code>#[test]</code> functions, by contrast, are all linked into a single test binary. Rule of thumb: use doctests to prove the public API reads the way the docs claim; use <code>#[test]</code> for bulk coverage.</p>
+<p class="lang-tr"><strong><code>#[test]</code>'ten farkları.</strong> Her doctest kendi küçücük binary'si olarak derlenir — çitli blok başına bir tane. Bu yalıtım ve öğretim için harikadır, ama yavaştır: yüzlerce doctest yüzlerce derleyici çağrısı demektir. <code>#[test]</code> fonksiyonları ise hepsi tek bir test binary'sine bağlanır. Kural: public API'nin dokümanların iddia ettiği gibi okunduğunu kanıtlamak için doctest kullan; yığın kapsama için <code>#[test]</code> kullan.</p>
+
+<p class="lang-en"><a class="back-link" href="#ch12">⟵ back to the main track</a></p>
+<p class="lang-tr"><a class="back-link" href="#ch12">⟵ ana yola dön</a></p>
+
+<div class="try-breaking lang-en">
+<strong>Try breaking it.</strong> Write a doctest that quietly misuses <code>normalize</code> — asserting it preserves the trailing slash when it actually strips it:
+<pre class="code-block rustc-input" data-file="src/lib.rs"><code class="language-rust">/// ```rust
+/// use demo::normalize;
+/// assert_eq!(normalize("/a/b/"), "/a/b/");  // wrong: trailing `/` is stripped
+/// ```
+pub fn normalize(path: &amp;str) -&gt; String { /* ... */ }</code></pre>
+Run <code>cargo test --doc</code>:
+<pre class="code-block rustc" data-file="cargo"><code>---- src/lib.rs - normalize (line 1) stdout ----
+thread 'main' panicked at 'assertion `left == right` failed
+  left: "/a/b"
+ right: "/a/b/"', src/lib.rs:3:1
+
+failures:
+    src/lib.rs - normalize (line 1)
+
+test result: FAILED. 0 passed; 1 failed</code></pre>
+Fix the assertion to match what the function actually returns (<code>"/a/b"</code>). The point: a stale example in the docs is now a CI failure, not silent misinformation.
+</div>
+<div class="try-breaking lang-tr">
+<strong>Kırmayı dene.</strong> <code>normalize</code>'ı sessizce yanlış kullanan bir doctest yaz — aslında soyduğu halde sondaki eğik çizgiyi koruduğunu iddia eden:
+<pre class="code-block rustc-input" data-file="src/lib.rs"><code class="language-rust">/// ```rust
+/// use demo::normalize;
+/// assert_eq!(normalize("/a/b/"), "/a/b/");  // yanlış: sondaki `/` soyulur
+/// ```
+pub fn normalize(path: &amp;str) -&gt; String { /* ... */ }</code></pre>
+<code>cargo test --doc</code>'u çalıştır:
+<pre class="code-block rustc" data-file="cargo"><code>---- src/lib.rs - normalize (line 1) stdout ----
+thread 'main' panicked at 'assertion `left == right` failed
+  left: "/a/b"
+ right: "/a/b/"', src/lib.rs:3:1
+
+failures:
+    src/lib.rs - normalize (line 1)
+
+test result: FAILED. 0 passed; 1 failed</code></pre>
+Assertion'ı fonksiyonun gerçekten döndürdüğü şeyle eşleşecek şekilde düzelt (<code>"/a/b"</code>). Mesele şu: dokümanlardaki bayat bir örnek artık sessiz yanlış bilgi değil, bir CI hatasıdır.
+</div>
+
+<p class="lang-en"><em>See also:</em> <a href="#sidebar-testing">testing / <code>#[test]</code></a>.</p>
+<p class="lang-tr"><em>Ayrıca bakınız:</em> <a href="#sidebar-testing">test / <code>#[test]</code></a>.</p>
+
+</details>
+
 <section class="chapter" id="ch13" data-chapter="13">
 <header>
   <span class="chapter-num lang-en">Chapter 13</span>
@@ -4759,6 +5160,144 @@ fn main() {
 </section>
 
 <!-- ==================================================================== -->
+<details class="sidebar" id="sidebar-pattern-depth">
+<summary><span class="lang-en">Rust: patterns beyond <code>match</code> — <code>if let</code>, <code>let else</code>, and destructuring</span><span class="lang-tr">Rust: <code>match</code>'in ötesinde desenler — <code>if let</code>, <code>let else</code> ve yapı-sökme</span></summary>
+
+<p class="lang-en">Pattern matching isn't just <code>match</code> — it's everywhere, and it's a feature of <code>let</code>. Every time you write <code>let (a, b) = pair</code> you're running a pattern against a value. The compiler splits patterns into two camps: <em>irrefutable</em> (always matches, safe in <code>let</code> and function parameters) and <em>refutable</em> (might not match, needs an arm or an <code>else</code>).</p>
+<p class="lang-tr">Desen eşleştirme sadece <code>match</code> değildir — her yerdedir ve <code>let</code>'in bir özelliğidir. Her <code>let (a, b) = pair</code> yazdığında bir deseni bir değere karşı çalıştırıyorsun. Derleyici desenleri iki kampa böler: <em>çürütülemez</em> (her zaman eşleşir, <code>let</code>'te ve fonksiyon parametrelerinde güvenli) ve <em>çürütülebilir</em> (eşleşmeyebilir, bir kol ya da <code>else</code> gerektirir).</p>
+
+<p class="lang-en"><strong>The shortcut forms.</strong> <code>if let</code> runs a block when one pattern matches. <code>while let</code> loops until it stops matching. <code>let … else</code> binds on the happy path and forces the <code>else</code> branch to diverge (<code>return</code>, <code>break</code>, <code>panic!</code>, etc.) when it doesn't.</p>
+<p class="lang-tr"><strong>Kısayol biçimleri.</strong> <code>if let</code>, bir desen eşleştiğinde bir bloğu çalıştırır. <code>while let</code>, eşleşmeyi durdurana kadar döner. <code>let … else</code>, mutlu yolda bağlar ve eşleşmediğinde <code>else</code> dalının ıraksamasını (<code>return</code>, <code>break</code>, <code>panic!</code>, vb.) zorunlu kılar.</p>
+
+<pre class="sample"><code class="language-rust">struct Point { x: i32, y: i32 }
+
+fn classify(p: &Point) -> &'static str {
+    // nested destructuring + literal in the pattern
+    match p {
+        Point { x: 0, y: 0 } => "origin",
+        Point { x: 0, y: _ } => "on y-axis",
+        Point { x, y } if x == y => "diagonal",     // match guard
+        Point { x: n @ 1..=5, .. } => {              // @ binding + range
+            let _ = n; "small-x"
+        }
+        _ => "somewhere",
+    }
+}
+
+fn first_word(s: &str) -> Option&lt;&amp;str&gt; {
+    s.split_whitespace().next()
+}
+
+fn main() {
+    // if let — one arm only
+    if let Some(w) = first_word("hello world") {
+        println!("first = {w}");
+    }
+
+    // while let — drain a stack
+    let mut stack = vec![1, 2, 3];
+    while let Some(top) = stack.pop() {
+        println!("popped {top}");
+    }
+
+    // let else — early return on the sad path
+    let opt: Option&lt;i32&gt; = Some(7);
+    let Some(n) = opt else {
+        println!("nothing to do"); return;
+    };
+    println!("got {n}");
+
+    // or-patterns + range
+    let day = 3;
+    let kind = match day {
+        1 | 7 => "weekend",
+        2..=6 => "weekday",
+        _     => "bogus",
+    };
+    println!("{kind}");
+
+    for p in [Point { x: 0, y: 0 }, Point { x: 2, y: 2 }, Point { x: 3, y: 9 }] {
+        println!("{}", classify(&p));
+    }
+}</code></pre>
+<button class="playground-btn">Run in Playground</button>
+
+<p class="lang-en"><strong>Refutable vs irrefutable — the one rule.</strong> <code>let PATTERN = expr;</code> requires the pattern to be irrefutable. <code>Some(n)</code> is refutable (it can fail on <code>None</code>), so <code>let Some(n) = opt;</code> alone is a compile error. Use <code>if let</code>, <code>let … else</code>, or <code>match</code>.</p>
+<p class="lang-tr"><strong>Çürütülebilir mi çürütülemez mi — tek kural.</strong> <code>let DESEN = ifade;</code> desenin çürütülemez olmasını gerektirir. <code>Some(n)</code> çürütülebilirdir (<code>None</code>'da başarısız olabilir), bu yüzden tek başına <code>let Some(n) = opt;</code> derleme hatasıdır. <code>if let</code>, <code>let … else</code> veya <code>match</code> kullan.</p>
+
+<p class="lang-en"><strong><code>ref</code> and <code>ref mut</code>.</strong> In a pattern, a bare name <em>moves</em> or <em>copies</em> out of the scrutinee. Write <code>ref</code> to borrow instead: <code>let Point { ref x, ref y } = p;</code> binds two <code>&amp;i32</code>s without consuming <code>p</code>. You rarely need it at top level (modern match ergonomics add the <code>&amp;</code> for you), but it's still the tool inside nested patterns.</p>
+<p class="lang-tr"><strong><code>ref</code> ve <code>ref mut</code>.</strong> Bir desende çıplak bir isim, incelenen değerden <em>taşır</em> ya da <em>kopyalar</em>. Bunun yerine ödünç almak için <code>ref</code> yaz: <code>let Point { ref x, ref y } = p;</code>, <code>p</code>'yi tüketmeden iki <code>&amp;i32</code> bağlar. Üst düzeyde nadiren gerekir (modern match ergonomisi <code>&amp;</code>'yi senin için ekler) ama iç içe desenlerde hâlâ kullanılan alettir.</p>
+
+<table class="compare-table lang-en">
+<thead><tr><th>What you want</th><th>Old way</th><th>Pattern form</th></tr></thead>
+<tbody>
+<tr><td>Early-return on <code>None</code></td><td><code>if self.x.is_none() { return; } let v = self.x.unwrap();</code></td><td><code>let Some(v) = self.x else { return; };</code></td></tr>
+<tr><td>Do something when <code>Some</code></td><td><code>match opt { Some(v) =&gt; {...}, None =&gt; {} }</code></td><td><code>if let Some(v) = opt { ... }</code></td></tr>
+<tr><td>Drain a stack until empty</td><td><code>loop { match stack.pop() { Some(t) =&gt; ..., None =&gt; break } }</code></td><td><code>while let Some(t) = stack.pop() { ... }</code></td></tr>
+<tr><td>Split a struct into fields</td><td><code>let x = p.x; let y = p.y;</code></td><td><code>let Point { x, y } = p;</code></td></tr>
+<tr><td>Match several values the same way</td><td><code>x == 1 || x == 2 || x == 3</code></td><td><code>matches!(x, 1 | 2 | 3)</code></td></tr>
+<tr><td>Keep the whole value <em>and</em> inspect it</td><td>compare, then rebind by hand</td><td><code>n @ 1..=5</code> inside the arm</td></tr>
+</tbody>
+</table>
+
+<table class="compare-table lang-tr">
+<thead><tr><th>İstediğin şey</th><th>Eski yol</th><th>Desen biçimi</th></tr></thead>
+<tbody>
+<tr><td><code>None</code>'da erken dön</td><td><code>if self.x.is_none() { return; } let v = self.x.unwrap();</code></td><td><code>let Some(v) = self.x else { return; };</code></td></tr>
+<tr><td><code>Some</code> olduğunda bir şey yap</td><td><code>match opt { Some(v) =&gt; {...}, None =&gt; {} }</code></td><td><code>if let Some(v) = opt { ... }</code></td></tr>
+<tr><td>Yığını boşalana kadar tüket</td><td><code>loop { match stack.pop() { Some(t) =&gt; ..., None =&gt; break } }</code></td><td><code>while let Some(t) = stack.pop() { ... }</code></td></tr>
+<tr><td>Bir struct'ı alanlarına ayır</td><td><code>let x = p.x; let y = p.y;</code></td><td><code>let Point { x, y } = p;</code></td></tr>
+<tr><td>Birkaç değeri aynı şekilde eşleştir</td><td><code>x == 1 || x == 2 || x == 3</code></td><td><code>matches!(x, 1 | 2 | 3)</code></td></tr>
+<tr><td>Değerin tamamını tut <em>ve</em> incele</td><td>karşılaştır, sonra elle yeniden bağla</td><td>kolun içinde <code>n @ 1..=5</code></td></tr>
+</tbody>
+</table>
+
+<div class="try-breaking lang-en">
+<strong>Try breaking it.</strong> Use a refutable pattern directly in a <code>let</code>:
+<pre class="code-block rustc-input" data-file="src/main.rs"><code class="language-rust">fn main() {
+    let opt: Option&lt;i32&gt; = Some(7);
+    let Some(n) = opt;          // refutable — no else, no if let
+    println!("{n}");
+}</code></pre>
+<pre class="code-block rustc" data-file="rustc"><code>error[E0005]: refutable pattern in local binding
+  |
+  |     let Some(n) = opt;
+  |         ^^^^^^^ pattern `None` not covered
+  |
+  = note: `let` bindings require an "irrefutable pattern", like a `struct` or an `enum` with only one variant
+help: you might want to use `let else` to handle the variant that isn't matched
+  |
+  |     let Some(n) = opt else { todo!() };
+  |                       ++++++++++++++++</code></pre>
+The compiler even suggests the fix: add <code>else { … }</code> so the <code>None</code> case goes somewhere.
+</div>
+<div class="try-breaking lang-tr">
+<strong>Kırmayı dene.</strong> <code>let</code>'te doğrudan çürütülebilir bir desen kullan:
+<pre class="code-block rustc-input" data-file="src/main.rs"><code class="language-rust">fn main() {
+    let opt: Option&lt;i32&gt; = Some(7);
+    let Some(n) = opt;          // çürütülebilir — else yok, if let yok
+    println!("{n}");
+}</code></pre>
+<pre class="code-block rustc" data-file="rustc"><code>error[E0005]: refutable pattern in local binding
+  |
+  |     let Some(n) = opt;
+  |         ^^^^^^^ pattern `None` not covered
+  |
+  = note: `let` bindings require an "irrefutable pattern", like a `struct` or an `enum` with only one variant
+help: you might want to use `let else` to handle the variant that isn't matched
+  |
+  |     let Some(n) = opt else { todo!() };
+  |                       ++++++++++++++++</code></pre>
+Derleyici çözümü bile öneriyor: <code>else { … }</code> ekle ki <code>None</code> durumu bir yere gitsin.
+</div>
+
+<p class="lang-en"><strong>See also.</strong> <a class="sidebar-link" href="#sidebar-match">⟶ <code>match</code> and pattern matching</a> for exhaustiveness and the <code>matches!</code> macro, and <a class="sidebar-link" href="#sidebar-result">⟶ <code>Result</code> and the <code>?</code> operator</a> for how <code>let … else</code> pairs with early-return error handling.</p>
+<p class="lang-tr"><strong>Ayrıca bak.</strong> Kapsayıcılık ve <code>matches!</code> makrosu için <a class="sidebar-link" href="#sidebar-match">⟶ <code>match</code> ve desen eşleştirme</a>, <code>let … else</code>'in erken-dönüşlü hata yönetimiyle nasıl eşleştiği için <a class="sidebar-link" href="#sidebar-result">⟶ <code>Result</code> ve <code>?</code> operatörü</a>.</p>
+
+<p class="lang-en"><a class="back-link" href="#ch13">⟵ back to the main track</a></p>
+<p class="lang-tr"><a class="back-link" href="#ch13">⟵ ana yola dön</a></p>
+</details>
+
 <section class="chapter checkpoint" id="ch14" data-chapter="14">
 <header>
   <span class="chapter-num lang-en">Checkpoint · Chapter 14</span>
@@ -5165,6 +5704,307 @@ Derleyici tam da yeni bir kol isteyen <code>match</code>'i gösterir — string 
 </section>
 
 <!-- ==================================================================== -->
+<details class="sidebar" id="sidebar-from-into">
+<summary><span class="lang-en">Rust: <code>From</code> / <code>Into</code> — why <code>?</code> magically converts error types</span><span class="lang-tr">Rust: <code>From</code> / <code>Into</code> — <code>?</code> hata türlerini nasıl sihirli biçimde dönüştürüyor</span></summary>
+<p class="lang-en"><strong>The one-liner.</strong> <code>?</code> isn't compiler magic — it's trait plumbing. When <code>?</code> meets an <code>Err(e)</code>, it calls <code>From::from(e)</code> on its way out of the function. If a <code>From</code> impl exists between the two error types, conversion is silent. If it doesn't, you get <code>E0277</code>.</p>
+<p class="lang-tr"><strong>Tek cümlelik.</strong> <code>?</code> bir derleyici sihri değil — trait tesisatıdır. <code>?</code> bir <code>Err(e)</code>'yle karşılaştığında, fonksiyondan çıkarken <code>From::from(e)</code>'yi çağırır. İki hata türü arasında <code>From</code> impl'i varsa, dönüşüm sessiz olur. Yoksa <code>E0277</code> alırsın.</p>
+
+<p class="lang-en"><strong>The two traits.</strong> <code>From&lt;T&gt;</code> says "I can be built from a <code>T</code>." <code>Into&lt;U&gt;</code> says "I can turn myself into a <code>U</code>." A blanket impl in <code>core</code> gives you <code>Into</code> for free whenever you write <code>From</code>:</p>
+<p class="lang-tr"><strong>İki trait.</strong> <code>From&lt;T&gt;</code> "bir <code>T</code>'den inşa edilebilirim" der. <code>Into&lt;U&gt;</code> "kendimi bir <code>U</code>'ya çevirebilirim" der. <code>core</code>'daki bir blanket impl, <code>From</code> yazdığında sana <code>Into</code>'yu bedavaya verir:</p>
+
+<pre class="sample"><code class="language-rust">// This impl lives in core — you never write it, you benefit from it:
+// impl&lt;T, U: From&lt;T&gt;&gt; Into&lt;U&gt; for T {
+//     fn into(self) -&gt; U { U::from(self) }
+// }
+
+struct Celsius(f64);
+struct Fahrenheit(f64);
+
+impl From&lt;Celsius&gt; for Fahrenheit {
+    fn from(c: Celsius) -&gt; Self {
+        Fahrenheit(c.0 * 9.0 / 5.0 + 32.0)
+    }
+}
+
+fn main() {
+    let boiling: Fahrenheit = Celsius(100.0).into();   // Into, for free
+    let freezing = Fahrenheit::from(Celsius(0.0));     // From, explicit
+    println!("{} {}", boiling.0, freezing.0);          // 212 32
+}</code></pre>
+<button class="playground-btn">Run in Playground</button>
+
+<p class="lang-en"><strong>Rule of thumb:</strong> <em>always</em> impl <code>From</code>, <em>never</em> impl <code>Into</code> directly. The blanket impl covers both directions, and impl'ing <code>Into</code> by hand usually runs afoul of the orphan rule.</p>
+<p class="lang-tr"><strong>Pratik kural:</strong> <em>her zaman</em> <code>From</code>'u impl'le, <em>asla</em> doğrudan <code>Into</code>'yu impl'leme. Blanket impl her iki yönü de kapsar ve <code>Into</code>'yu elle yazmak genellikle orphan kuralına takılır.</p>
+
+<p class="lang-en"><strong>What <code>?</code> actually expands to.</strong> Roughly:</p>
+<p class="lang-tr"><strong><code>?</code> aslında neye açılır.</strong> Kabaca:</p>
+
+<pre class="sample"><code class="language-rust">// Sugar:
+//     let x = expr?;
+// Desugared (conceptually):
+//     let x = match expr {
+//         Ok(v)  =&gt; v,
+//         Err(e) =&gt; return Err(From::from(e)),
+//     };
+
+use std::num::ParseIntError;
+
+#[derive(Debug)]
+enum MyError {
+    Parse(ParseIntError),
+    Io(std::io::Error),
+}
+
+impl From&lt;ParseIntError&gt; for MyError {
+    fn from(e: ParseIntError) -&gt; Self { MyError::Parse(e) }
+}
+impl From&lt;std::io::Error&gt; for MyError {
+    fn from(e: std::io::Error) -&gt; Self { MyError::Io(e) }
+}
+
+fn read_port(path: &amp;str) -&gt; Result&lt;u16, MyError&gt; {
+    let s = std::fs::read_to_string(path)?;   // io::Error  -&gt; MyError
+    let n: u16 = s.trim().parse()?;           // ParseIntError -&gt; MyError
+    Ok(n)
+}
+
+fn main() {
+    println!("{:?}", read_port("/does/not/exist"));
+}</code></pre>
+<button class="playground-btn">Run in Playground</button>
+
+<p class="lang-en">Two different error types, one function, zero <code>.map_err</code> calls. The <code>From</code> impls are the whole interface.</p>
+<p class="lang-tr">İki farklı hata türü, tek fonksiyon, sıfır <code>.map_err</code> çağrısı. Arayüzün tamamı <code>From</code> impl'leri.</p>
+
+<p class="lang-en"><strong><code>TryFrom</code> / <code>TryInto</code>.</strong> When the conversion can fail — narrowing <code>i64</code> to <code>u16</code>, parsing a string into a typed id — use the fallible cousins. Same blanket-impl relationship; they return <code>Result&lt;Self, Self::Error&gt;</code>.</p>
+<p class="lang-tr"><strong><code>TryFrom</code> / <code>TryInto</code>.</strong> Dönüşüm başarısız olabiliyorsa — <code>i64</code>'ü <code>u16</code>'ya daraltmak, bir string'i tipli bir id'ye çevirmek — başarısız olabilen kuzenlerini kullan. Aynı blanket-impl ilişkisi; <code>Result&lt;Self, Self::Error&gt;</code> döndürürler.</p>
+
+<pre class="sample"><code class="language-rust">use std::convert::TryFrom;
+
+fn main() {
+    let big: i64 = 70_000;
+    let small = u16::try_from(big);          // Err — doesn't fit
+    println!("{small:?}");                   // Err(TryFromIntError(()))
+
+    let ok = u16::try_from(42_i64).unwrap();
+    println!("{ok}");                        // 42
+}</code></pre>
+<button class="playground-btn">Run in Playground</button>
+
+<p class="lang-en"><strong>The <code>impl Into&lt;T&gt;</code> argument trick.</strong> A function that accepts "anything convertible to <code>T</code>" is just a generic bound:</p>
+<p class="lang-tr"><strong><code>impl Into&lt;T&gt;</code> argüman hilesi.</strong> "<code>T</code>'ye dönüştürülebilir her şey"i kabul eden bir fonksiyon sadece bir generic kısıtlamadır:</p>
+
+<pre class="sample"><code class="language-rust">// Two equivalent signatures — pick whichever reads better:
+fn log_a&lt;E: Into&lt;String&gt;&gt;(msg: E) { println!("{}", msg.into()); }
+fn log_b(msg: impl Into&lt;String&gt;)  { println!("{}", msg.into()); }
+
+fn main() {
+    log_a("a &amp;str");                // &amp;str: Into&lt;String&gt; ✓
+    log_b(String::from("owned"));   // String: Into&lt;String&gt; (identity) ✓
+}</code></pre>
+<button class="playground-btn">Run in Playground</button>
+
+<p class="lang-en">This is how ergonomic APIs swallow <code>&amp;str</code>, <code>String</code>, <code>Cow&lt;str&gt;</code>, and your own string-like types through a single parameter.</p>
+<p class="lang-tr">Ergonomik API'lerin <code>&amp;str</code>, <code>String</code>, <code>Cow&lt;str&gt;</code> ve kendi string-benzeri türlerini tek bir parametreyle yutma şekli budur.</p>
+
+<table class="compare-table lang-en">
+  <thead><tr><th>Trait</th><th>Signature</th><th>Impl this?</th><th>Use when</th></tr></thead>
+  <tbody>
+    <tr><td><code>From&lt;T&gt;</code></td><td><code>fn from(T) -&gt; Self</code></td><td>Yes — always this one</td><td>Infallible conversion into your type</td></tr>
+    <tr><td><code>Into&lt;U&gt;</code></td><td><code>fn into(self) -&gt; U</code></td><td>No — blanket impl gives it free</td><td>Generic bounds: <code>impl Into&lt;U&gt;</code> argument</td></tr>
+    <tr><td><code>TryFrom&lt;T&gt;</code></td><td><code>fn try_from(T) -&gt; Result&lt;Self, E&gt;</code></td><td>Yes, when failure is possible</td><td>Narrowing, validation, parsing</td></tr>
+    <tr><td><code>TryInto&lt;U&gt;</code></td><td><code>fn try_into(self) -&gt; Result&lt;U, E&gt;</code></td><td>No — blanket impl</td><td>Same as <code>Into</code> but fallible</td></tr>
+  </tbody>
+</table>
+<table class="compare-table lang-tr">
+  <thead><tr><th>Trait</th><th>İmza</th><th>Bunu impl et?</th><th>Ne zaman</th></tr></thead>
+  <tbody>
+    <tr><td><code>From&lt;T&gt;</code></td><td><code>fn from(T) -&gt; Self</code></td><td>Evet — her zaman bu</td><td>Türüne başarısız olmayan dönüşüm</td></tr>
+    <tr><td><code>Into&lt;U&gt;</code></td><td><code>fn into(self) -&gt; U</code></td><td>Hayır — blanket impl bedava verir</td><td>Generic kısıtlar: <code>impl Into&lt;U&gt;</code> argümanı</td></tr>
+    <tr><td><code>TryFrom&lt;T&gt;</code></td><td><code>fn try_from(T) -&gt; Result&lt;Self, E&gt;</code></td><td>Evet, başarısızlık mümkünse</td><td>Daraltma, doğrulama, ayrıştırma</td></tr>
+    <tr><td><code>TryInto&lt;U&gt;</code></td><td><code>fn try_into(self) -&gt; Result&lt;U, E&gt;</code></td><td>Hayır — blanket impl</td><td><code>Into</code> gibi ama başarısız olabilir</td></tr>
+  </tbody>
+</table>
+
+<p class="lang-en"><strong>Orphan-rule gotcha.</strong> You can only <code>impl From&lt;Foreign&gt; for Local</code> or <code>impl From&lt;Local&gt; for Foreign</code> — at least one side must be a type <em>you</em> defined in this crate. You cannot sneak an <code>impl From&lt;std::io::Error&gt; for String</code> into your code; both types belong to other crates. The fix is a newtype: wrap one side in <code>struct MyString(String)</code> and impl against that.</p>
+<p class="lang-tr"><strong>Orphan kuralı tuzağı.</strong> Yalnızca <code>impl From&lt;Foreign&gt; for Local</code> ya da <code>impl From&lt;Local&gt; for Foreign</code> yazabilirsin — en az bir taraf bu crate'te <em>senin</em> tanımladığın bir tür olmalı. Koduna <code>impl From&lt;std::io::Error&gt; for String</code> gizleyemezsin; iki tür de başka crate'lere aittir. Çözüm bir newtype: bir tarafı <code>struct MyString(String)</code> ile sar ve ona karşı impl'le.</p>
+
+<div class="try-breaking lang-en">
+<strong>Try breaking it.</strong> Remove the <code>From&lt;ParseIntError&gt;</code> impl and try to use <code>?</code> anyway:
+<pre class="code-block rustc-input" data-file="src/main.rs"><code class="language-rust">#[derive(Debug)]
+enum MyError {
+    Io(std::io::Error),
+}
+
+impl From&lt;std::io::Error&gt; for MyError {
+    fn from(e: std::io::Error) -&gt; Self { MyError::Io(e) }
+}
+
+fn read_port(path: &amp;str) -&gt; Result&lt;u16, MyError&gt; {
+    let s = std::fs::read_to_string(path)?;
+    let n: u16 = s.trim().parse()?;    // &lt;-- ParseIntError, no From impl
+    Ok(n)
+}</code></pre>
+<code>cargo check</code>:
+<pre class="code-block rustc" data-file="rustc"><code>error[E0277]: `?` couldn't convert the error to `MyError`
+   |
+   |     let n: u16 = s.trim().parse()?;
+   |                                  ^ the trait `From&lt;ParseIntError&gt;` is not implemented for `MyError`
+   |
+   = note: the question mark operation (`?`) implicitly performs a
+           conversion on the error value using the `From` trait
+help: consider implementing the trait on `MyError`
+   |
+   | impl From&lt;ParseIntError&gt; for MyError {</code></pre>
+The compiler spells it out: <code>?</code> needs <code>From</code> and you didn't give it one. Add the impl back, or use <code>.map_err(MyError::Parse)</code> at the call site.</div>
+<div class="try-breaking lang-tr">
+<strong>Şunu kırmayı dene.</strong> <code>From&lt;ParseIntError&gt;</code> impl'ini kaldır ve yine de <code>?</code> kullanmayı dene:
+<pre class="code-block rustc-input" data-file="src/main.rs"><code class="language-rust">#[derive(Debug)]
+enum MyError {
+    Io(std::io::Error),
+}
+
+impl From&lt;std::io::Error&gt; for MyError {
+    fn from(e: std::io::Error) -&gt; Self { MyError::Io(e) }
+}
+
+fn read_port(path: &amp;str) -&gt; Result&lt;u16, MyError&gt; {
+    let s = std::fs::read_to_string(path)?;
+    let n: u16 = s.trim().parse()?;    // &lt;-- ParseIntError, From impl yok
+    Ok(n)
+}</code></pre>
+<code>cargo check</code>:
+<pre class="code-block rustc" data-file="rustc"><code>error[E0277]: `?` couldn't convert the error to `MyError`
+   |
+   |     let n: u16 = s.trim().parse()?;
+   |                                  ^ the trait `From&lt;ParseIntError&gt;` is not implemented for `MyError`
+   |
+   = note: the question mark operation (`?`) implicitly performs a
+           conversion on the error value using the `From` trait
+help: consider implementing the trait on `MyError`
+   |
+   | impl From&lt;ParseIntError&gt; for MyError {</code></pre>
+Derleyici açıkça söylüyor: <code>?</code> <code>From</code> ister ve sen vermedin. Impl'i geri ekle ya da çağrı yerinde <code>.map_err(MyError::Parse)</code> kullan.</div>
+
+<p class="lang-en"><strong>Common trap.</strong> Writing your own <code>impl From&lt;MyError&gt; for MyError</code> — it's already there as a reflexive blanket impl (<code>impl&lt;T&gt; From&lt;T&gt; for T</code>). Your hand-written version collides and the compiler rejects it.</p>
+<p class="lang-tr"><strong>Sık yapılan tuzak.</strong> Kendi <code>impl From&lt;MyError&gt; for MyError</code>'unu yazmak — o zaten yansımalı bir blanket impl olarak var (<code>impl&lt;T&gt; From&lt;T&gt; for T</code>). Elle yazdığın sürüm çakışır ve derleyici reddeder.</p>
+
+<p class="lang-en"><em>See also:</em> <a href="#sidebar-result"><code>Result</code> and <code>?</code></a>, <a href="#sidebar-macros">macros</a> (for <code>#[derive(thiserror::Error)]</code>, which writes these <code>From</code> impls for you).</p>
+<p class="lang-tr"><em>Ayrıca bak:</em> <a href="#sidebar-result"><code>Result</code> ve <code>?</code></a>, <a href="#sidebar-macros">makrolar</a> (<code>#[derive(thiserror::Error)]</code> bu <code>From</code> impl'lerini senin yerine yazar).</p>
+
+<p class="lang-en"><a class="back-link" href="#ch15">⟵ back to the main track</a></p>
+<p class="lang-tr"><a class="back-link" href="#ch15">⟵ ana yola dön</a></p>
+</details>
+
+<details class="sidebar" id="sidebar-anyhow-vs-thiserror">
+<summary><span class="lang-en">Rust: <code>anyhow</code> vs <code>thiserror</code> — two crates, different jobs</span><span class="lang-tr">Rust: <code>anyhow</code> ile <code>thiserror</code> — iki crate, farklı işler</span></summary>
+
+<p class="lang-en"><strong>The one-liner.</strong> <code>thiserror</code> is for your library's errors. <code>anyhow</code> is for scripts and <code>main</code>. You already know <code>Result</code> and <code>?</code>; these two crates just pick what sits in the <code>E</code> slot.</p>
+<p class="lang-tr"><strong>Tek cümlelik.</strong> <code>thiserror</code> kütüphanenin hataları için. <code>anyhow</code> scriptler ve <code>main</code> için. <code>Result</code> ve <code>?</code>'yi zaten biliyorsun; bu iki crate yalnızca <code>E</code> yuvasına ne oturacağını seçer.</p>
+
+<p class="lang-en"><strong>Use <code>thiserror</code> when callers need to branch on the variant.</strong> A typed <code>enum MyError</code> with explicit variants is the right shape for library code, API boundaries, and Tauri commands (so JS can tell the cases apart). <code>#[derive(thiserror::Error)]</code> writes the <code>Display</code> impl from your <code>#[error("...")]</code> format strings, and <code>#[from]</code> gives you free <code>?</code> conversion from inner error types.</p>
+<p class="lang-tr"><strong>Çağıranlar varyanta göre dallanmak zorundaysa <code>thiserror</code> kullan.</strong> Açık varyantları olan tipli bir <code>enum MyError</code>; kütüphane kodu, API sınırı ve Tauri komutları için doğru biçimdir (JS durumları ayırt edebilsin diye). <code>#[derive(thiserror::Error)]</code>, <code>#[error("...")]</code> format dizelerinden <code>Display</code> impl'ini yazar ve <code>#[from]</code> sana iç hata türlerinden bedava <code>?</code> dönüşümü verir.</p>
+
+<pre class="sample"><code class="language-rust">// Cargo.toml: thiserror = "1"
+use thiserror::Error;
+
+#[derive(Debug, Error)]
+pub enum ConfigError {
+    #[error("config file not found: {path}")]
+    Missing { path: String },
+    #[error("i/o error: {0}")]
+    Io(#[from] std::io::Error),        // From&lt;io::Error&gt; for free
+    #[error("bad toml: {0}")]
+    Parse(#[from] toml::de::Error),    // From&lt;toml::de::Error&gt; for free
+}
+
+pub fn load(path: &amp;str) -&gt; Result&lt;String, ConfigError&gt; {
+    let bytes = std::fs::read(path)?;              // io::Error  -&gt; ConfigError::Io
+    let text  = String::from_utf8(bytes)
+        .map_err(|e| ConfigError::Missing { path: e.to_string() })?;
+    Ok(text)
+}
+
+fn main() {
+    match load("nope.toml") {
+        Ok(s)  =&gt; println!("{} bytes", s.len()),
+        Err(e) =&gt; eprintln!("{e}"),
+    }
+}</code></pre>
+<button class="playground-btn">Run in Playground</button>
+
+<p class="lang-en"><strong>Use <code>anyhow</code> when you just want to bubble anything up and print it.</strong> <code>anyhow::Result&lt;T&gt;</code> is an alias for <code>Result&lt;T, anyhow::Error&gt;</code>, and <code>anyhow::Error</code> swallows anything that implements <code>std::error::Error</code>. <code>.context(...)</code> and <code>.with_context(|| ...)</code> attach a note as the error bubbles up, so the final printout is a readable stack of what-was-happening. <code>bail!("...")</code> is <code>return Err(anyhow!("..."))</code>; <code>anyhow!(...)</code> builds an ad-hoc error with <code>format!</code>-style args.</p>
+<p class="lang-tr"><strong>Sadece her şeyi yukarı iletip yazdırmak istiyorsan <code>anyhow</code> kullan.</strong> <code>anyhow::Result&lt;T&gt;</code>, <code>Result&lt;T, anyhow::Error&gt;</code> için bir takma addır ve <code>anyhow::Error</code>, <code>std::error::Error</code>'u uygulayan her şeyi yutar. <code>.context(...)</code> ve <code>.with_context(|| ...)</code>, hata yukarı çıkarken bir not iliştirir; böylece sondaki çıktı, ne olup bittiğinin okunabilir bir yığını olur. <code>bail!("...")</code>, <code>return Err(anyhow!("..."))</code>'dur; <code>anyhow!(...)</code>, <code>format!</code> tarzı argümanlarla anlık bir hata kurar.</p>
+
+<pre class="sample"><code class="language-rust">// Cargo.toml: anyhow = "1"
+use anyhow::{anyhow, bail, Context, Result};
+
+fn read_port(path: &amp;str) -&gt; Result&lt;u16&gt; {
+    let text = std::fs::read_to_string(path)
+        .with_context(|| format!("reading config {path}"))?;
+    let line = text.lines().next()
+        .ok_or_else(|| anyhow!("empty config"))?;
+    let port: u16 = line.trim().parse()
+        .context("first line must be a port number")?;
+    if port &lt; 1024 { bail!("port {port} is privileged"); }
+    Ok(port)
+}
+
+fn main() -&gt; Result&lt;()&gt; {
+    let port = read_port("fedit.conf")?;
+    println!("listening on {port}");
+    Ok(())
+}
+// Error chain on failure:
+//   Error: reading config fedit.conf
+//   Caused by:
+//       No such file or directory (os error 2)</code></pre>
+<button class="playground-btn">Run in Playground</button>
+
+<aside class="callout lang-en"><strong>Why <code>.context()</code> is the killer feature.</strong> Raw <code>std::io::Error</code> says <em>"No such file or directory"</em> — fine, but <em>which</em> file? <code>.with_context(|| format!("reading config {path}"))</code> attaches the path right where you have it, so the final printout reads top-down like a breadcrumb trail: high-level intent first, OS error last. Use <code>.context("literal")</code> for a fixed string, <code>.with_context(|| …)</code> when building the message costs something (allocates, formats) — the closure runs only on the error path.</aside>
+<aside class="callout lang-tr"><strong><code>.context()</code> neden öldürücü özellik.</strong> Çıplak <code>std::io::Error</code> <em>"No such file or directory"</em> der — güzel, ama <em>hangi</em> dosya? <code>.with_context(|| format!("reading config {path}"))</code>, yolu tam elinin altındayken iliştirir; böylece son çıktı yukarıdan aşağı bir iz gibi okunur: önce üst düzey niyet, sonda işletim sistemi hatası. Sabit dize için <code>.context("literal")</code> kullan, mesajı kurmak pahalıysa (ayırma, formatlama) <code>.with_context(|| …)</code> kullan — closure yalnızca hata yolunda çalışır.</aside>
+
+<p class="lang-en"><strong>The "mix them" pattern.</strong> A library crate defines its own <code>thiserror</code> enum (so downstream code can match on it). Its binary or CLI wraps those calls with <code>anyhow</code> and adds context as values bubble up. <code>anyhow::Error</code> happily swallows a <code>ConfigError</code> via its blanket <code>From&lt;E: std::error::Error + Send + Sync&gt;</code>:</p>
+<p class="lang-tr"><strong>"İkisini karıştır" deseni.</strong> Bir kütüphane crate'i kendi <code>thiserror</code> enum'unu tanımlar (aşağı akış kodu üzerinde <code>match</code> yapabilsin diye). Onun binary'si ya da CLI'sı, o çağrıları <code>anyhow</code>'la sarar ve değerler yukarı çıkarken context ekler. <code>anyhow::Error</code>, kapsayan <code>From&lt;E: std::error::Error + Send + Sync&gt;</code> impl'i sayesinde bir <code>ConfigError</code>'u memnuniyetle yutar:</p>
+
+<pre class="sample"><code class="language-rust">// in the CLI binary that depends on the lib:
+use anyhow::{Context, Result};
+
+fn main() -&gt; Result&lt;()&gt; {
+    let text = mylib::load("fedit.toml")       // returns Result&lt;_, ConfigError&gt;
+        .context("startup: loading fedit.toml")?;   // now anyhow::Error, with note
+    println!("loaded {} bytes", text.len());
+    Ok(())
+}</code></pre>
+
+<table class="compare-table lang-en">
+<thead><tr><th>You're writing…</th><th>Pick</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td>a library crate</td><td><code>thiserror</code></td><td>callers need to match on variants; you don't know their error policy</td></tr>
+<tr><td>a CLI app's <code>main.rs</code></td><td><code>anyhow</code></td><td>you just print the chain and exit; <code>.context()</code> gives the user a trail</td></tr>
+<tr><td>a one-off script / build tool</td><td><code>anyhow</code></td><td>zero ceremony; <code>bail!</code> and <code>?</code> are all you need</td></tr>
+<tr><td>a Tauri <code>#[command]</code></td><td><code>thiserror</code></td><td>the error crosses the IPC boundary with <code>Serialize</code>; JS branches on a tag</td></tr>
+<tr><td>a test helper</td><td><code>anyhow</code></td><td><code>#[test] fn t() -&gt; anyhow::Result&lt;()&gt;</code> lets you <code>?</code> everything in tests</td></tr>
+</tbody>
+</table>
+<table class="compare-table lang-tr">
+<thead><tr><th>Yazdığın şey…</th><th>Seçim</th><th>Neden</th></tr></thead>
+<tbody>
+<tr><td>bir kütüphane crate'i</td><td><code>thiserror</code></td><td>çağıranlar varyantlara göre <code>match</code>lemek zorunda; hata politikalarını bilmiyorsun</td></tr>
+<tr><td>bir CLI uygulamasının <code>main.rs</code>'si</td><td><code>anyhow</code></td><td>zinciri yazdırıp çıkıyorsun; <code>.context()</code> kullanıcıya iz bırakır</td></tr>
+<tr><td>tek seferlik script / build aracı</td><td><code>anyhow</code></td><td>sıfır tören; <code>bail!</code> ve <code>?</code> yetiyor</td></tr>
+<tr><td>bir Tauri <code>#[command]</code></td><td><code>thiserror</code></td><td>hata <code>Serialize</code> ile IPC sınırını geçer; JS etiket üzerinden dallanır</td></tr>
+<tr><td>test yardımcısı</td><td><code>anyhow</code></td><td><code>#[test] fn t() -&gt; anyhow::Result&lt;()&gt;</code> testlerde her şeye <code>?</code> koymanı sağlar</td></tr>
+</tbody>
+</table>
+
+<p class="lang-en"><em>See also:</em> <a href="#sidebar-result">Result / ?</a> · <a href="#sidebar-enums">enums with data</a>.</p>
+<p class="lang-tr"><em>Ayrıca bakınız:</em> <a href="#sidebar-result">Result / ?</a> · <a href="#sidebar-enums">veri taşıyan enum'lar</a>.</p>
+
+<p class="lang-en"><a class="back-link" href="#ch15">⟵ back to the main track</a></p>
+<p class="lang-tr"><a class="back-link" href="#ch15">⟵ ana yola dön</a></p>
+</details>
+
 <section class="chapter" id="ch16" data-chapter="16">
 <header>
   <span class="chapter-num lang-en">Chapter 16</span>
@@ -6200,6 +7040,189 @@ jobs:
 </section>
 
 <!-- ==================================================================== -->
+<details class="sidebar" id="sidebar-cfg-features">
+<summary><span class="lang-en">Rust: <code>#[cfg]</code> + Cargo features — one codebase, many builds</span><span class="lang-tr">Rust: <code>#[cfg]</code> + Cargo özellikleri — tek kod, çok derleme</span></summary>
+
+<p class="lang-en"><strong>The hook.</strong> One codebase, multiple builds. The same source compiles differently per platform or feature flag. fedit ships to Windows 10/11, macOS, and Linux from one <code>git clone</code> — the compiler throws away the parts that don't belong in this build, and keeps the parts that do.</p>
+<p class="lang-tr"><strong>Giriş.</strong> Tek bir kod tabanı, birçok derleme. Aynı kaynak, platforma ya da özellik bayrağına göre farklı derlenir. fedit, tek bir <code>git clone</code>'dan Windows 10/11'e, macOS'a ve Linux'a gönderilir — derleyici, bu derlemeye ait olmayan kısımları atar, ait olanları tutar.</p>
+
+<p class="lang-en"><strong>The one-liner.</strong> <code>#[cfg(predicate)]</code> keeps or drops the item (fn, mod, use, struct, whatever it's attached to) at compile time based on the predicate. Predicates compose: <code>any(...)</code>, <code>all(...)</code>, <code>not(...)</code>. If the predicate is false, the item simply isn't in the binary — no runtime cost, no dead branch.</p>
+<p class="lang-tr"><strong>Tek cümlelik.</strong> <code>#[cfg(önerme)]</code>, eklendiği öğeyi (fn, mod, use, struct — her ne ise) önermeye göre derleme zamanında tutar ya da atar. Önermeler birleşir: <code>any(...)</code>, <code>all(...)</code>, <code>not(...)</code>. Önerme false ise öğe binary'ye hiç girmez — çalışma zamanı maliyeti yok, ölü dal yok.</p>
+
+<p class="lang-en">A runnable shape. The Playground runs on Linux (<code>x86_64-unknown-linux-gnu</code>), so the non-macOS branch is the one that compiles:</p>
+<p class="lang-tr">Çalışabilir bir örnek. Playground, Linux üzerinde çalışır (<code>x86_64-unknown-linux-gnu</code>), dolayısıyla macOS olmayan dal derlenir:</p>
+
+<pre class="sample"><code class="language-rust">#[cfg(target_os = "macos")]
+fn greet() {
+    println!("hello from macOS");
+}
+
+#[cfg(not(target_os = "macos"))]
+fn greet() {
+    println!("hello from not-macOS (probably Linux on the Playground)");
+}
+
+#[cfg(target_family = "unix")]
+fn family() -&gt; &amp;'static str { "unix" }
+
+#[cfg(target_family = "windows")]
+fn family() -&gt; &amp;'static str { "windows" }
+
+fn main() {
+    greet();
+    println!("family = {}", family());
+
+    // Only compiled in debug builds. `cargo run` keeps it; `cargo run --release` drops it.
+    #[cfg(debug_assertions)]
+    println!("(debug build)");
+}</code></pre>
+<button class="playground-btn">Run in Playground</button>
+
+<p class="lang-en">Two <code>fn greet</code>s with the same name is normally a compile error — here it's fine, because at most one survives the <code>cfg</code> filter. The compiler sees exactly one <code>greet</code>.</p>
+<p class="lang-tr">Aynı isimde iki <code>fn greet</code> normalde derleme hatasıdır — burada sorun yok, çünkü <code>cfg</code> filtresinden en fazla bir tanesi sağ çıkar. Derleyici tek bir <code>greet</code> görür.</p>
+
+<p class="lang-en"><strong>The useful set of predicates.</strong> You'll meet these constantly:</p>
+<p class="lang-tr"><strong>Faydalı önermeler kümesi.</strong> Bunlarla sürekli karşılaşacaksın:</p>
+
+<table class="compare-table lang-en">
+  <thead><tr><th>You want...</th><th><code>cfg</code> attribute</th><th>When it fires</th></tr></thead>
+  <tbody>
+    <tr><td>Windows-only code</td><td><code>#[cfg(target_os = "windows")]</code></td><td>Building for <code>*-pc-windows-*</code></td></tr>
+    <tr><td>macOS-only code</td><td><code>#[cfg(target_os = "macos")]</code></td><td>Building for <code>*-apple-darwin</code></td></tr>
+    <tr><td>Unix (Linux + macOS + BSD)</td><td><code>#[cfg(target_family = "unix")]</code> or <code>#[cfg(unix)]</code></td><td>Any Unix-y target</td></tr>
+    <tr><td>Debug builds only</td><td><code>#[cfg(debug_assertions)]</code></td><td><code>cargo build</code> (not <code>--release</code>)</td></tr>
+    <tr><td>Test builds only</td><td><code>#[cfg(test)]</code></td><td><code>cargo test</code> — never in <code>cargo build</code></td></tr>
+    <tr><td>Release builds only</td><td><code>#[cfg(not(debug_assertions))]</code></td><td><code>cargo build --release</code></td></tr>
+    <tr><td>Feature <code>foo</code> enabled</td><td><code>#[cfg(feature = "foo")]</code></td><td>Someone passed <code>--features foo</code> or it's in <code>default</code></td></tr>
+  </tbody>
+</table>
+<table class="compare-table lang-tr">
+  <thead><tr><th>İsteğin...</th><th><code>cfg</code> niteliği</th><th>Ne zaman tetiklenir</th></tr></thead>
+  <tbody>
+    <tr><td>Sadece Windows kodu</td><td><code>#[cfg(target_os = "windows")]</code></td><td><code>*-pc-windows-*</code> için derleme</td></tr>
+    <tr><td>Sadece macOS kodu</td><td><code>#[cfg(target_os = "macos")]</code></td><td><code>*-apple-darwin</code> için derleme</td></tr>
+    <tr><td>Unix (Linux + macOS + BSD)</td><td><code>#[cfg(target_family = "unix")]</code> ya da <code>#[cfg(unix)]</code></td><td>Herhangi bir Unix-vari hedef</td></tr>
+    <tr><td>Sadece debug derlemeleri</td><td><code>#[cfg(debug_assertions)]</code></td><td><code>cargo build</code> (<code>--release</code> değil)</td></tr>
+    <tr><td>Sadece test derlemeleri</td><td><code>#[cfg(test)]</code></td><td><code>cargo test</code> — <code>cargo build</code>'da asla</td></tr>
+    <tr><td>Sadece release derlemeleri</td><td><code>#[cfg(not(debug_assertions))]</code></td><td><code>cargo build --release</code></td></tr>
+    <tr><td><code>foo</code> özelliği açık</td><td><code>#[cfg(feature = "foo")]</code></td><td>Biri <code>--features foo</code> geçti ya da <code>default</code>'ta var</td></tr>
+  </tbody>
+</table>
+
+<p class="lang-en"><strong>Platform split pattern.</strong> When Windows and Unix need genuinely different code (different syscalls, different path conventions, different menu APIs), the standard move is one module per platform and a shim that picks the right one:</p>
+<p class="lang-tr"><strong>Platform ayırma deseni.</strong> Windows ve Unix gerçekten farklı koda ihtiyaç duyduğunda (farklı sistem çağrıları, farklı yol kuralları, farklı menü API'leri), standart çözüm her platform için bir modül ve doğru olanı seçen bir ara katmandır:</p>
+
+<pre class="sample"><code class="language-rust">// src/plat/mod.rs
+#[cfg(windows)]
+mod plat_win;
+#[cfg(unix)]
+mod plat_unix;
+
+#[cfg(windows)]
+pub use plat_win::*;
+#[cfg(unix)]
+pub use plat_unix::*;
+
+// Elsewhere in the crate, you just call `plat::open_config_dir()` —
+// the compiler wired up the right implementation for this target.</code></pre>
+
+<p class="lang-en">Each <code>plat_*</code> file exposes the same public names (<code>open_config_dir</code>, <code>default_font</code>, ...). Callers never branch on OS; the compiler does it for them.</p>
+<p class="lang-tr">Her <code>plat_*</code> dosyası aynı public isimleri sunar (<code>open_config_dir</code>, <code>default_font</code>, ...). Çağıranlar işletim sistemine göre dallanmaz; derleyici onlar adına yapar.</p>
+
+<p class="lang-en"><strong><code>#[cfg_attr]</code> — apply an attribute conditionally.</strong> Sometimes you don't want to drop the item; you want to decorate it only under some condition. <code>#[cfg_attr(predicate, attr)]</code> expands to <code>#[attr]</code> when the predicate is true, and to nothing otherwise:</p>
+<p class="lang-tr"><strong><code>#[cfg_attr]</code> — bir niteliği koşullu uygula.</strong> Bazen öğeyi atmak istemezsin; onu sadece belirli bir koşulda süslemek istersin. <code>#[cfg_attr(önerme, nitelik)]</code>, önerme true ise <code>#[nitelik]</code>'e, değilse hiçbir şeye açılır:</p>
+
+<pre class="sample"><code class="language-rust">#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+pub struct Config {
+    pub font_size: u16,
+}
+// With --features serde: Config derives Serialize.
+// Without:               Config is a plain struct, serde isn't even pulled in.</code></pre>
+
+<p class="lang-en"><strong>Cargo <code>[features]</code> — your crate's public toggles.</strong> A feature is just a named flag your crate declares. Downstream users opt in from their <code>Cargo.toml</code>. The publisher picks which ones are on by default:</p>
+<p class="lang-tr"><strong>Cargo <code>[features]</code> — crate'inin public anahtarları.</strong> Bir feature, crate'inin ilan ettiği adlandırılmış bir bayraktır. Aşağı akış kullanıcıları kendi <code>Cargo.toml</code>'larından katılır. Yayıncı, varsayılan olarak hangilerinin açık olduğunu seçer:</p>
+
+<pre class="sample"><code class="language-toml">[features]
+default = ["native-menu"]
+native-menu = []
+tauri-bundler = ["tauri/devtools"]</code></pre>
+
+<p class="lang-en">Reading that: this crate declares two features, <code>native-menu</code> and <code>tauri-bundler</code>. <code>native-menu</code> is on by default (it's in the <code>default</code> list) and enables no extra dependencies — it just flips a flag your own code reads via <code>#[cfg(feature = "native-menu")]</code>. <code>tauri-bundler</code> is off by default, and when enabled it turns on the <code>devtools</code> feature of the <code>tauri</code> dependency. Features can chain through the whole dep graph.</p>
+<p class="lang-tr">Bunu okumak: bu crate iki feature ilan eder, <code>native-menu</code> ve <code>tauri-bundler</code>. <code>native-menu</code> varsayılan olarak açık (<code>default</code> listesinde) ve ek bağımlılık etkinleştirmez — sadece kendi kodunun <code>#[cfg(feature = "native-menu")]</code> ile okuduğu bir bayrağı değiştirir. <code>tauri-bundler</code> varsayılan olarak kapalı; açıldığında <code>tauri</code> bağımlılığının <code>devtools</code> feature'ını açar. Feature'lar tüm bağımlılık grafiği boyunca zincirlenebilir.</p>
+
+<p class="lang-en"><strong>Wiring a feature to code.</strong> Once declared in <code>Cargo.toml</code>, use it the same way as any other cfg predicate — on a function, a module, a <code>use</code>, a field:</p>
+<p class="lang-tr"><strong>Bir feature'ı koda bağlamak.</strong> <code>Cargo.toml</code>'da ilan edildikten sonra, onu herhangi bir diğer cfg önermesi gibi kullan — bir fonksiyonda, bir modülde, bir <code>use</code>'da, bir alanda:</p>
+
+<pre class="sample"><code class="language-rust">#[cfg(feature = "native-menu")]
+mod menu;
+
+#[cfg(feature = "native-menu")]
+pub fn install_menu(app: &amp;mut App) { menu::install(app); }
+
+#[cfg(not(feature = "native-menu"))]
+pub fn install_menu(_app: &amp;mut App) { /* no-op stub */ }</code></pre>
+
+<p class="lang-en"><strong><code>#[cfg(test)]</code> — test-only code.</strong> The <code>cargo test</code> harness turns this on; <code>cargo build</code> never sees it. The release binary ships without test modules, without fixtures, without helper <code>fn</code>s you only needed to assert something. The convention:</p>
+<p class="lang-tr"><strong><code>#[cfg(test)]</code> — sadece test kodu.</strong> <code>cargo test</code> koşum aracı bunu açar; <code>cargo build</code> bunu asla görmez. Release binary'si test modülleri, fixture'lar ya da sadece bir şeyi doğrulamak için gerektirmiş olduğun yardımcı <code>fn</code>'ler olmadan gönderilir. Gelenek:</p>
+
+<pre class="sample"><code class="language-rust">pub fn bump(n: u16) -&gt; u16 { n + 1 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test] fn bump_works() { assert_eq!(bump(41), 42); }
+}</code></pre>
+
+<aside class="callout lang-en"><strong>Default features, and when to turn them off.</strong> When your crate lists a dependency, you get whatever that crate ticked as <code>default</code> — usually convenient, sometimes too much. To opt out, say <code>default-features = false</code> and then name only what you want:
+<pre class="sample"><code class="language-toml">[dependencies]
+tokio = { version = "1", default-features = false, features = ["rt", "macros"] }</code></pre>
+Reasons to do this: smaller compile (fewer deps compiled), smaller binary (dead code stripped), dropping heavy features the consumer doesn't need (e.g. a TLS stack, an async runtime you already have, a platform backend). "Disable a default feature" is not a separate command — the only way is <code>default-features = false</code> plus an explicit opt-in list.</aside>
+<aside class="callout lang-tr"><strong>Varsayılan feature'lar ve ne zaman kapatılır.</strong> Crate'in bir bağımlılık listelediğinde, o crate'in <code>default</code> olarak işaretlediği şey gelir — genelde rahat, bazen fazla. Dışarı çıkmak için <code>default-features = false</code> de ve sadece istediğini adlandır:
+<pre class="sample"><code class="language-toml">[dependencies]
+tokio = { version = "1", default-features = false, features = ["rt", "macros"] }</code></pre>
+Neden? Daha küçük derleme (daha az bağımlılık derlenir), daha küçük binary (ölü kod atılır), tüketicinin ihtiyacı olmayan ağır feature'ları düşürmek (örneğin bir TLS yığını, zaten sahip olduğun bir async runtime, bir platform backend'i). "Bir varsayılan feature'ı kapat" ayrı bir komut değil — tek yol <code>default-features = false</code> artı açık katılım listesi.</aside>
+
+<p class="lang-en"><strong>Common gotchas.</strong></p>
+<ul class="lang-en">
+  <li><strong>Feature unions across the dep graph.</strong> If crate A and crate B both depend on crate C, and A enables C's <code>tls</code> feature while B doesn't, <em>both</em> see <code>tls</code> on. Features are additive. You can't scope a feature to "just this user" — once on, on for everyone.</li>
+  <li><strong>Typo in <code>target_os</code></strong> silently drops the code. No error, no warning — the predicate is just false. You thought you wrote platform code; the compiler saw an unrelated string.</li>
+  <li><strong>Forgetting <code>default-features = false</code>.</strong> Adding <code>features = ["x"]</code> alone doesn't "switch to x" — it just adds x on top of the defaults. The big one comes back with them.</li>
+  <li><strong>Two items with the same name and overlapping cfgs</strong> will conflict. Make the predicates mutually exclusive (e.g. <code>cfg(unix)</code> + <code>cfg(not(unix))</code>), not overlapping.</li>
+</ul>
+<p class="lang-tr"><strong>Sık yapılan hatalar.</strong></p>
+<ul class="lang-tr">
+  <li><strong>Bağımlılık grafiğindeki feature birleşimleri.</strong> A ve B crate'leri C'ye bağımlıysa ve A, C'nin <code>tls</code> feature'ını açarken B açmıyorsa, <em>ikisi de</em> <code>tls</code>'yi açık görür. Feature'lar toplamsaldır. Bir feature'ı "sadece bu kullanıcıya" kapsayamazsın — bir kere açık, herkes için açık.</li>
+  <li><strong><code>target_os</code>'ta yazım hatası</strong> kodu sessizce atar. Hata yok, uyarı yok — önerme sadece false. Platform kodu yazdığını sandın; derleyici alakasız bir string gördü.</li>
+  <li><strong><code>default-features = false</code>'u unutmak.</strong> Sadece <code>features = ["x"]</code> eklemek "x'e geç" demek değildir — sadece x'i varsayılanların üzerine ekler. Büyük olan onlarla birlikte geri gelir.</li>
+  <li><strong>Aynı ada sahip ve örtüşen cfg'li iki öğe</strong> çakışır. Önermeleri karşılıklı dışlayıcı yap (örn. <code>cfg(unix)</code> + <code>cfg(not(unix))</code>), örtüşen değil.</li>
+</ul>
+
+<p class="lang-en"><a class="back-link" href="#ch19">⟵ back to the main track</a></p>
+<p class="lang-tr"><a class="back-link" href="#ch19">⟵ ana yola dön</a></p>
+
+<p class="lang-en">See also: <a href="#sidebar-testing">sidebar on <code>#[test]</code> and the test harness</a>, <a href="#sidebar-cargo-toolkit">sidebar on the Cargo toolkit</a>.</p>
+<p class="lang-tr">Ayrıca bkz: <a href="#sidebar-testing"><code>#[test]</code> ve test koşum aracı üzerine kenar çubuğu</a>, <a href="#sidebar-cargo-toolkit">Cargo toolkit üzerine kenar çubuğu</a>.</p>
+
+<div class="try-breaking lang-en">
+<strong>Try breaking it.</strong> Add this to any source file:
+<pre class="code-block rustc-input" data-file="src-tauri/src/lib.rs"><code class="language-rust">#[cfg(target_os = "mars")]
+pub fn greet_martians() {
+    println!("hello, mars");
+    this_function_does_not_exist();   // blatant error inside
+    let _: u32 = "not a number";      // another blatant error
+}</code></pre>
+Run <code>cargo check</code>. No error. No warning. The function simply isn't there — <code>target_os = "mars"</code> is false on every real target, so the whole item gets dropped before type-checking ever looks at the body. A typo like <code>target_os = "windoes"</code> behaves exactly the same way: silent dead code that looks fine. When platform-specific code "isn't running," check the <code>cfg</code> string first, not the logic.</div>
+<div class="try-breaking lang-tr">
+<strong>Kırmayı dene.</strong> Herhangi bir kaynak dosyaya şunu ekle:
+<pre class="code-block rustc-input" data-file="src-tauri/src/lib.rs"><code class="language-rust">#[cfg(target_os = "mars")]
+pub fn greet_martians() {
+    println!("hello, mars");
+    this_function_does_not_exist();   // içinde apaçık hata
+    let _: u32 = "not a number";      // başka bir apaçık hata
+}</code></pre>
+<code>cargo check</code> çalıştır. Hata yok. Uyarı yok. Fonksiyon orada yok — <code>target_os = "mars"</code> her gerçek hedefte false olduğundan, tür kontrolü gövdeye bakmadan önce tüm öğe atılır. <code>target_os = "windoes"</code> gibi bir yazım hatası da aynen böyle davranır: iyi görünen sessiz ölü kod. Platforma özgü kod "çalışmıyorsa" önce <code>cfg</code> string'ini kontrol et, mantığı değil.</div>
+</details>
+
 <section class="chapter" id="ch20" data-chapter="20">
 <header>
   <span class="chapter-num lang-en">Chapter 20</span>
@@ -6310,6 +7333,122 @@ jobs:
 
 <p class="lang-en">Now go break it, fix it, and build the next one.</p>
 <p class="lang-tr">Şimdi git, kır, düzelt ve bir sonrakini inşa et.</p>
+
+<details class="sidebar" id="sidebar-unsafe-primer">
+<summary><span class="lang-en">Rust: <code>unsafe</code> — the 5 superpowers (and what it is <em>not</em>)</span><span class="lang-tr">Rust: <code>unsafe</code> — 5 süper güç (ve ne <em>değil</em>)</span></summary>
+
+<p class="lang-en"><strong>The one-liner.</strong> <code>unsafe</code> doesn't turn off the borrow checker. It unlocks 5 things you usually don't need.</p>
+<p class="lang-tr"><strong>Tek cümlelik.</strong> <code>unsafe</code>, ödünç denetleyiciyi kapatmaz. Genellikle ihtiyaç duymadığın 5 şeyi açar.</p>
+
+<p class="lang-en">An <code>unsafe</code> block is a small, local pact between you and the compiler: "for these specific operations the compiler can't prove soundness, so I'm promising to uphold the invariants myself." Everything else — ownership, lifetimes, moves, types — still applies exactly as before.</p>
+<p class="lang-tr">Bir <code>unsafe</code> bloku, seninle derleyici arasında küçük, yerel bir anlaşmadır: "bu belirli işlemler için derleyici sağlamlığı kanıtlayamıyor, o yüzden değişmezleri bizzat koruyacağıma söz veriyorum." Geri kalan her şey — sahiplik, yaşam süreleri, taşımalar, türler — aynen önceki gibi geçerli.</p>
+
+<table class="compare-table lang-en">
+  <thead><tr><th>Superpower</th><th>Example</th><th>Why the compiler can't check it</th></tr></thead>
+  <tbody>
+    <tr><td>Dereference a raw pointer (<code>*const T</code> / <code>*mut T</code>)</td><td><code>let v = unsafe { *p };</code></td><td>Raw pointers carry no lifetime, no aliasing info, no alignment guarantee.</td></tr>
+    <tr><td>Call an <code>unsafe fn</code> (including FFI)</td><td><code>unsafe { libc::getpid() }</code></td><td>The function's own contract can't be expressed in Rust's type system.</td></tr>
+    <tr><td>Access / modify a <code>static mut</code></td><td><code>unsafe { COUNTER += 1; }</code></td><td>Global mutable state has no owner — nothing rules out a data race.</td></tr>
+    <tr><td>Implement an <code>unsafe trait</code> (e.g. <code>Send</code> / <code>Sync</code> by hand)</td><td><code>unsafe impl Send for MyRaw {}</code></td><td>The trait's guarantee is semantic, not structural — you assert it.</td></tr>
+    <tr><td>Read a field of a <code>union</code></td><td><code>unsafe { u.as_f32 }</code></td><td>Unions overlap memory; the compiler doesn't know which variant is live.</td></tr>
+  </tbody>
+</table>
+<table class="compare-table lang-tr">
+  <thead><tr><th>Süper güç</th><th>Örnek</th><th>Derleyici neden denetleyemez</th></tr></thead>
+  <tbody>
+    <tr><td>Ham işaretçi dereference (<code>*const T</code> / <code>*mut T</code>)</td><td><code>let v = unsafe { *p };</code></td><td>Ham işaretçiler lifetime, aliasing bilgisi ve hizalama garantisi taşımaz.</td></tr>
+    <tr><td>Bir <code>unsafe fn</code> çağırmak (FFI dahil)</td><td><code>unsafe { libc::getpid() }</code></td><td>Fonksiyonun kendi sözleşmesi Rust'ın tür sisteminde ifade edilemez.</td></tr>
+    <tr><td>Bir <code>static mut</code>'a erişmek / değiştirmek</td><td><code>unsafe { COUNTER += 1; }</code></td><td>Global değiştirilebilir durumun sahibi yoktur — veri yarışını dışlayan bir şey yoktur.</td></tr>
+    <tr><td>Bir <code>unsafe trait</code> uygulamak (örn. elle <code>Send</code> / <code>Sync</code>)</td><td><code>unsafe impl Send for MyRaw {}</code></td><td>Trait'in garantisi anlamsaldır, yapısal değil — bunu sen iddia edersin.</td></tr>
+    <tr><td>Bir <code>union</code> alanını okumak</td><td><code>unsafe { u.as_f32 }</code></td><td>Union'lar belleği örtüştürür; derleyici hangi varyantın geçerli olduğunu bilmez.</td></tr>
+  </tbody>
+</table>
+
+<p class="lang-en"><strong>See one in action.</strong> A raw pointer round-trip — compiles, runs, and is well-defined <em>only because</em> we keep the pointee alive:</p>
+<p class="lang-tr"><strong>Bir tanesini iş başında gör.</strong> Bir ham işaretçi gidiş-dönüşü — derlenir, çalışır ve yalnızca işaret edileni hayatta tuttuğumuz için tanımlıdır:</p>
+
+<pre class="sample"><code class="language-rust">fn main() {
+    let x: i32 = 42;
+    let p: *const i32 = &amp;x;            // safe: taking a raw pointer is fine
+
+    // Reading through it is the unsafe bit — we promise `p` is valid,
+    // aligned, and that no &amp;mut to `x` is live right now.
+    let v = unsafe { *p };
+    println!("v = {v}");                // 42
+
+    // The borrow checker is still awake: this won't compile,
+    // because `x` is still borrowed by `p`'s provenance rules only
+    // at the deref — not here. But try moving `x` while `p` is live
+    // and Miri will complain loudly.
+}</code></pre>
+<button class="playground-btn">Run in Playground</button>
+
+<aside class="callout lang-en">
+  <strong>What <code>unsafe</code> is NOT.</strong>
+  <ul>
+    <li>It does <em>not</em> turn off the borrow checker. <code>&amp;T</code> and <code>&amp;mut T</code> inside an <code>unsafe</code> block still obey aliasing rules — one <code>&amp;mut</code> xor any number of <code>&amp;</code>.</li>
+    <li>It does <em>not</em> silence type errors, lifetime errors, or move-out errors on safe values. <code>unsafe { let s: String = 5; }</code> is still a type error.</li>
+    <li>It is <em>not</em> a performance knob. Safe Rust compiles to the same machine code in the cases that matter.</li>
+    <li>It is <em>not</em> a way to "just get things done" — every <code>unsafe</code> block is a proof obligation you now owe the reader.</li>
+  </ul>
+</aside>
+<aside class="callout lang-tr">
+  <strong><code>unsafe</code> NE DEĞİLDİR.</strong>
+  <ul>
+    <li>Ödünç denetleyiciyi kapatmaz. Bir <code>unsafe</code> bloğundaki <code>&amp;T</code> ve <code>&amp;mut T</code> aliasing kurallarına uymaya devam eder — tek bir <code>&amp;mut</code> ya da istediğin kadar <code>&amp;</code>.</li>
+    <li>Güvenli değerlerdeki tür hatalarını, lifetime hatalarını veya "move-out" hatalarını susturmaz. <code>unsafe { let s: String = 5; }</code> hâlâ tür hatasıdır.</li>
+    <li>Bir performans düğmesi değildir. Önemli durumlarda güvenli Rust da aynı makine koduna derlenir.</li>
+    <li>"Sadece işi bitirme" yolu değildir — her <code>unsafe</code> bloğu, artık okuyucuya borçlu olduğun bir ispat yükümlülüğüdür.</li>
+  </ul>
+</aside>
+
+<p class="lang-en"><strong>The pact.</strong> Inside <code>unsafe</code>, <em>you</em> promise the invariants the compiler can't check. Raw-pointer deref must hit valid, aligned memory of the right type, with no conflicting reference live at the same moment. <code>static mut</code> access must be race-free — which in practice means wrap it in a <code>Mutex</code>, use an atomic, or just don't. Break the promise and you don't get a compile error; you get undefined behaviour.</p>
+<p class="lang-tr"><strong>Anlaşma.</strong> <code>unsafe</code> içinde, derleyicinin denetleyemediği değişmezleri <em>sen</em> garanti edersin. Ham işaretçi dereference'ı; geçerli, hizalı, doğru türde belleğe düşmek ve aynı anda çakışan bir referans olmaması gerekir. <code>static mut</code> erişimi yarışsız olmalıdır — pratikte: ya bir <code>Mutex</code>'e sar, ya atomic kullan, ya da hiç yapma. Sözü bozarsan derleme hatası almazsın; tanımsız davranış alırsın.</p>
+
+<p class="lang-en"><strong>When you actually write <code>unsafe</code>.</strong> Calling C libraries over FFI. Writing a performance-critical primitive that needs raw pointers (a ring buffer, a SIMD intrinsic, a custom allocator). Near-zero day-to-day application code. For fedit specifically, the only <code>unsafe</code> you'll meet is transitively, inside crates you depend on — Tauri, <code>serde</code>, and the standard library all contain carefully audited <code>unsafe</code> so you don't have to write any yourself.</p>
+<p class="lang-tr"><strong>Gerçekten ne zaman <code>unsafe</code> yazarsın.</strong> FFI üzerinden C kütüphanelerini çağırırken. Ham işaretçi gerektiren performans kritik bir ilkel yazarken (bir ring buffer, bir SIMD intrinsic, özel bir allocator). Günlük uygulama kodunda neredeyse hiç. Özellikle fedit için, karşılaşacağın tek <code>unsafe</code>, bağımlı olduğun crate'lerin içinde dolaylıdır — Tauri, <code>serde</code> ve standart kütüphane; kendinin yazması gerekmesin diye dikkatle denetlenmiş <code>unsafe</code> barındırır.</p>
+
+<div class="try-breaking lang-en">
+<strong>Try breaking it.</strong> Deliberately break the pact — take a raw pointer to a local, let the local die, then dereference:
+<pre class="sample"><code class="language-rust">fn dangling() -&gt; *const i32 {
+    let x: i32 = 0xDEAD;
+    &amp;x as *const i32         // address of a local; `x` dies at return
+}
+
+fn main() {
+    let p = dangling();
+    // `p` now points into freed stack. The compiler has no way to know —
+    // raw pointers carry no lifetime. This is the promise you just broke.
+    let v = unsafe { *p };
+    println!("v = {v:#x}");   // garbage, or a crash, or "0xdead" if you're unlucky
+}</code></pre>
+This compiles with no warnings. At runtime you get undefined behaviour: a garbage value, a stale <code>0xdead</code>, or a segfault, depending on what the OS has since done with that stack slot. This is exactly what <code>unsafe</code> means — the compiler stopped checking, so <em>you</em> had to, and you didn't. Run it under <a href="https://github.com/rust-lang/miri">Miri</a> (<code>cargo +nightly miri run</code>) and it pinpoints the violation.</div>
+<div class="try-breaking lang-tr">
+<strong>Kırmayı dene.</strong> Anlaşmayı kasten boz — bir yerelin ham işaretçisini al, yerelin ölmesine izin ver, sonra dereference yap:
+<pre class="sample"><code class="language-rust">fn dangling() -&gt; *const i32 {
+    let x: i32 = 0xDEAD;
+    &amp;x as *const i32         // bir yerelin adresi; `x` return'de ölür
+}
+
+fn main() {
+    let p = dangling();
+    // `p` artık serbest bırakılmış stack'e işaret ediyor. Derleyicinin
+    // bunu bilmesinin yolu yok — ham işaretçiler lifetime taşımaz.
+    // Bu, az önce bozduğun söz.
+    let v = unsafe { *p };
+    println!("v = {v:#x}");   // çöp, bir çökme veya şanssızsan "0xdead"
+}</code></pre>
+Bu, hiçbir uyarı vermeden derlenir. Çalışma zamanında tanımsız davranış alırsın: çöp bir değer, bayat bir <code>0xdead</code> ya da işletim sistemi o stack yuvasıyla ne yaptıysa ona göre bir segfault. <code>unsafe</code>'in anlamı tam olarak budur — derleyici denetlemeyi bıraktı; dolayısıyla denetleme görevi <em>sende</em>ydi ve sen yapmadın. <a href="https://github.com/rust-lang/miri">Miri</a> altında çalıştır (<code>cargo +nightly miri run</code>); ihlali tam yerine basar.</div>
+
+<p class="lang-en"><strong>The rule of thumb.</strong> If you can write it in safe Rust, write it in safe Rust. If you can't, wrap the <code>unsafe</code> in the smallest possible function, document the invariants the caller must uphold, and expose a safe API on top. That's how the standard library stays sound — <code>Vec</code>, <code>String</code>, <code>HashMap</code> are all safe wrappers over carefully constrained <code>unsafe</code> interiors.</p>
+<p class="lang-tr"><strong>Pratik kural.</strong> Güvenli Rust'ta yazabiliyorsan, güvenli Rust'ta yaz. Yazamıyorsan <code>unsafe</code>'i mümkün olan en küçük fonksiyona sar, çağıranın koruması gereken değişmezleri belgele ve üstünde güvenli bir API sun. Standart kütüphane sağlamlığını böyle korur — <code>Vec</code>, <code>String</code>, <code>HashMap</code>; hepsi dikkatle sınırlandırılmış <code>unsafe</code> iç organları üzerindeki güvenli sarmalayıcılardır.</p>
+
+<p class="lang-en"><em>See also:</em> <a href="#sidebar-send-sync">Send &amp; Sync</a> — the two <code>unsafe</code> traits you most often meet without realising it, because the compiler auto-derives them almost everywhere.</p>
+<p class="lang-tr"><em>Ayrıca bkz.:</em> <a href="#sidebar-send-sync">Send &amp; Sync</a> — derleyici neredeyse her yerde otomatik türettiği için farkına varmadan en sık karşılaştığın iki <code>unsafe</code> trait.</p>
+
+<p class="lang-en"><a class="back-link" href="#ch20">⟵ back to the main track</a></p>
+<p class="lang-tr"><a class="back-link" href="#ch20">⟵ ana yola dön</a></p>
+</details>
 
 <a class="mark-done" data-ch="20"><span class="lang-en">Mark chapter 20 done</span><span class="lang-tr">Bölüm 20'yi tamamlandı olarak işaretle</span></a>
 </section>
