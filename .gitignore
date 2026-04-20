@@ -1,0 +1,7 @@
+.DS_Store
+
+# fedit/ is a standalone repo (its own .git) — managed separately.
+fedit/
+
+# Local Claude settings (settings.json is fine to share).
+.claude/settings.local.json
