@@ -8,7 +8,7 @@ There's no magic. Each chapter adds between 1 and 50 lines of Rust / JS / JSON, 
 
 | Path | What it is |
 |------|-----------|
-| [rust-tutorial.html](rust-tutorial.html) | The tutorial itself — one self-contained HTML file. Open it in any browser. Twin-track reading: a main chapter track on the left, collapsible concept sidebars on the right. Progress is saved to `localStorage`. |
+| [rust-tutorial.html](rust-tutorial.html) | The tutorial itself — one self-contained HTML file. Open it in any browser. Twin-track reading: a main chapter track on the left, collapsible concept sidebars on the right. Bilingual (English ↔ Türkçe, header toggle). Progress, theme, and language are saved to `localStorage`. |
 | [fedit/](fedit/) | The Tauri 2 project you're going to build. Seventeen git tags (`ch01` … `ch17`) let you jump to any chapter's state. |
 | [rust-tutorial-architecture.md](rust-tutorial-architecture.md) | The design document that drove the tutorial's structure. Useful if you want to fork and rework it. |
 | [rust-tutorial-prompt.md](rust-tutorial-prompt.md) | The original authoring prompt — provenance. |
@@ -49,16 +49,17 @@ Installers land in `src-tauri/target/release/bundle/` — a `.dmg` on macOS, `.m
 
 ## The shape of the tutorial
 
-Twenty chapters, roughly four arcs:
+Twenty-one chapters plus one optional CSS interlude, roughly four arcs:
 
 - **0 – Setup.** Per-OS install instructions. WebView2 on Windows 10.
 - **1–6 — First window, first Rust, first file read.** Ownership, `String` vs `&str`, `Result` + `?`.
+- **2b — Beautify fedit (optional CSS primer).** Six short CSS moves that turn the naked window into something you'd screenshot. Teaches CSS custom properties, flexbox, focus rings, and a one-attribute dark mode. Zero Rust.
 - **7–10 — A real file picker and editable buffer.** Plugins, permissions, `Option`, serde, references and borrowing.
 - **11–14 — State, methods, and save-as.** `Mutex<AppState>`, `impl`, `match`.
 - **15–18 — A proper error type, recent files, a native menu.** `thiserror`, `Vec` + iterators, traits, `MenuBuilder`.
 - **19–20 — Ship it.** Bundle, WebView2, CI, where to go next.
 
-Checkpoints with quizzes at chapters 6, 10, 14, and 18.
+Checkpoints with quizzes at chapters 6, 10, 14, and 18. Every chapter and sidebar is written in both English and Turkish — flip with the `EN ↔ TR` button in the header.
 
 ## Requirements, in short
 

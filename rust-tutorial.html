@@ -600,15 +600,24 @@ details.sidebar .back-to-main a { color: var(--muted); }
   margin-top: 1rem;
 }
 
-code.inline,
-p code,
-li code,
-aside code,
-.callout code,
-.tldr code,
-.trap code,
-.boss-fight code,
-.compare-table code {
+code.inline:not(pre code),
+p code:not(pre code),
+li code:not(pre code),
+h1 code:not(pre code),
+h2 code:not(pre code),
+h3 code:not(pre code),
+h4 code:not(pre code),
+h5 code:not(pre code),
+h6 code:not(pre code),
+aside code:not(pre code),
+.callout code:not(pre code),
+.tldr code:not(pre code),
+.trap code:not(pre code),
+.try-breaking code:not(pre code),
+.boss-fight code:not(pre code),
+.compare-table code:not(pre code),
+details.sidebar summary code:not(pre code),
+details.sidebar .sidebar-body code:not([class*="language-"]):not(pre code) {
   font-family: "JetBrains Mono", ui-monospace, monospace !important;
   background: var(--surface) !important;
   color: var(--text) !important;
@@ -617,6 +626,31 @@ aside code,
   font-size: 0.92em !important;
   border: 1px solid var(--rule) !important;
   text-shadow: none !important;
+}
+/* Defensive: if an inline chip ever carries a language-* class, beat Prism's
+   :not(pre) > code[class*="language-"] dark-terminal rule on specificity.
+   The :not(pre code) guard keeps this rule from reaching into <pre> blocks. */
+.tldr code[class*="language-"]:not(pre code),
+.trap code[class*="language-"]:not(pre code),
+.try-breaking code[class*="language-"]:not(pre code),
+.boss-fight code[class*="language-"]:not(pre code),
+.compare-table code[class*="language-"]:not(pre code),
+.callout code[class*="language-"]:not(pre code),
+p code[class*="language-"]:not(pre code),
+li code[class*="language-"]:not(pre code),
+h1 code[class*="language-"]:not(pre code),
+h2 code[class*="language-"]:not(pre code),
+h3 code[class*="language-"]:not(pre code),
+h4 code[class*="language-"]:not(pre code),
+h5 code[class*="language-"]:not(pre code),
+h6 code[class*="language-"]:not(pre code),
+details.sidebar summary code[class*="language-"]:not(pre code) {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  text-shadow: none !important;
+  padding: 0.08em 0.35em !important;
+  border: 1px solid var(--rule) !important;
+  border-radius: 3px !important;
 }
 p.version-note code,
 .version-note code {
@@ -1193,8 +1227,11 @@ kbd {
 <li><a href="#ch2" data-ch="2"><span class="lang-en">2 · Make it yours</span><span class="lang-tr">2 · Kendine göre ayarla</span></a>
   <ul class="toc-sub">
     <li><a href="#sidebar-cargo-toolkit"><span class="lang-en">→ cargo toolkit</span><span class="lang-tr">→ cargo alet çantası</span></a></li>
+    <li><a href="#sidebar-css-variables"><span class="lang-en">→ re-skin with 6 CSS variables</span><span class="lang-tr">→ 6 CSS değişkeniyle yeniden giydir</span></a></li>
+    <li><a href="#sidebar-css-themes"><span class="lang-en">→ runtime themes preview</span><span class="lang-tr">→ çalışma anı tema önizleme</span></a></li>
   </ul>
 </li>
+<li><a href="#ch2b" data-ch="2b"><span class="lang-en">2b · Beautify fedit (CSS primer)</span><span class="lang-tr">2b · fedit'i güzelleştir (CSS girişi)</span></a></li>
 <li><a href="#ch3" data-ch="3"><span class="lang-en">3 · Your first Rust change</span><span class="lang-tr">3 · İlk Rust değişikliğin</span></a>
   <ul class="toc-sub">
     <li><a href="#sidebar-string-str"><span class="lang-en">→ String vs &amp;str</span><span class="lang-tr">→ String ile &amp;str</span></a></li>
@@ -1883,7 +1920,378 @@ cargo doc --open              # when you forget what an API does</code></pre>
 <p class="lang-tr"><a class="back-link" href="#ch2">⟵ ana hatta geri dön</a></p>
 </details>
 
+<p class="lang-en">The ch2 HTML landed in one page with no styling — fine, but we can do better with six lines of CSS. The two sidebars below are a gentle CSS primer that pays off for the rest of the tutorial: <a class="sidebar-link" href="#sidebar-css-variables">⟶ re-skin fedit with 6 CSS variables</a> teaches custom properties, and <a class="sidebar-link" href="#sidebar-css-themes">⟶ runtime themes preview</a> shows how to flip the whole palette with one attribute — the same trick this tutorial uses for dark mode.</p>
+<p class="lang-tr">ch2'nin HTML'i tek sayfada, hiçbir stil olmadan indi — iyi, ama altı satır CSS ile daha iyisini yapabiliriz. Aşağıdaki iki yan pencere, geri kalanının değerini artıracak yumuşak bir CSS giriş: <a class="sidebar-link" href="#sidebar-css-variables">⟶ 6 CSS değişkeniyle fedit'i yeniden giydir</a> custom property'leri öğretir; <a class="sidebar-link" href="#sidebar-css-themes">⟶ çalışma anı tema önizlemesi</a> ise bu eğitimin karanlık mod için kullandığı aynı numarayla, tek bir öznitelikle bütün paleti nasıl değiştireceğini gösterir.</p>
+
+<details class="sidebar" id="sidebar-css-variables">
+<summary><span class="lang-en">CSS: re-skin fedit with six variables</span><span class="lang-tr">CSS: altı değişkenle fedit'i yeniden giydir</span></summary>
+
+<p class="lang-en"><strong>The one-liner.</strong> CSS custom properties are named values declared once at <code>:root</code>, then referenced anywhere with <code>var(--name)</code>. They're the lightest form of "theme-able design" you can ship — no preprocessor, no build step, just browser CSS.</p>
+<p class="lang-tr"><strong>Tek cümleyle.</strong> CSS custom property'leri, bir kere <code>:root</code>'ta tanımlanan ve <code>var(--ad)</code> ile her yerde kullanılan isimli değerlerdir. Gönderebileceğin en hafif "tema desteği" şekli — ön işlemci yok, derleme adımı yok, sadece tarayıcı CSS'i.</p>
+
+<p class="lang-en">Six variables cover 90% of what a small app needs: a background, a foreground (text), a "surface" for cards and inputs, an accent color for interactive bits, a border, and a border-radius. Put them at the top of <code>src/styles.css</code>:</p>
+<p class="lang-tr">Altı değişken, küçük bir uygulamanın ihtiyacının %90'ını karşılar: arka plan, ön plan (metin), kart ve girdiler için bir "yüzey," etkileşimli kısımlar için vurgu rengi, bir kenarlık ve bir kenarlık yuvarlaklığı. <code>src/styles.css</code>'in tepesine koy:</p>
+
+<pre class="code-block" data-file="src/styles.css"><code class="language-css">:root {
+  --bg:      #fbf7ee;   /* page background — warm cream */
+  --fg:      #23201a;   /* body text — near-black */
+  --surface: #ffffff;   /* cards, inputs — slightly lighter than --bg */
+  --accent:  #b3591f;   /* buttons, links, focus ring — pumpkin */
+  --border:  #d9cfba;   /* thin dividers */
+  --radius:  6px;       /* one corner radius for everything */
+}</code></pre>
+
+<p class="lang-en">Then reach for them in real selectors. Every rule that picks a color or a radius now pulls from the palette:</p>
+<p class="lang-tr">Sonra onları gerçek seçicilerde kullan. Renk veya yuvarlaklık seçen her kural artık paletten çeker:</p>
+
+<pre class="code-block" data-file="src/styles.css"><code class="language-css">body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 15px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+  margin: 0;
+}
+
+.container {
+  max-width: 640px;
+  margin: 3rem auto;
+  padding: 1.5rem;
+}
+
+input, button {
+  font: inherit;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--fg);
+}
+
+button {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  cursor: pointer;
+}
+
+button:hover { filter: brightness(1.08); }
+input:focus, button:focus { outline: 2px solid var(--accent); outline-offset: 2px; }</code></pre>
+
+<p class="lang-en">That's it. One <code>:root</code> block and a handful of rules — fedit now looks like a real app. To change the entire color scheme, you edit exactly <em>six</em> lines.</p>
+<p class="lang-tr">Hepsi bu. Tek bir <code>:root</code> bloğu ve bir avuç kural — fedit artık gerçek bir uygulama gibi görünüyor. Tüm renk düzenini değiştirmek için tam olarak <em>altı</em> satır düzenlersin.</p>
+
+<aside class="callout lang-en"><strong>Why this pattern wins.</strong> Sass variables get resolved at build time, so a theme switch needs a rebuild. CSS variables resolve in the browser at runtime. That means a dark-mode toggle or a user-picked accent is just a <code>setAttribute</code> away — no bundler, no page reload. This is the exact mechanism Chapter 2b uses to switch themes live.</aside>
+<aside class="callout lang-tr"><strong>Bu desen niye kazanır.</strong> Sass değişkenleri derleme zamanında çözülür, tema değişimi yeniden derleme ister. CSS değişkenleri tarayıcıda çalışma anında çözülür. Yani karanlık mod düğmesi veya kullanıcının seçtiği vurgu rengi yalnızca bir <code>setAttribute</code> kadar uzakta — bundler yok, sayfa yenilemesi yok. 2b Bölümü temaları canlı değiştirmek için tam olarak bu mekanizmayı kullanır.</aside>
+
+<div class="try-breaking lang-en">
+<strong>Try breaking it.</strong> Change <code>--accent</code> to <code>rebeccapurple</code> and reload. Every button, focus ring, and hover glow flips at once — because every rule that touched the accent color went through <code>var(--accent)</code>. Now imagine doing the same edit in a project that hardcoded <code>#b3591f</code> in 14 places. <em>That</em> is why variables.
+</div>
+<div class="try-breaking lang-tr">
+<strong>Kırmayı dene.</strong> <code>--accent</code>'i <code>rebeccapurple</code> yap ve yeniden yükle. Her düğme, her odak halkası ve her hover ışığı aynı anda dönüyor — çünkü vurgu rengine dokunan her kural <code>var(--accent)</code>'ten geçti. Şimdi aynı düzenlemeyi <code>#b3591f</code>'i 14 yere sabitlemiş bir projede yapmayı hayal et. Değişkenler <em>işte bunun için</em>.
+</div>
+
+<aside class="trap lang-en"><strong>Common gotcha.</strong> <code>var(--bg)</code> falls back to <code>initial</code> (transparent / black) if <code>--bg</code> isn't defined. Always define your palette at <code>:root</code>, not on <code>body</code> — <code>:root</code> is the <code>&lt;html&gt;</code> element and variables inherit down. If you only set them on <code>body</code>, an element outside <code>body</code> (like the scrollbar area or a portal div) sees nothing.</aside>
+<aside class="trap lang-tr"><strong>Sık düşülen tuzak.</strong> <code>var(--bg)</code>, <code>--bg</code> tanımlı değilse <code>initial</code>'a (şeffaf / siyah) geri düşer. Paletini her zaman <code>:root</code>'ta tanımla, <code>body</code>'de değil — <code>:root</code>, <code>&lt;html&gt;</code> elemanıdır ve değişkenler aşağı doğru kalıtılır. Yalnızca <code>body</code>'ye koyarsan, <code>body</code> dışındaki bir eleman (kaydırma çubuğu alanı veya bir portal div'i gibi) hiçbir şey görmez.</aside>
+
+<p class="lang-en"><em>See also:</em> <a href="#sidebar-css-themes">runtime themes preview</a> · <a href="#ch2b">Chapter 2b · Beautify fedit in 6 steps</a>.</p>
+<p class="lang-tr"><em>Ayrıca bakınız:</em> <a href="#sidebar-css-themes">çalışma anı tema önizlemesi</a> · <a href="#ch2b">2b Bölümü · fedit'i 6 adımda güzelleştir</a>.</p>
+
+<p class="lang-en"><a class="back-link" href="#ch2">⟵ back to the main track</a></p>
+<p class="lang-tr"><a class="back-link" href="#ch2">⟵ ana hatta geri dön</a></p>
+</details>
+
+<details class="sidebar" id="sidebar-css-themes">
+<summary><span class="lang-en">CSS: runtime themes, one attribute flip</span><span class="lang-tr">CSS: çalışma anı temalar, tek öznitelik değişimi</span></summary>
+
+<p class="lang-en"><strong>The one-liner.</strong> Once your palette lives in CSS variables, a whole theme is "re-declare those variables under a different <code>html[data-theme="…"]</code> selector." Switch themes = set one attribute. No re-render logic, no rebuilt stylesheet.</p>
+<p class="lang-tr"><strong>Tek cümleyle.</strong> Paletin CSS değişkenlerinde yaşadıktan sonra, bütün bir tema yalnızca "aynı değişkenleri farklı bir <code>html[data-theme="…"]</code> seçicisi altında yeniden tanımlamak" demektir. Tema değiştirmek = tek bir öznitelik ayarlamak. Yeniden render mantığı yok, yeniden derlenmiş stil dosyası yok.</p>
+
+<p class="lang-en">Add a second palette that fires only when <code>&lt;html data-theme="dark"&gt;</code> is set. Three overrides are usually enough:</p>
+<p class="lang-tr"><code>&lt;html data-theme="dark"&gt;</code> ayarlandığında devreye giren ikinci bir palet ekle. Genelde üç geçersiz kılma yeter:</p>
+
+<pre class="code-block" data-file="src/styles.css"><code class="language-css">html[data-theme="dark"] {
+  --bg:      #1c1a16;   /* dark parchment */
+  --fg:      #f2ecdc;   /* bone */
+  --surface: #2a2621;   /* cards lift above the bg */
+  --border:  #403a30;
+  /* --accent and --radius inherit from :root — same pumpkin, same corners */
+}</code></pre>
+
+<p class="lang-en">Then a two-line toggle in <code>src/main.js</code> flips it. Users see every button, input, card, and border retint in one animation frame:</p>
+<p class="lang-tr">Ardından <code>src/main.js</code>'de iki satırlık bir geçiş onu değiştirir. Kullanıcılar her düğme, girdi, kart ve kenarlığın tek bir animasyon karesinde yeniden renklendiğini görür:</p>
+
+<pre class="code-block" data-file="src/main.js"><code class="language-js">const setTheme = (name) => {
+  document.documentElement.setAttribute("data-theme", name);
+  localStorage.setItem("fedit-theme", name);
+};
+
+// on startup, honor the stored choice
+setTheme(localStorage.getItem("fedit-theme") || "light");
+
+// wire up a button later; the handler is just:
+// setTheme(currentTheme === "dark" ? "light" : "dark");</code></pre>
+
+<p class="lang-en">You can preview any palette live from the browser devtools console right now:</p>
+<p class="lang-tr">Tarayıcı geliştirici araçları konsolundan her paleti şu anda canlı önizleyebilirsin:</p>
+
+<pre class="code-block" data-file="devtools console"><code class="language-js">document.documentElement.setAttribute("data-theme", "dark");
+// instant dark mode — no reload</code></pre>
+
+<aside class="callout lang-en"><strong>Where this is heading.</strong> In Chapter 24 (Settings) we persist the choice via Tauri's plugin-store instead of <code>localStorage</code>, so the theme survives across machines if the user syncs settings. The frontend stays identical — the only change is where <code>"fedit-theme"</code> is read from. Same CSS, same JS hook, different persistence layer.</aside>
+<aside class="callout lang-tr"><strong>Bu nereye gidiyor.</strong> 24. Bölümde (Ayarlar) seçimi <code>localStorage</code> yerine Tauri'nin plugin-store'u ile kalıcı hale getireceğiz, böylece kullanıcı ayarları senkronlarsa tema makineler arasında korunur. Ön yüz aynı kalır — tek değişiklik <code>"fedit-theme"</code>'in nereden okunduğu. Aynı CSS, aynı JS kancası, farklı kalıcılık katmanı.</aside>
+
+<table class="compare-table lang-en">
+<thead><tr><th>What you want</th><th>The CSS you'd write before variables</th><th>The CSS you write now</th></tr></thead>
+<tbody>
+  <tr><td class="concept">Change the accent color</td><td>Find-and-replace <code>#b3591f</code> in 14 rules</td><td>Edit <code>--accent</code>. Once.</td></tr>
+  <tr><td class="concept">Add a dark mode</td><td>Duplicate every rule under <code>@media (prefers-color-scheme: dark)</code></td><td>Re-declare ~4 variables under <code>html[data-theme="dark"]</code></td></tr>
+  <tr><td class="concept">Let users pick a theme</td><td>Ship 3 stylesheets, swap the <code>&lt;link&gt;</code></td><td><code>setAttribute("data-theme", name)</code></td></tr>
+  <tr><td class="concept">Theme a third-party widget</td><td>Fork its CSS</td><td>Set a CSS var it reads; no fork needed</td></tr>
+</tbody>
+</table>
+
+<table class="compare-table lang-tr">
+<thead><tr><th>İstediğin</th><th>Değişkenlerden önce yazacağın CSS</th><th>Şimdi yazdığın CSS</th></tr></thead>
+<tbody>
+  <tr><td class="concept">Vurgu rengini değiştir</td><td>14 kuralda <code>#b3591f</code>'i bul-değiştir</td><td><code>--accent</code>'i düzenle. Tek.</td></tr>
+  <tr><td class="concept">Karanlık mod ekle</td><td>Her kuralı <code>@media (prefers-color-scheme: dark)</code> altında kopyala</td><td><code>html[data-theme="dark"]</code> altında ~4 değişkeni yeniden tanımla</td></tr>
+  <tr><td class="concept">Kullanıcıya tema seçtir</td><td>3 stil dosyası yayınla, <code>&lt;link&gt;</code>'i değiştir</td><td><code>setAttribute("data-theme", name)</code></td></tr>
+  <tr><td class="concept">Üçüncü parti bir widget'a tema ver</td><td>CSS'ini fork'la</td><td>Okuduğu bir CSS değişkenini ayarla; fork gerekmez</td></tr>
+</tbody>
+</table>
+
+<div class="try-breaking lang-en">
+<strong>Try breaking it.</strong> In the devtools console, run <code>document.documentElement.style.setProperty("--accent", "#3a86ff")</code>. Every accented element goes cornflower-blue, live. Refresh the page — it snaps back. Now you understand why Chapter 24 persists the choice: CSS variables default to in-memory, storage is a separate concern.
+</div>
+<div class="try-breaking lang-tr">
+<strong>Kırmayı dene.</strong> Geliştirici konsolunda <code>document.documentElement.style.setProperty("--accent", "#3a86ff")</code> çalıştır. Her vurgulu eleman canlı biçimde peygamber-çiçeği mavisine döner. Sayfayı yenile — geri zıplar. 24. Bölüm'ün seçimi neden kalıcı hale getirdiğini artık biliyorsun: CSS değişkenleri bellekte varsayılandır, saklama ayrı bir konudur.
+</div>
+
+<p class="lang-en"><em>See also:</em> <a href="#sidebar-css-variables">re-skin with 6 CSS variables</a> · <a href="#ch2b">Chapter 2b · Beautify fedit in 6 steps</a>.</p>
+<p class="lang-tr"><em>Ayrıca bakınız:</em> <a href="#sidebar-css-variables">6 CSS değişkeniyle yeniden giydir</a> · <a href="#ch2b">2b Bölümü · fedit'i 6 adımda güzelleştir</a>.</p>
+
+<p class="lang-en"><a class="back-link" href="#ch2">⟵ back to the main track</a></p>
+<p class="lang-tr"><a class="back-link" href="#ch2">⟵ ana hatta geri dön</a></p>
+</details>
+
 <a class="mark-done" data-ch="2">Mark chapter 2 done</a>
+</section>
+
+<!-- ==================================================================== -->
+<section class="chapter" id="ch2b" data-chapter="2b">
+<header>
+  <span class="chapter-num lang-en">Chapter 2b · Polish interlude</span>
+  <span class="chapter-num lang-tr">2b. Bölüm · Parlatma arası</span>
+  <h2><span class="lang-en">Beautify fedit in six steps</span><span class="lang-tr">fedit'i altı adımda güzelleştir</span></h2>
+</header>
+
+<div class="tldr">
+  <span class="meta lang-en">~15 min · chapter 2b · optional</span>
+  <span class="meta lang-tr">~15 dk · 2b. bölüm · isteğe bağlı</span>
+  <p class="lang-en"><span class="lbl">TL;DR</span> Six copy-paste CSS moves turn the naked fedit window into a real-looking app. Every move pays off visibly. Zero JavaScript, zero Rust.</p>
+  <p class="lang-tr"><span class="lbl">Özet</span> Altı adımlık kopyala-yapıştır CSS hamlesi, çıplak fedit penceresini gerçek bir uygulamaya çevirir. Her hamlenin karşılığını gözünle görürsün. Sıfır JavaScript, sıfır Rust.</p>
+  <p class="lang-en">An optional detour. Skip it if you're itching to write Rust — come back later, the six steps still work on the finished app.</p>
+  <p class="lang-tr">İsteğe bağlı bir sapma. Rust yazmak için sabırsızsan atla — sonra geri dönersin, altı adım bitmiş uygulamada da işe yarar.</p>
+</div>
+
+<p class="recap lang-en"><strong>Where we are:</strong> fedit's window renders a plain <code>&lt;h1&gt;fedit&lt;/h1&gt;</code>, an input, and a button. No CSS yet — browser defaults only. Legible, but ugly.</p>
+<p class="recap lang-tr"><strong>Neredeyiz:</strong> fedit penceresi düz bir <code>&lt;h1&gt;fedit&lt;/h1&gt;</code>, bir input ve bir düğme çiziyor. Henüz CSS yok — sadece tarayıcı varsayılanları. Okunaklı ama çirkin.</p>
+<p class="goal lang-en"><strong>Goal:</strong> in six ~30-second edits to <code>src/styles.css</code>, turn it into something you'd screenshot. Each step introduces exactly one CSS concept and leaves a visible win.</p>
+<p class="goal lang-tr"><strong>Amaç:</strong> <code>src/styles.css</code>'e altı tane ~30 saniyelik düzenlemeyle, ekran görüntüsü alacağın bir şeye çevir. Her adım tam olarak bir CSS kavramını tanıtıyor ve görünür bir kazanç bırakıyor.</p>
+
+<aside class="callout rust-30 lang-en"><strong>How to do this chapter.</strong> Open <code>src/styles.css</code> side-by-side with the running fedit window. Apply the six blocks below top-to-bottom. After each, the hot-reloader repaints — stop and look. If you can't tell what changed, that edit earned a look from someone experienced; CSS learns through eyes, not reasoning.</aside>
+<aside class="callout rust-30 lang-tr"><strong>Bu bölümü nasıl yaparsın.</strong> <code>src/styles.css</code>'i, çalışan fedit penceresinin yanında aç. Aşağıdaki altı bloğu yukarıdan aşağıya uygula. Her birinin ardından sıcak yeniden yükleyici yeniden boyar — dur ve bak. Neyin değiştiğini anlayamadıysan, o düzenleme deneyimli birinin bakışına hak kazandı; CSS akılla değil, gözlerle öğrenilir.</aside>
+
+<h3><span class="lang-en">Step 1 — Typography: pick a font and a line height</span><span class="lang-tr">Adım 1 — Tipografi: bir font ve satır yüksekliği seç</span></h3>
+
+<p class="lang-en">The browser default is Times New Roman at 16px, line-height ≈1.15. Every "ugly app" screenshot you've ever seen started here. A system-font stack + a 1.5 line height is the single highest-leverage CSS move you'll ever make.</p>
+<p class="lang-tr">Tarayıcı varsayılanı Times New Roman, 16px, satır yüksekliği ≈1.15'tir. Gördüğün her "çirkin uygulama" ekran görüntüsü buradan başladı. Sistem-fontu yığını + 1.5 satır yüksekliği, yazacağın en yüksek kazançlı tek CSS hamlesidir.</p>
+
+<pre class="code-block" data-file="src/styles.css"><code class="language-diff">+body {
++  font: 15px/1.55 system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
++  color: #23201a;
++  background: #fbf7ee;
++  margin: 0;
++}</code></pre>
+
+<p class="lang-en"><strong>What's new:</strong> the <code>font</code> shorthand (size/line-height/family), the <code>system-ui</code> family (uses the OS's native UI font — San Francisco on Mac, Segoe on Windows, Roboto on Android), and two colors that aren't pure black-and-white (easier on the eyes than <code>#000</code> on <code>#fff</code>).</p>
+<p class="lang-tr"><strong>Yeni olan:</strong> <code>font</code> kısa yazımı (boyut/satır-yüksekliği/aile), <code>system-ui</code> ailesi (işletim sisteminin yerli arayüz fontunu kullanır — Mac'te San Francisco, Windows'ta Segoe, Android'de Roboto) ve saf siyah-beyaz olmayan iki renk (<code>#000</code>/<code>#fff</code>'den göze daha rahat).</p>
+
+<div class="try-breaking lang-en">
+<strong>Try breaking it.</strong> Remove the <code>1.55</code> from the <code>font</code> shorthand — the paragraphs tighten up visibly. Put it back. A reader's eye needs ~1.5× the font size between baselines to track lines comfortably; most browser defaults fall short.
+</div>
+<div class="try-breaking lang-tr">
+<strong>Kırmayı dene.</strong> <code>font</code> kısa yazımından <code>1.55</code>'i çıkar — paragraflar gözle görülür biçimde sıkışır. Geri koy. Bir okurun gözü satırları rahat izleyebilmek için font boyutunun ~1.5 katına ihtiyaç duyar; çoğu tarayıcı varsayılanı bu değerin altında kalır.
+</div>
+
+<h3><span class="lang-en">Step 2 — The six-variable palette</span><span class="lang-tr">Adım 2 — Altı değişkenlik palet</span></h3>
+
+<p class="lang-en">Hardcoding <code>#fbf7ee</code> in one place is fine. Hardcoding it in fourteen places is how you end up with a nightmare. Pull the palette into <code>:root</code> so every future rule reads from it. You already wrote two of these colors above — we're promoting them to reusable names.</p>
+<p class="lang-tr">Tek bir yerde <code>#fbf7ee</code>'yi sabitlemek sorun değil. On dört yerde sabitlemek bir kâbusa dönüşmenin yolu. Paleti <code>:root</code>'a çek ki gelecekteki her kural oradan okusun. Yukarıda zaten iki rengi yazdın — onları yeniden kullanılabilir isimlere yükseltiyoruz.</p>
+
+<pre class="code-block" data-file="src/styles.css"><code class="language-diff">+:root {
++  --bg:      #fbf7ee;
++  --fg:      #23201a;
++  --surface: #ffffff;
++  --accent:  #b3591f;
++  --border:  #d9cfba;
++  --radius:  6px;
++}
+
+ body {
+-  font: 15px/1.55 system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
+-  color: #23201a;
+-  background: #fbf7ee;
++  font: 15px/1.55 system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
++  color: var(--fg);
++  background: var(--bg);
+   margin: 0;
+ }</code></pre>
+
+<p class="lang-en"><strong>What's new:</strong> CSS custom properties. Declare them on <code>:root</code> (the <code>&lt;html&gt;</code> element — inherits down to everything), reference them with <code>var(--name)</code>. The sidebars attached to chapter 2 go deeper.</p>
+<p class="lang-tr"><strong>Yeni olan:</strong> CSS custom property'leri. <code>:root</code>'ta tanımla (<code>&lt;html&gt;</code> elemanı — her şeye aşağı doğru kalıtılır), <code>var(--ad)</code> ile kullan. 2. Bölüm'e bağlı yan pencereler konuya daha derin iniyor.</p>
+
+<h3><span class="lang-en">Step 3 — Container spacing</span><span class="lang-tr">Adım 3 — Konteyner boşluğu</span></h3>
+
+<p class="lang-en">Right now the content is flush against the top-left of the window. A centered container with breathing room fixes 80% of the "looks unfinished" problem in one rule.</p>
+<p class="lang-tr">Şu anda içerik pencerenin sol üst köşesine yapışık. Ortalanmış ve nefes alan bir konteyner, "bitmemiş duruyor" sorununun %80'ini tek bir kuralla çözer.</p>
+
+<pre class="code-block" data-file="src/styles.css"><code class="language-diff">+.container {
++  max-width: 560px;
++  margin: 3rem auto;
++  padding: 1.5rem;
++}
++
++h1 {
++  margin: 0 0 0.5rem;
++  font-size: 1.8rem;
++  letter-spacing: -0.01em;
++}
++
++.tagline {
++  margin: 0 0 2rem;
++  color: #6e6659;
++  font-size: 0.95rem;
++}</code></pre>
+
+<p class="lang-en"><strong>What's new:</strong> <code>margin: 3rem auto</code> — <code>auto</code> on the horizontal axis centers a block element of fixed <code>max-width</code>. This is the oldest centering trick on the web. <code>rem</code> is "root em" — 1rem = the <code>&lt;html&gt;</code> font size (16px by default), so <code>3rem</code> = 48px. Using <code>rem</code> instead of <code>px</code> makes the whole layout scale if the user bumps their browser's default font size.</p>
+<p class="lang-tr"><strong>Yeni olan:</strong> <code>margin: 3rem auto</code> — yatay eksende <code>auto</code>, sabit <code>max-width</code>'li blok elemanını ortalar. Web'in en eski ortalama numarası. <code>rem</code>, "root em" demek — 1rem = <code>&lt;html&gt;</code>'in font boyutu (varsayılan 16px), yani <code>3rem</code> = 48px. <code>rem</code> kullanmak, kullanıcı tarayıcı font boyutunu büyütürse tüm düzenin ölçeklenmesini sağlar.</p>
+
+<h3><span class="lang-en">Step 4 — Inputs and buttons that feel native</span><span class="lang-tr">Adım 4 — Yerli hissettiren girdi ve düğmeler</span></h3>
+
+<p class="lang-en">Browser default form controls are beige boxes from 1998. Twelve lines of CSS puts them on par with what macOS and Windows ship today.</p>
+<p class="lang-tr">Tarayıcı varsayılan form kontrolleri 1998'den kalma bej kutulardır. On iki satır CSS, onları macOS ve Windows'un bugün kullandıklarıyla aynı hizaya çeker.</p>
+
+<pre class="code-block" data-file="src/styles.css"><code class="language-diff">+.row {
++  display: flex;
++  gap: 0.5rem;
++  margin-bottom: 1rem;
++}
++
++input, button {
++  font: inherit;
++  padding: 0.5rem 0.75rem;
++  border: 1px solid var(--border);
++  border-radius: var(--radius);
++  background: var(--surface);
++  color: var(--fg);
++}
++
++input { flex: 1; }
++
++button {
++  background: var(--accent);
++  color: #fff;
++  border-color: var(--accent);
++  cursor: pointer;
++}
++
++button:hover { filter: brightness(1.08); }</code></pre>
+
+<p class="lang-en"><strong>What's new:</strong> Flexbox — <code>display: flex</code> + <code>gap</code> lays children out in a row with even spacing. <code>input { flex: 1 }</code> tells the input to grow and fill leftover space. <code>font: inherit</code> is a one-line fix for the single most common form-styling complaint: browsers refuse to inherit the page font into form controls by default, which is why Comic-Sans-looking inputs show up inside Helvetica designs.</p>
+<p class="lang-tr"><strong>Yeni olan:</strong> Flexbox — <code>display: flex</code> + <code>gap</code> çocukları satır halinde, eşit aralıklarla dizer. <code>input { flex: 1 }</code>, girdinin büyüyüp kalan alanı doldurmasını söyler. <code>font: inherit</code>, en sık form-stil şikayetinin tek satırlık düzeltmesidir: tarayıcılar form kontrollerine sayfa fontunu varsayılan olarak kalıtmayı reddeder, bu yüzden Helvetica tasarımların içinde Comic Sans görünümlü girdiler belirir.</p>
+
+<h3><span class="lang-en">Step 5 — Focus rings (accessibility + polish)</span><span class="lang-tr">Adım 5 — Odak halkaları (erişilebilirlik + parlaklık)</span></h3>
+
+<p class="lang-en">When you Tab to an input, the browser draws <em>something</em>. On most OS-browser combos that "something" is a fuzzy blue halo that doesn't match your palette. Override it with a clean accent outline:</p>
+<p class="lang-tr">Bir girdiye Tab'la geçtiğinde tarayıcı <em>bir şey</em> çizer. Çoğu işletim sistemi-tarayıcı kombinasyonunda bu "bir şey" paletinle uyumsuz bulanık mavi bir hâledir. Temiz bir vurgu taslağıyla üstüne yaz:</p>
+
+<pre class="code-block" data-file="src/styles.css"><code class="language-diff">+input:focus, button:focus {
++  outline: 2px solid var(--accent);
++  outline-offset: 2px;
++}
++
++button:focus:not(:focus-visible) { outline: none; }</code></pre>
+
+<p class="lang-en"><strong>What's new:</strong> <code>outline</code> (not to be confused with <code>border</code> — outline sits outside the box and doesn't take up layout space), <code>outline-offset</code> for air between the control and the ring, and <code>:focus-visible</code> — a pseudo-class the browser applies only when focus came from the keyboard, not a click. The second rule suppresses the outline on mouse-click focus (annoying) while keeping it on Tab-focus (essential for keyboard users).</p>
+<p class="lang-tr"><strong>Yeni olan:</strong> <code>outline</code> (<code>border</code> ile karıştırma — outline kutunun dışında durur ve düzen alanı kaplamaz), kontrol ile halka arasına hava için <code>outline-offset</code>, ve <code>:focus-visible</code> — tarayıcının yalnızca odak klavyeden geldiğinde (tıklamadan değil) uyguladığı bir pseudo-sınıf. İkinci kural, fare-tıklama odağındaki outline'ı (rahatsız edici) bastırırken Tab-odağında korur (klavye kullanıcıları için vazgeçilmez).</p>
+
+<aside class="trap lang-en"><strong>Never do this:</strong> <code>*:focus { outline: none; }</code>. It's the single most common accessibility mistake on the web. Keyboard users lose all sense of where focus is. If you don't like the default ring, <em>replace</em> it like we did — don't remove it.</aside>
+<aside class="trap lang-tr"><strong>Asla yapma:</strong> <code>*:focus { outline: none; }</code>. Web'in en sık yapılan tek erişilebilirlik hatası. Klavye kullanıcıları odağın nerede olduğu hissini tamamen kaybeder. Varsayılan halkayı sevmiyorsan, bizim yaptığımız gibi <em>değiştir</em> — kaldırma.</aside>
+
+<h3><span class="lang-en">Step 6 — Dark mode in five lines</span><span class="lang-tr">Adım 6 — Beş satırda karanlık mod</span></h3>
+
+<p class="lang-en">Because every color in fedit now flows through a variable, a whole dark theme is just "re-declare those variables under <code>html[data-theme="dark"]</code>". No rule-duplication, no selector gymnastics.</p>
+<p class="lang-tr">fedit'teki her renk artık bir değişkenden geçtiği için, bütün bir karanlık tema yalnızca "<code>html[data-theme="dark"]</code> altında o değişkenleri yeniden tanımlamak"tan ibaret. Kural kopyalama yok, seçici cambazlığı yok.</p>
+
+<pre class="code-block" data-file="src/styles.css"><code class="language-diff">+html[data-theme="dark"] {
++  --bg:      #1c1a16;
++  --fg:      #f2ecdc;
++  --surface: #2a2621;
++  --border:  #403a30;
++}</code></pre>
+
+<p class="lang-en">To preview it, open devtools and paste into the console:</p>
+<p class="lang-tr">Önizlemek için geliştirici araçlarını aç ve konsola yapıştır:</p>
+
+<pre class="code-block" data-file="devtools console"><code class="language-js">document.documentElement.setAttribute("data-theme", "dark");
+// flip back:
+// document.documentElement.removeAttribute("data-theme");</code></pre>
+
+<p class="lang-en">The whole UI retints in one paint cycle. That's the payoff of the variable palette — this step took five lines because steps 1–4 did the work.</p>
+<p class="lang-tr">Tüm arayüz tek bir boyama döngüsünde yeniden renklenir. Değişken paletin kazancı — bu adım beş satır sürdü çünkü 1–4 adımları asıl işi yaptı.</p>
+
+<div class="boss-fight lang-en">
+<strong>Boss fight · where this leads.</strong> You can already type <code>setAttribute("data-theme", "dark")</code> in the devtools console and see the whole app flip. In Chapter 24 ("Settings that persist") we'll wire this to a real toggle and save the choice via Tauri's plugin-store so it survives restarts — same CSS, same JS hook, different persistence layer. The heavy lifting is already in your stylesheet; ch24 adds ~10 lines of Rust and one checkbox.
+</div>
+<div class="boss-fight lang-tr">
+<strong>Patron kavgası · bu nereye gidiyor.</strong> Geliştirici konsolunda <code>setAttribute("data-theme", "dark")</code> yazıp tüm uygulamanın döndüğünü görebilirsin. 24. Bölümde ("Kalıcı Ayarlar") bunu gerçek bir geçişe bağlayıp seçimi Tauri'nin plugin-store'u üzerinden kaydedeceğiz, böylece yeniden başlatmada korunur — aynı CSS, aynı JS kancası, farklı kalıcılık katmanı. Ağır iş zaten stil dosyanda; ch24 ~10 satır Rust ve bir onay kutusu ekleyecek.
+</div>
+
+<h3><span class="lang-en">What you shipped</span><span class="lang-tr">Ne teslim ettin</span></h3>
+<p class="lang-en">Six CSS blocks, about 45 lines, and fedit now has: a readable font at a comfortable line height, a named six-color palette, a centered breathing container, native-looking inputs and a primary button, keyboard-visible focus rings, and a working dark theme. No bundler, no preprocessor, no JavaScript. Re-skinning to another palette is editing six lines; offering users a theme picker is two more attribute setters.</p>
+<p class="lang-tr">Altı CSS bloğu, yaklaşık 45 satır, ve fedit artık şunlara sahip: rahat satır yüksekliğinde okunaklı font, isimli altı renklik palet, ortalanmış nefes alan konteyner, yerli görünümlü girdiler ve birincil düğme, klavye-görünür odak halkaları, ve çalışan karanlık tema. Bundler yok, ön işlemci yok, JavaScript yok. Başka bir palete yeniden giydirmek altı satır düzenlemek; kullanıcıya tema seçimi sunmak iki öznitelik ayarlayıcısı daha.</p>
+
+<table class="compare-table lang-en">
+<thead><tr><th>Step</th><th>One concept it teaches</th><th>Lines added</th></tr></thead>
+<tbody>
+  <tr><td class="concept">1 · Typography</td><td>font shorthand + system-ui</td><td>~6</td></tr>
+  <tr><td class="concept">2 · Palette</td><td>CSS custom properties</td><td>~7</td></tr>
+  <tr><td class="concept">3 · Container</td><td>max-width + margin auto + rem</td><td>~10</td></tr>
+  <tr><td class="concept">4 · Controls</td><td>flexbox + form font inheritance</td><td>~14</td></tr>
+  <tr><td class="concept">5 · Focus</td><td>outline + :focus-visible</td><td>~5</td></tr>
+  <tr><td class="concept">6 · Dark mode</td><td>attribute selector + variable override</td><td>~5</td></tr>
+</tbody>
+</table>
+
+<table class="compare-table lang-tr">
+<thead><tr><th>Adım</th><th>Öğrettiği tek kavram</th><th>Eklenen satır</th></tr></thead>
+<tbody>
+  <tr><td class="concept">1 · Tipografi</td><td>font kısa yazımı + system-ui</td><td>~6</td></tr>
+  <tr><td class="concept">2 · Palet</td><td>CSS custom property'leri</td><td>~7</td></tr>
+  <tr><td class="concept">3 · Konteyner</td><td>max-width + margin auto + rem</td><td>~10</td></tr>
+  <tr><td class="concept">4 · Kontroller</td><td>flexbox + form fontu kalıtımı</td><td>~14</td></tr>
+  <tr><td class="concept">5 · Odak</td><td>outline + :focus-visible</td><td>~5</td></tr>
+  <tr><td class="concept">6 · Karanlık mod</td><td>öznitelik seçici + değişken geçersiz kılma</td><td>~5</td></tr>
+</tbody>
+</table>
+
+<p class="lang-en"><em>See also:</em> <a href="#sidebar-css-variables">CSS variables sidebar</a> goes deeper on <code>:root</code> and <code>var()</code>. <a href="#sidebar-css-themes">Runtime themes sidebar</a> shows the <code>setAttribute</code> trick and a comparison table against the old ways of doing themes.</p>
+<p class="lang-tr"><em>Ayrıca bakınız:</em> <a href="#sidebar-css-variables">CSS değişkenleri yan penceresi</a> <code>:root</code> ve <code>var()</code>'a daha derin iniyor. <a href="#sidebar-css-themes">Çalışma anı temalar yan penceresi</a> <code>setAttribute</code> numarasını ve temaların eski yöntemlerine karşı bir karşılaştırma tablosunu gösteriyor.</p>
+
+<p class="tag-link lang-en">Full stylesheet at this point in <code>fedit/</code>: <code>git checkout ch02b</code>. (Tag will land with Wave B; the diffs above are the complete content.)</p>
+<p class="tag-link lang-tr"><code>fedit/</code>'te bu noktadaki tam stil dosyası: <code>git checkout ch02b</code>. (Etiket Wave B ile gelecek; yukarıdaki diff'ler tam içeriktir.)</p>
+
+<a class="mark-done" data-ch="2b"><span class="lang-en">Mark chapter 2b done</span><span class="lang-tr">Bölüm 2b'yi tamamlandı olarak işaretle</span></a>
 </section>
 
 <!-- ==================================================================== -->
@@ -5923,7 +6331,7 @@ jobs:
   const LS_DONE = "fedit-tut-done";
   const LS_SIDEBAR = "fedit-tut-sidebar";
   const LS_LANG = "fedit-tut-lang";
-  const TEACHING = new Set(["1","2","3","4","5","7","8","9","11","12","13","15","16","17"]);
+  const TEACHING = new Set(["1","2","2b","3","4","5","7","8","9","11","12","13","15","16","17"]);
 
   const safeGet = (k) => { try { return localStorage.getItem(k); } catch (_) { return null; } };
   const safeSet = (k, v) => { try { localStorage.setItem(k, v); } catch (_) {} };
