@@ -232,7 +232,10 @@ section.intro h1 {
   margin: 0 0 0.75rem;
   font-weight: 600;
   font-variation-settings: "opsz" 144;
+  text-wrap: balance;
 }
+section.intro h1 .hed-line { display: block; }
+section.intro h1 .hed-line + .hed-line { margin-top: 0.18em; }
 section.intro .lede {
   font-size: 1.25rem;
   line-height: 1.55;
@@ -597,6 +600,13 @@ code.inline, p code {
   font-size: 0.92em;
   border: 1px solid var(--rule);
 }
+.version-note code {
+  background: transparent;
+  border: none;
+  padding: 0 0.15em;
+  color: var(--text);
+  font-weight: 500;
+}
 
 .shortcut-keys kbd {
   font-family: "JetBrains Mono", ui-monospace, monospace;
@@ -931,7 +941,7 @@ table.compare-table td.concept {
   list-style: none;
   padding-left: 0.85rem;
   margin: 0.1rem 0 0.35rem;
-  border-left: 1px dashed var(--rule);
+  border-left: 1px solid color-mix(in srgb, var(--rule) 45%, transparent);
 }
 .toc ol .toc-sub li { margin: 0.1rem 0; }
 .toc ol .toc-sub a {
@@ -1179,95 +1189,95 @@ kbd {
 <li><a href="#ch0" data-ch="0">0 · Install</a></li>
 <li><a href="#ch1" data-ch="1">1 · A window in five minutes</a>
   <ul class="toc-sub">
-    <li><a href="#sidebar-crates">⟶ crates, packages, editions</a></li>
+    <li><a href="#sidebar-crates">→ crates, packages, editions</a></li>
   </ul>
 </li>
 <li><a href="#ch2" data-ch="2">2 · Make it yours</a>
   <ul class="toc-sub">
-    <li><a href="#sidebar-cargo-toolkit">⟶ cargo toolkit</a></li>
+    <li><a href="#sidebar-cargo-toolkit">→ cargo toolkit</a></li>
   </ul>
 </li>
 <li><a href="#ch3" data-ch="3">3 · Your first Rust change</a>
   <ul class="toc-sub">
-    <li><a href="#sidebar-string-str">⟶ String vs &amp;str</a></li>
-    <li><a href="#sidebar-immutability">⟶ let, let mut, shadowing</a></li>
-    <li><a href="#sidebar-primitives">⟶ primitive zoo</a></li>
-    <li><a href="#sidebar-fmt">⟶ println! &amp; formatting</a></li>
+    <li><a href="#sidebar-string-str">→ String vs &amp;str</a></li>
+    <li><a href="#sidebar-immutability">→ let, let mut, shadowing</a></li>
+    <li><a href="#sidebar-primitives">→ primitive zoo</a></li>
+    <li><a href="#sidebar-fmt">→ println! &amp; formatting</a></li>
   </ul>
 </li>
 <li><a href="#ch4" data-ch="4">4 · A new command</a>
   <ul class="toc-sub">
-    <li><a href="#sidebar-ownership">⟶ ownership</a></li>
-    <li><a href="#sidebar-ownership-move">⟶ move semantics vs C++</a></li>
-    <li><a href="#sidebar-fn-expr">⟶ expressions vs statements</a></li>
+    <li><a href="#sidebar-ownership">→ ownership</a></li>
+    <li><a href="#sidebar-ownership-move">→ move semantics vs C++</a></li>
+    <li><a href="#sidebar-fn-expr">→ expressions vs statements</a></li>
   </ul>
 </li>
 <li><a href="#ch5" data-ch="5">5 · Read a hardcoded file</a>
   <ul class="toc-sub">
-    <li><a href="#sidebar-result">⟶ Result, ?, error propagation</a></li>
-    <li><a href="#sidebar-error-as-value">⟶ errors-as-values vs exceptions</a></li>
+    <li><a href="#sidebar-result">→ Result, ?, error propagation</a></li>
+    <li><a href="#sidebar-error-as-value">→ errors-as-values vs exceptions</a></li>
   </ul>
 </li>
 <li><a href="#ch6" data-ch="6" class="checkpoint-link">6 · 🎉 Checkpoint</a></li>
 <li><a href="#ch7" data-ch="7">7 · Open-file dialog</a>
   <ul class="toc-sub">
-    <li><a href="#sidebar-permissions">⟶ Tauri permissions</a></li>
-    <li><a href="#sidebar-option">⟶ Option&lt;T&gt;</a></li>
-    <li><a href="#sidebar-option-null">⟶ no null vs C++/C#</a></li>
+    <li><a href="#sidebar-permissions">→ Tauri permissions</a></li>
+    <li><a href="#sidebar-option">→ Option&lt;T&gt;</a></li>
+    <li><a href="#sidebar-option-null">→ no null vs C++/C#</a></li>
   </ul>
 </li>
 <li><a href="#ch8" data-ch="8">8 · Display and edit</a>
   <ul class="toc-sub">
-    <li><a href="#sidebar-serde">⟶ serde</a></li>
+    <li><a href="#sidebar-serde">→ serde</a></li>
   </ul>
 </li>
 <li><a href="#ch9" data-ch="9">9 · Write a file</a>
   <ul class="toc-sub">
-    <li><a href="#sidebar-borrow">⟶ borrowing &amp; references</a></li>
+    <li><a href="#sidebar-borrow">→ borrowing &amp; references</a></li>
   </ul>
 </li>
 <li><a href="#ch10" data-ch="10" class="checkpoint-link">10 · 🎉 Checkpoint</a></li>
 <li><a href="#ch11" data-ch="11">11 · Remember the current file</a>
   <ul class="toc-sub">
-    <li><a href="#sidebar-mutex">⟶ Mutex &amp; State</a></li>
-    <li><a href="#sidebar-lifetimes">⟶ lifetimes &amp; elision</a></li>
-    <li><a href="#sidebar-smart-ptrs">⟶ Box, Rc, Arc</a></li>
-    <li><a href="#sidebar-send-sync">⟶ Send &amp; Sync</a></li>
-    <li><a href="#sidebar-no-inheritance">⟶ no inheritance vs C#</a></li>
+    <li><a href="#sidebar-mutex">→ Mutex &amp; State</a></li>
+    <li><a href="#sidebar-lifetimes">→ lifetimes &amp; elision</a></li>
+    <li><a href="#sidebar-smart-ptrs">→ Box, Rc, Arc</a></li>
+    <li><a href="#sidebar-send-sync">→ Send &amp; Sync</a></li>
+    <li><a href="#sidebar-no-inheritance">→ no inheritance vs C#</a></li>
   </ul>
 </li>
 <li><a href="#ch12" data-ch="12">12 · Dirty tracking</a>
   <ul class="toc-sub">
-    <li><a href="#sidebar-methods">⟶ impl methods</a></li>
-    <li><a href="#sidebar-testing">⟶ #[test] &amp; cargo test</a></li>
-    <li><a href="#sidebar-literals-cast">⟶ literals &amp; conversions</a></li>
+    <li><a href="#sidebar-methods">→ impl methods</a></li>
+    <li><a href="#sidebar-testing">→ #[test] &amp; cargo test</a></li>
+    <li><a href="#sidebar-literals-cast">→ literals &amp; conversions</a></li>
   </ul>
 </li>
 <li><a href="#ch13" data-ch="13">13 · Save vs Save As</a>
   <ul class="toc-sub">
-    <li><a href="#sidebar-match">⟶ match &amp; exhaustiveness</a></li>
+    <li><a href="#sidebar-match">→ match &amp; exhaustiveness</a></li>
   </ul>
 </li>
 <li><a href="#ch14" data-ch="14" class="checkpoint-link">14 · 🎉 Checkpoint</a></li>
 <li><a href="#ch15" data-ch="15">15 · A real error type</a>
   <ul class="toc-sub">
-    <li><a href="#sidebar-enums">⟶ enums-with-data</a></li>
-    <li><a href="#sidebar-macros">⟶ macros: ! and #[derive]</a></li>
-    <li><a href="#sidebar-modules">⟶ mod, use, pub</a></li>
+    <li><a href="#sidebar-enums">→ enums-with-data</a></li>
+    <li><a href="#sidebar-macros">→ macros: ! and #[derive]</a></li>
+    <li><a href="#sidebar-modules">→ mod, use, pub</a></li>
   </ul>
 </li>
 <li><a href="#ch16" data-ch="16">16 · Recent files</a>
   <ul class="toc-sub">
-    <li><a href="#sidebar-iter">⟶ iterators</a></li>
-    <li><a href="#sidebar-traits">⟶ traits</a></li>
-    <li><a href="#sidebar-collections">⟶ HashMap, HashSet, BTreeMap</a></li>
-    <li><a href="#sidebar-closures">⟶ closures &amp; Fn/FnMut/FnOnce</a></li>
-    <li><a href="#sidebar-generics">⟶ generics &amp; impl/dyn Trait</a></li>
+    <li><a href="#sidebar-iter">→ iterators</a></li>
+    <li><a href="#sidebar-traits">→ traits</a></li>
+    <li><a href="#sidebar-collections">→ HashMap, HashSet, BTreeMap</a></li>
+    <li><a href="#sidebar-closures">→ closures &amp; Fn/FnMut/FnOnce</a></li>
+    <li><a href="#sidebar-generics">→ generics &amp; impl/dyn Trait</a></li>
   </ul>
 </li>
 <li><a href="#ch17" data-ch="17">17 · Keyboard shortcuts</a>
   <ul class="toc-sub">
-    <li><a href="#sidebar-idioms">⟶ Rust idioms</a></li>
+    <li><a href="#sidebar-idioms">→ Rust idioms</a></li>
   </ul>
 </li>
 <li><a href="#ch18" data-ch="18" class="checkpoint-link">18 · 🎉 Checkpoint</a></li>
@@ -1280,7 +1290,7 @@ kbd {
 <main id="main">
 
 <section class="intro">
-<h1>Build a text editor. Learn Rust on the way.</h1>
+<h1><span class="hed-line">Build a text editor.</span><span class="hed-line">Learn Rust on the way.</span></h1>
 <p class="lede">A twin-track tutorial: you build a real Tauri 2 desktop app chapter by chapter, and the Rust-the-language content lives in collapsible sidebars you can open when curious and skip when you're not.</p>
 
 <p class="version-note"><strong>Versions verified 2026-04-20:</strong> Tauri <code>2.10.3</code>, Rust <code>1.94</code> (edition <code>2024</code>, stable since 1.85), <code>tauri-plugin-dialog 2.7.0</code>, <code>tauri-plugin-store 2.4.2</code>, <code>thiserror 2.0.18</code>, Node 18+.</p>
