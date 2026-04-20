@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="light" data-lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -608,6 +608,18 @@ code.inline, p code {
   font-weight: 500;
 }
 
+/* i18n: language toggle — default EN shows .lang-en, TR shows .lang-tr */
+html[data-lang="en"] .lang-tr { display: none !important; }
+html[data-lang="tr"] .lang-en { display: none !important; }
+#lang-toggle {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0.35rem 0.55rem;
+  min-width: 2.5rem;
+}
+
 .shortcut-keys kbd {
   font-family: "JetBrains Mono", ui-monospace, monospace;
   background: var(--surface);
@@ -1176,6 +1188,7 @@ kbd {
       <span class="badge" data-badge="thiserror"     data-name="Error-as-Data Artisan (ch 15)">✺</span>
       <span class="badge" data-badge="iterator"      data-name="Iterator Alchemist (ch 16)">∞</span>
     </div>
+    <button id="lang-toggle" class="icon-btn" aria-label="Change language / Dili değiştir" title="English / Türkçe">TR</button>
     <button id="dark-toggle" class="icon-btn" aria-label="Toggle dark mode">🌓</button>
   </div>
 </header>
@@ -5348,6 +5361,7 @@ jobs:
   const LS_THEME = "fedit-tut-theme";
   const LS_DONE = "fedit-tut-done";
   const LS_SIDEBAR = "fedit-tut-sidebar";
+  const LS_LANG = "fedit-tut-lang";
   const TEACHING = new Set(["1","2","3","4","5","7","8","9","11","12","13","15","16","17"]);
 
   const safeGet = (k) => { try { return localStorage.getItem(k); } catch (_) { return null; } };
@@ -5363,6 +5377,29 @@ jobs:
     const next = cur === "dark" ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", next);
     safeSet(LS_THEME, next);
+  });
+
+  // Language toggle: EN <-> TR, persisted.
+  const storedLang = safeGet(LS_LANG);
+  if (storedLang === "en" || storedLang === "tr") {
+    document.documentElement.setAttribute("data-lang", storedLang);
+    document.documentElement.setAttribute("lang", storedLang);
+  }
+  const langBtn = document.getElementById("lang-toggle");
+  const refreshLangBtn = () => {
+    if (!langBtn) return;
+    const cur = document.documentElement.getAttribute("data-lang") || "en";
+    // Button shows the *other* language (the one you'd switch to).
+    langBtn.textContent = cur === "tr" ? "EN" : "TR";
+  };
+  refreshLangBtn();
+  if (langBtn) langBtn.addEventListener("click", () => {
+    const cur = document.documentElement.getAttribute("data-lang") || "en";
+    const next = cur === "tr" ? "en" : "tr";
+    document.documentElement.setAttribute("data-lang", next);
+    document.documentElement.setAttribute("lang", next);
+    safeSet(LS_LANG, next);
+    refreshLangBtn();
   });
 
   const done = new Set();
