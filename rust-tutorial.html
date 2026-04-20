@@ -321,10 +321,30 @@ code.language-diff .diff-del { background: rgba(235, 120, 120, 0.14); color: #ff
 }
 .callout.diff-primer pre.code-block { margin-top: 0.75rem; margin-bottom: 0.5rem; }
 
-.callout.diff-primer {
-  border-left: 4px solid var(--accent);
-  margin: 1rem 0 1.5rem;
-}
+/* Rust syntax highlighting — dep-free, tokenized at page load.
+   Dark-theme palette is borrowed from Dracula-style sets; light-theme
+   uses darker, higher-contrast tints so it reads on white. */
+code.language-rust .rt-kw { color: #ff85c1; font-weight: 600; }        /* keywords         */
+code.language-rust .rt-pr { color: #8be9fd; }                          /* primitive types  */
+code.language-rust .rt-ty { color: #ffb86c; }                          /* user-defined types */
+code.language-rust .rt-mc { color: #7fd98a; }                          /* macro calls      */
+code.language-rust .rt-s  { color: #f1fa8c; }                          /* string literals  */
+code.language-rust .rt-ch { color: #f1fa8c; }                          /* char literals    */
+code.language-rust .rt-n  { color: #c8a6ff; }                          /* number literals  */
+code.language-rust .rt-c  { color: #6c7a96; font-style: italic; }      /* comments         */
+code.language-rust .rt-lf { color: #ffb86c; font-style: italic; }      /* lifetimes        */
+code.language-rust .rt-at { color: #8be9fd; }                          /* attributes       */
+
+[data-theme="light"] code.language-rust .rt-kw { color: #b83280; }
+[data-theme="light"] code.language-rust .rt-pr { color: #0969da; }
+[data-theme="light"] code.language-rust .rt-ty { color: #9a6300; }
+[data-theme="light"] code.language-rust .rt-mc { color: #1f7a3a; }
+[data-theme="light"] code.language-rust .rt-s  { color: #8a5200; }
+[data-theme="light"] code.language-rust .rt-ch { color: #8a5200; }
+[data-theme="light"] code.language-rust .rt-n  { color: #6b37a6; }
+[data-theme="light"] code.language-rust .rt-c  { color: #6a737d; font-style: italic; }
+[data-theme="light"] code.language-rust .rt-lf { color: #9a6300; font-style: italic; }
+[data-theme="light"] code.language-rust .rt-at { color: #0969da; }
 .callout.diff-primer pre.code-block { margin-top: 0.75rem; margin-bottom: 0.5rem; }
 
 pre.code-block.rustc-error {
@@ -2779,6 +2799,28 @@ fn write_file(path: String, contents: String) -&gt; Result&lt;(), String&gt; {
 Add the <code>&amp;</code> back in the <code>std::fs::write</code> call (so it borrows instead of moves), recompile, and it's fine. This is the single most common error a Rust beginner meets. You'll learn to read it in your sleep.
 </div>
 
+<div class="micro-playground">
+<p><span class="lbl">30-second playground</span> Borrowing in practice: try using <code>path</code> after moving it into <code>std::fs::write</code>, then fix it by borrowing with <code>&amp;</code>. Watch the error change from <em>borrow of moved value</em> to <em>all good</em>.</p>
+<pre class="code-block" data-file="playground"><code class="language-rust">fn write_and_log(path: String, body: String) -&gt; std::io::Result&lt;()&gt; {
+    std::fs::write(path, body)?;          // <-- moves `path` INTO write
+    println!("wrote {}", path);           // <-- borrow of moved value
+    Ok(())
+}
+
+fn main() -&gt; std::io::Result&lt;()&gt; {
+    write_and_log("hi.txt".into(), "hello".into())
+}</code></pre>
+<button class="playground-btn" data-playground="fn write_and_log(path: String, body: String) -> std::io::Result<()> {
+    std::fs::write(&path, body)?;
+    println!(&quot;wrote {}&quot;, path);
+    Ok(())
+}
+
+fn main() -> std::io::Result<()> {
+    write_and_log(&quot;hi.txt&quot;.into(), &quot;hello&quot;.into())
+}">▶ Run the fixed version</button>
+</div>
+
 <p class="tag-link">Full code at this point: <code>git checkout ch09</code>.</p>
 
 <a class="mark-done" data-ch="9">Mark chapter 9 done</a>
@@ -3787,6 +3829,41 @@ This is exhaustiveness doing its job. Put the arm back.
 <aside class="trap">
 <p><strong>Trap — matching a reference.</strong> You wrote <code>match &amp;s.current_path { None =&gt; ..., Some(p) =&gt; ... }</code> and the compiler complained <em>pattern <code>&amp;None</code> not covered</em>. That's because you're matching <code>&amp;Option&lt;_&gt;</code>, not <code>Option&lt;_&gt;</code>. Two fixes: write the patterns with the <code>&amp;</code> (<code>&amp;None</code>, <code>&amp;Some(p)</code>), or match on the value (<code>match s.current_path.as_ref()</code>) so you get <code>Option&lt;&amp;_&gt;</code> patterns back.</p>
 </aside>
+
+<div class="micro-playground">
+<p><span class="lbl">30-second playground</span> The whole <em>match-is-an-expression</em> thing in one go. Every arm returns the same type, and the compiler refuses to compile if you forget a case.</p>
+<pre class="code-block" data-file="playground"><code class="language-rust">enum Signal { Red, Yellow, Green }
+
+fn advice(s: Signal) -&gt; &amp;'static str {
+    match s {
+        Signal::Red    =&gt; "stop",
+        Signal::Yellow =&gt; "slow down",
+        Signal::Green  =&gt; "go",
+        // try deleting any arm — the compiler stops you.
+    }
+}
+
+fn main() {
+    for s in [Signal::Red, Signal::Yellow, Signal::Green] {
+        println!("{}", advice(s));
+    }
+}</code></pre>
+<button class="playground-btn" data-playground="enum Signal { Red, Yellow, Green }
+
+fn advice(s: Signal) -> &'static str {
+    match s {
+        Signal::Red    => &quot;stop&quot;,
+        Signal::Yellow => &quot;slow down&quot;,
+        Signal::Green  => &quot;go&quot;,
+    }
+}
+
+fn main() {
+    for s in [Signal::Red, Signal::Yellow, Signal::Green] {
+        println!(&quot;{}&quot;, advice(s));
+    }
+}">▶ Run on Rust Playground</button>
+</div>
 
 <p class="tag-link">Full code at this point: <code>git checkout ch13</code>.</p>
 
@@ -5248,6 +5325,75 @@ jobs:
       _mo.observe(l, { attributes: true, attributeFilter: ["class"] })
     );
   }
+
+  // ----- Rust syntax highlighting (dep-free) -----
+  // Single-pass tokenizer: walks every <code class="language-rust"> block and
+  // wraps comments, strings, chars, numbers, keywords, primitive types,
+  // user types, macros, lifetimes, and attributes in <span class="rt-*">.
+  // Anything that doesn't match a token is emitted verbatim (escaped).
+  (function highlightRust() {
+    const KEYWORDS = new Set([
+      "fn","let","mut","pub","mod","use","impl","struct","enum","trait",
+      "match","if","else","loop","for","while","return","break","continue",
+      "as","in","ref","self","Self","where","async","await","move","dyn",
+      "const","static","type","unsafe","extern","crate","super","true","false",
+      "box"
+    ]);
+    const PRIMS = new Set([
+      "i8","i16","i32","i64","i128","u8","u16","u32","u64","u128",
+      "isize","usize","f32","f64","bool","char","str","()"
+    ]);
+
+    // Order matters: comments, strings, chars, lifetimes, attributes, numbers,
+    // macros, types, identifiers. Block comments are non-nested here (simple
+    // tutorial code doesn't nest). Char-literal rule requires a closing `'`
+    // within 4 chars so we don't gobble lifetimes like 'static.
+    const TOKEN = new RegExp(
+      "(\\/\\/[^\\n]*)" +                                          // 1 line comment
+      "|(\\/\\*[\\s\\S]*?\\*\\/)" +                                 // 2 block comment
+      "|(\"(?:\\\\.|[^\"\\\\])*\")" +                               // 3 string
+      "|(b?'(?:\\\\.|[^'\\\\\\n])')" +                              // 4 char (incl. byte char)
+      "|('[A-Za-z_][A-Za-z0-9_]*)" +                                // 5 lifetime
+      "|(#!?\\[[^\\]]*\\])" +                                       // 6 attribute
+      "|(0[xX][0-9a-fA-F_]+|0[bB][01_]+|0[oO][0-7_]+|\\d[\\d_]*(?:\\.\\d[\\d_]*)?(?:[eE][+-]?\\d+)?(?:[iuf](?:8|16|32|64|128|size)?)?)" + // 7 number
+      "|([A-Za-z_][A-Za-z0-9_]*!)" +                                // 8 macro
+      "|([A-Z][A-Za-z0-9_]*)" +                                     // 9 Type
+      "|([a-z_][A-Za-z0-9_]*)",                                     // 10 ident
+      "g"
+    );
+    const esc = (s) => s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+
+    function highlight(text) {
+      let out = "", last = 0, m;
+      TOKEN.lastIndex = 0;
+      while ((m = TOKEN.exec(text)) !== null) {
+        if (m.index > last) out += esc(text.slice(last, m.index));
+        let cls = null;
+        if      (m[1] || m[2]) cls = "c";
+        else if (m[3])         cls = "s";
+        else if (m[4])         cls = "ch";
+        else if (m[5])         cls = "lf";
+        else if (m[6])         cls = "at";
+        else if (m[7])         cls = "n";
+        else if (m[8])         cls = "mc";
+        else if (m[9])         cls = "ty";
+        else if (m[10]) {
+          if      (KEYWORDS.has(m[10])) cls = "kw";
+          else if (PRIMS.has(m[10]))    cls = "pr";
+        }
+        out += cls ? '<span class="rt-' + cls + '">' + esc(m[0]) + '</span>' : esc(m[0]);
+        last = m.index + m[0].length;
+      }
+      if (last < text.length) out += esc(text.slice(last));
+      return out;
+    }
+
+    document.querySelectorAll("code.language-rust").forEach(code => {
+      if (code.dataset.rustPainted === "1") return;
+      code.innerHTML = highlight(code.textContent);
+      code.dataset.rustPainted = "1";
+    });
+  })();
 
   // ----- Diff line coloring (+, -, context) -----
   // Walk every <code class="language-diff"> and wrap each line in a <span>
