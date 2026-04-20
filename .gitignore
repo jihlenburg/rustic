@@ -1,8 +1,5 @@
 .DS_Store
 
-# fedit/ is a standalone repo (its own .git) — managed separately.
-fedit/
-
 # Editor / tool config — local only, never publish.
 .claude/
 .vscode/

@@ -1,0 +1,3 @@
+[submodule "fedit"]
+	path = fedit
+	url = https://github.com/jihlenburg/fedit.git

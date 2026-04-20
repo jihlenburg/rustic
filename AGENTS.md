@@ -2,7 +2,17 @@
 
 Operational guidance for AI coding agents working on this repository. Humans: see `README.md`.
 
-This repo contains an interactive Rust + Tauri 2.0 tutorial (`rust-tutorial.html`) and the companion editor project it teaches (`fedit/`). The tutorial and the project are **tightly coupled** — changes to one usually require changes to the other.
+This repo contains an interactive Rust + Tauri 2.0 tutorial (`rust-tutorial.html`) and the companion editor project it teaches (`fedit/`, wired in here as a **git submodule** pointing at https://github.com/jihlenburg/fedit). The tutorial and the project are **tightly coupled** — changes to one usually require changes to the other.
+
+## Submodule workflow
+
+`fedit/` is its own repository. In this repo it appears via a committed submodule pointer. That has three consequences you must not forget:
+
+1. **Clone recursively** — `git clone --recursive …`, or run `git submodule update --init` after a plain clone. Without it, `fedit/` is an empty directory.
+2. **Commits to fedit happen inside `fedit/`**, not in the rustic worktree. `cd fedit && git commit …` lands on fedit's own branches and tags. A rustic commit that "bumps the submodule" is a separate, trivial commit whose only change is the submodule SHA.
+3. **Every chapter that modifies fedit code** therefore produces two commits: one in `fedit/` (often with a new tag `chNN`), and one in rustic that records the new pointer. Do them together: `cd fedit && git commit && git tag chNN && git push && git push --tags && cd .. && git add fedit && git commit -m "Bump fedit submodule to chNN"`.
+
+Hooks: both repos ship a tracked `.githooks/commit-msg`. After cloning either one, run `git config core.hooksPath .githooks` once. The hook rejects any commit message that credits Claude/Anthropic.
 
 ---
 
@@ -84,7 +94,7 @@ These are invariants because the tutorial breaks if they drift. Do not "improve"
 1. **Twin-track structure.** Main-track chapters are short, build `fedit` forward, and end with a visibly different app. Rust-the-language content lives in **collapsible sidebars** attached to the main track, not in inline body text. A reader who skips every sidebar must still reach the end with a working editor.
 2. **Sidebars default collapsed.** On first page load, every `<details>` concept sidebar is closed. Do not auto-expand them.
 3. **Main track has no Playground buttons.** That code belongs in `fedit/`. Playground buttons appear only inside sidebars.
-4. **`fedit/` tags mirror the tutorial.** Every main-track chapter that changes code has a matching git tag (`ch01`, `ch03`, `ch04`, `ch05`, `ch07`, `ch08`, `ch09`, `ch11`, `ch12`, `ch13`, `ch15`, `ch16`, `ch17`). Chapters 2, 6, 10, 14, 18, 19, 20 do not tag (frontend tweaks, checkpoints, or outros). `main` equals `ch17`. If you add or renumber a chapter, update tags accordingly and audit every link in the tutorial.
+4. **`fedit/` tags mirror the tutorial.** Every main-track chapter that changes code has a matching git tag in the fedit submodule (`ch01`, `ch03`, `ch04`, `ch05`, `ch07`, `ch08`, `ch09`, `ch11`, `ch12`, `ch13`, `ch15`, `ch16`, `ch17` — 13 tags). Chapters 2, 6, 10, 14, 18, 19, 20 do not tag (frontend tweaks, checkpoints, or outros). `main` of fedit tracks the latest shipping chapter. If you add or renumber a chapter: tag in fedit, push tag, then bump rustic's submodule pointer in a follow-up rustic commit. Audit every link in the tutorial afterwards.
 5. **Every Part-2 code block corresponds to a real line range in `fedit/`** at its chapter's tag. No fabricated snippets. If the tutorial shows it, you can `git checkout ch09` and find it.
 6. **Checkpoints at ch. 6, 10, 14, 18.** Quizzes live there, not in every chapter. Do not sprinkle quizzes throughout.
 7. **Vanilla JS frontend.** Do not introduce React, Svelte, Vue, or any build-tool plumbing beyond what `create-tauri-app --template vanilla` produces. The tutorial's focus is Rust.
