@@ -1183,6 +1183,28 @@ fn main() {
 
 <p>Target time: under ten minutes. Skip anything you already have. Pick your OS below and run the commands — the rest of the tutorial assumes the three prerequisites (<code>rustc</code>, <code>node</code>, and the OS build tools) are on your <code>PATH</code>.</p>
 
+<h3 id="what-is-a-shell">Wait — what's a shell, and how do I open one?</h3>
+<p>Everywhere the tutorial says <em>"run"</em>, <em>"paste"</em>, or shows a <code>$</code>-prefixed command, we mean: type (or paste) that line into a <strong>terminal window</strong> and hit Enter. The terminal is a text-only window where you type commands and the OS talks back. On every OS it's one app; here's how to find it.</p>
+
+<table class="compare-table">
+<thead><tr><th>OS</th><th>The app is called…</th><th>Quickest way to open it</th></tr></thead>
+<tbody>
+<tr><td class="concept">Windows 10 / 11</td><td><strong>Windows Terminal</strong> (or <em>PowerShell</em>)</td><td>Press <kbd>Win</kbd>, type <em>terminal</em>, press <kbd>Enter</kbd>. (On Windows 10 without Windows Terminal: type <em>powershell</em>.)</td></tr>
+<tr><td class="concept">macOS</td><td><strong>Terminal</strong></td><td>Press <kbd>⌘</kbd>+<kbd>Space</kbd>, type <em>terminal</em>, press <kbd>Return</kbd>.</td></tr>
+<tr><td class="concept">Linux (GNOME / KDE / Mint / Pop)</td><td><strong>GNOME Terminal</strong> / <strong>Konsole</strong> / <strong>xterm</strong></td><td>Press <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd>. If that does nothing, open your apps menu and search <em>terminal</em>.</td></tr>
+</tbody>
+</table>
+
+<p>When it's open you'll see a <em>prompt</em> — usually something like <code>PS C:\Users\you&gt;</code> on Windows, <code>you@mac ~ %</code> on macOS, or <code>you@box:~$</code> on Linux. That trailing character (<code>&gt;</code>, <code>%</code>, or <code>$</code>) is the <em>cursor</em> — the shell is waiting for you. In this tutorial we show commands without the prompt prefix so you can paste them directly:</p>
+
+<pre class="code-block compact" data-file="terminal (any OS)"><code class="language-bash">echo "hello shell"</code></pre>
+
+<p>Hit <kbd>Enter</kbd> and the shell prints <code>hello shell</code> back. That's the whole interaction model: line in, line out. Every command in this tutorial works the same way.</p>
+
+<aside class="callout">
+  <p><strong>Tiny terminal vocabulary.</strong> <em>Prompt</em> = the bit the shell prints before your cursor. <em>Run a command</em> = type it and press Enter. <em>Paste</em> = right-click or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>V</kbd> (on macOS it's <kbd>⌘</kbd>+<kbd>V</kbd>). <em>cd <code>foo</code></em> = change directory into <code>foo</code>. <em>Tab</em> = autocomplete — try it, it feels like a cheat. <em><kbd>Ctrl</kbd>+<kbd>C</kbd></em> = cancel a running command.</p>
+</aside>
+
 <h3>The three things every OS needs</h3>
 <ol class="checklist">
   <li><strong>Rust</strong> via <a href="https://rustup.rs/" target="_blank" rel="noreferrer">rustup</a>. Installs <code>rustc</code>, <code>cargo</code>, and the edition-2024 toolchain. Verify in a new terminal: <code>rustc --version</code> → <code>1.85</code> or newer.</li>
@@ -1229,7 +1251,62 @@ where link.exe   # should print a path inside Visual Studio\…\VC\Tools\MSVC\�
   <p><strong>Why WebView2 on Windows?</strong> Tauri doesn't ship a browser — it asks the OS for one. On macOS that's WebKit; on Linux it's WebKitGTK (via <code>libwebkit2gtk-4.1</code>); on Windows it's Microsoft's <em>WebView2</em>, which is modern Chromium-based Edge exposed as an embeddable control. The old IE / EdgeHTML engine is <em>not</em> involved. A WebView2-backed Tauri app gets the same rendering as current Edge, including up-to-date CSS, ES modules, and clipboard APIs — on Windows 10 and 11 alike. Chapter 19 covers bundling WebView2 into your installer for machines that don't have it yet.</p>
 </aside>
 
-<p>When <code>rustc --version</code>, <code>node --version</code>, and your OS's webview are all present, you're done. Click into chapter 1.</p>
+<h3 id="verify-setup">Is it actually working? — a 30-second sanity check</h3>
+<p>Before moving on, let's make sure all three prerequisites <em>actually run</em>, not just "are installed." Open your terminal (see above), then paste each line one at a time and hit <kbd>Enter</kbd>:</p>
+
+<pre class="code-block" data-file="terminal (any OS)"><code class="language-bash">rustc --version
+cargo --version
+node --version
+npm --version</code></pre>
+
+<p>You should see four version lines, one per command. On a fresh 2026-04 install they look roughly like this (your numbers may be higher — that's fine):</p>
+
+<pre class="code-block" data-file="expected output"><code>rustc 1.94.0 (abc1234 2026-02-08)
+cargo 1.94.0 (def5678 2026-02-03)
+v20.11.1
+10.2.4</code></pre>
+
+<p>Four lines, no errors — you're golden. Skip to the "Hello, Rust" check below.</p>
+
+<aside class="trap">
+<p><strong>Trap — "command not found" / "not recognized as an internal or external command".</strong> Your shell is saying: <em>"I looked in every folder on your <code>PATH</code> and didn't see this program."</em></p>
+<ul>
+  <li><strong>Fix 1 (99% of the time):</strong> <em>close the terminal and open a fresh one</em>. Installers update <code>PATH</code>, but already-running shells don't notice until they restart.</li>
+  <li><strong>Fix 2 — Windows:</strong> re-run the rustup installer; at the end it prints the exact folder (usually <code>%USERPROFILE%\.cargo\bin</code>) — make sure it's in Settings → System → About → Advanced system settings → Environment Variables → <em>Path</em>.</li>
+  <li><strong>Fix 2 — macOS/Linux:</strong> rustup adds a line to <code>~/.zshrc</code> (zsh) or <code>~/.bashrc</code> / <code>~/.bash_profile</code> (bash). Open a new terminal, or run <code>source ~/.zshrc</code>. If the file doesn't exist, add <code>. "$HOME/.cargo/env"</code> to it and reopen.</li>
+</ul>
+</aside>
+
+<h4>Hello, Rust — prove the toolchain works end-to-end</h4>
+<p>Versions printing doesn't prove the compiler can actually <em>build</em> something. Two-line proof that it can:</p>
+
+<pre class="code-block" data-file="terminal (any OS)"><code class="language-bash">cargo new hello-rust
+cd hello-rust
+cargo run</code></pre>
+
+<p><code>cargo new</code> made a tiny project with a single <code>src/main.rs</code> that prints <em>Hello, world!</em>. <code>cargo run</code> compiles it and runs it. Expected output:</p>
+
+<pre class="code-block" data-file="expected output"><code>   Compiling hello-rust v0.1.0 (/path/to/hello-rust)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.24s
+     Running `target/debug/hello-rust`
+Hello, world!</code></pre>
+
+<p>See those four lines? The toolchain compiled a Rust program and ran the binary. You're done — you can leave this folder wherever it is (or <code>cd ..</code> and <code>rm -rf hello-rust</code> on macOS/Linux, <code>rmdir /s hello-rust</code> on Windows, to clean up).</p>
+
+<aside class="trap">
+<p><strong>Trap — <code>error: linker 'link.exe' not found</code> (Windows) or <code>error: linker 'cc' not found</code> (Linux).</strong> Rust compiled your code fine, then couldn't find the system linker to turn it into an executable. The compiler says so literally. The fix: you skipped step 1 for your OS above (Visual Studio Build Tools on Windows, <code>build-essential</code> on Debian/Ubuntu, <code>xcode-select --install</code> on macOS). Install it, reopen the terminal, <code>cargo run</code> again.</p>
+</aside>
+
+<aside class="trap">
+<p><strong>Trap — first compile takes forever.</strong> <code>cargo run</code> on a fresh install can take 10–60 seconds the first time because Cargo has to compile a few dependencies from scratch. This is normal. The second <code>cargo run</code> in the same project is under a second. If yours hangs past two minutes with no output, cancel with <kbd>Ctrl</kbd>+<kbd>C</kbd> and check the troubleshooting above for linker errors.</p>
+</aside>
+
+<h4>Node sanity check</h4>
+<p>Same idea for Node (Tauri uses <code>npm</code> to run the frontend build):</p>
+<pre class="code-block" data-file="terminal (any OS)"><code class="language-bash">node -e "console.log('node is alive')"</code></pre>
+<p>Prints <code>node is alive</code>. If it does, you're done with chapter 0. If it doesn't, scroll up to the "command not found" trap.</p>
+
+<p><strong>All four — <code>rustc</code>, <code>cargo</code>, <code>node</code>, <code>npm</code> — produce version lines, and <code>cargo run</code> prints "Hello, world!"?</strong> You're ready. Click into chapter 1.</p>
 
 <a class="mark-done" data-ch="0">Mark chapter 0 done</a>
 </section>
