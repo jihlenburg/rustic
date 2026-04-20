@@ -6,7 +6,7 @@ This document is the authoritative specification. The companion short prompt poi
 
 ## 1. Overview
 
-**Goal.** Teach a beginner enough Rust to ship a small, real, native desktop app: a minimal **text-file editor built on Tauri 2.0** (code-named `fedit`). The tutorial is designed for an audience with short attention spans and a preference for learning by doing — **ADHD-aware pedagogy is a first-class constraint**, not a nice-to-have. Readers start building on chapter 1 and have a running window within 10 minutes.
+**Goal.** Teach a beginner enough Rust to ship a small, real, native desktop app: a minimal **text-file editor built on Tauri 2.0** (code-named `fedit`). The tutorial is designed for an audience with short attention spans and a preference for learning by doing — **DAVE-aware pedagogy is a first-class constraint**, not a nice-to-have. (*DAVE* — Dopamine Attention Variability Executive Dysfunction — is how we refer throughout this document to the cluster of attention, motivation, and executive-function patterns the tutorial accommodates.) Readers start building on chapter 1 and have a running window within 10 minutes.
 
 **Audience.** Someone who has written a little JavaScript or Python. No C/C++, no prior Rust. Comfortable on the command line. Likely to bail the moment something feels like homework.
 
@@ -123,7 +123,7 @@ Exactly these sidebars, in the order they are first linked from the main track. 
 
 Each sidebar follows the same shape: (1) one-paragraph plain-English definition, (2) one or two Playground examples, (3) one "common gotcha," (4) "⟵ back to the main track."
 
-## 7. ADHD-aware design principles
+## 7. DAVE-aware design principles
 
 These apply across the whole tutorial and inform every structural decision. They are not style notes — they're requirements.
 

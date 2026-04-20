@@ -3,5 +3,11 @@
 # fedit/ is a standalone repo (its own .git) — managed separately.
 fedit/
 
-# Local Claude settings (settings.json is fine to share).
-.claude/settings.local.json
+# Editor / tool config — local only, never publish.
+.claude/
+.vscode/
+.idea/
+
+# Internal working notes — never publish.
+logbook.md
+todo.md

@@ -59,6 +59,24 @@ python3 -m http.server 8000
     └── package.json
 ```
 
+## Local working notes (never commit)
+
+During active work, maintain two untracked files at the repo root:
+
+- `todo.md` — active task list. Add items as they surface; strike or delete when done. Short bullet format is fine.
+- `logbook.md` — session-by-session log of what changed and why. One heading per session / wave.
+
+Both files are in `.gitignore` and **must never** be published. They exist so successive agent sessions can pick up context without spelunking the full transcript. If they slip into a commit, stop and remove them before pushing — they are internal-only.
+
+## Attribution policy
+
+This repo must not credit Claude, Anthropic, or any AI assistant anywhere visible:
+
+- No `Co-Authored-By: Claude …` trailers in commit messages.
+- No `🤖 Generated with …` footers in commit messages, PR descriptions, or tracked files.
+- A `commit-msg` hook at `.git/hooks/commit-msg` rejects banned patterns locally. Do not bypass with `--no-verify`; strip the offending lines and retry.
+- The same hook is installed in `fedit/.git/hooks/commit-msg`.
+
 ## Non-negotiable invariants
 
 These are invariants because the tutorial breaks if they drift. Do not "improve" any of them without updating the architecture doc first.
@@ -158,4 +176,4 @@ See also the full acceptance checklist in **Section 13 of `rust-tutorial-archite
 
 ## When in doubt
 
-Ask the user. The architecture doc is thorough but not exhaustive, and the pedagogy (ADHD-aware, momentum-first) has judgment calls the spec can't fully capture. Surfacing a question is cheaper than a PR that misses the tone.
+Ask the user. The architecture doc is thorough but not exhaustive, and the pedagogy (DAVE-aware, momentum-first) has judgment calls the spec can't fully capture. Surfacing a question is cheaper than a PR that misses the tone.
