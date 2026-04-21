@@ -86,6 +86,25 @@ Three appendices live after chapter 26, reachable from the header quick-links an
 - **Troubleshooting** — 18 common compile / runtime / build symptoms grouped by area (Rust compiler errors, Tauri runtime & build, platform-specific), each with Cause / Fix.
 - **Cheatsheet** — 10 dense cards (bindings, flow control, structs & enums, traits, ownership, errors, iterators, derives, Tauri command shape, cargo & tooling) — print-stylesheet-safe, pairs two columns on paper.
 
+## Host the tutorial on your own server
+
+`scripts/publish.sh` fetches `rust-tutorial.html` from GitHub and drops it into a publishing directory as `index.html`. It's idempotent and safe to run from cron.
+
+```sh
+# simplest — fetches main into ./public/index.html
+./scripts/publish.sh /var/www/rust-tutorial
+
+# pin to a tag or commit
+./scripts/publish.sh --ref v1.2.3 /var/www/rust-tutorial
+
+# self-host Prism + Fraunces so the page no longer hits cdnjs or Google Fonts
+# (recommended for public deployments — removes the GDPR/KVKK third-party
+#  data-transfer concern and eliminates the CDN-outage failure mode)
+./scripts/publish.sh --all /var/www/rust-tutorial
+```
+
+Sample `nginx` and Apache `.htaccess` snippets (CSP, caching, compression) are written next to `index.html` as `headers.nginx.example` / `headers.htaccess.example`.
+
 ## Requirements, in short
 
 - **Rust** (stable, via [rustup.rs](https://rustup.rs)) — edition 2024 compatible toolchain.
