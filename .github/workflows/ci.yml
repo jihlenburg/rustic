@@ -61,3 +61,40 @@ jobs:
 
       - name: Run pytest
         run: pytest tests/ --browser ${{ matrix.browser }} -n auto --tb=short
+
+  fedit:
+    name: fedit cargo check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Tauri system deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            libappindicator3-dev \
+            librsvg2-dev \
+            patchelf \
+            libsoup-3.0-dev
+
+      - name: Cache cargo registry + git
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: cargo-${{ runner.os }}-${{ hashFiles('fedit/src-tauri/Cargo.toml') }}
+
+      - name: Cache cargo target
+        uses: actions/cache@v4
+        with:
+          path: fedit/src-tauri/target
+          key: cargo-target-${{ runner.os }}-${{ hashFiles('fedit/src-tauri/Cargo.toml', 'fedit/src-tauri/src/**/*.rs') }}
+          restore-keys: |
+            cargo-target-${{ runner.os }}-
+
+      - name: cargo check
+        run: cargo check --manifest-path fedit/src-tauri/Cargo.toml --locked
