@@ -1197,7 +1197,7 @@ kbd {
     <span class="brand">Rust + Tauri 2 — build <em>fedit</em></span>
     <div class="progress">
       <div class="progress-track"><div id="progress-bar"></div></div>
-      <span id="progress-text">0 / 14</span>
+      <span id="progress-text">0 / 16</span>
     </div>
     <div class="badge-strip" id="badge-strip" aria-label="Achievement badges">
       <span class="badge" data-badge="ownership"     data-name="Ownership Slayer (ch 4)">⚔</span>
@@ -1206,6 +1206,8 @@ kbd {
       <span class="badge" data-badge="match"         data-name="Match Master (ch 13)">◈</span>
       <span class="badge" data-badge="thiserror"     data-name="Error-as-Data Artisan (ch 15)">✺</span>
       <span class="badge" data-badge="iterator"      data-name="Iterator Alchemist (ch 16)">∞</span>
+      <span class="badge" data-badge="line-gutter"   data-name="Line-Gutter Cartographer (ch 21)">≡</span>
+      <span class="badge" data-badge="regex-wrangler" data-name="Regex Wrangler (ch 22)">⁂</span>
     </div>
     <button id="lang-toggle" class="icon-btn" aria-label="Change language / Dili değiştir" title="English / Türkçe">TR</button>
     <button id="dark-toggle" class="icon-btn" aria-label="Toggle dark mode">🌓</button>
@@ -1322,6 +1324,9 @@ kbd {
     <li><a href="#sidebar-unsafe-primer"><span class="lang-en">→ unsafe: the 5 superpowers</span><span class="lang-tr">→ unsafe: 5 süper güç</span></a></li>
   </ul>
 </li>
+<li><a href="#arc-bonus" class="arc-lead-link"><span class="lang-en">Bonus arc · make it a good editor</span><span class="lang-tr">Bonus bölüm · iyi bir editör yap</span></a></li>
+<li><a href="#ch21" data-ch="21"><span class="lang-en">21 · Line-number gutter</span><span class="lang-tr">21 · Satır numarası şeridi</span></a></li>
+<li><a href="#ch22" data-ch="22"><span class="lang-en">22 · Find and replace</span><span class="lang-tr">22 · Bul ve değiştir</span></a></li>
 </ol>
 </div>
 </nav>
@@ -7453,6 +7458,319 @@ Bu, hiçbir uyarı vermeden derlenir. Çalışma zamanında tanımsız davranı�
 <a class="mark-done" data-ch="20"><span class="lang-en">Mark chapter 20 done</span><span class="lang-tr">Bölüm 20'yi tamamlandı olarak işaretle</span></a>
 </section>
 
+<section class="chapter arc-lead" id="arc-bonus">
+<header>
+  <h2 class="lang-en">Bonus arc — make it a <em>good</em> editor</h2>
+  <h2 class="lang-tr">Bonus kuşak — onu <em>iyi</em> bir editör yap</h2>
+</header>
+<p class="lang-en">You've shipped. Everything from here on is optional. Each chapter adds one feature that turns fedit from a working text editor into one you'd actually keep open. They're short, self-contained, and each ends with a real git tag you can check out.</p>
+<p class="lang-tr">Sevk ettin. Buradan sonrası opsiyonel. Her bölüm, fedit'i çalışan bir metin editöründen gerçekten açık tutacağın bir editöre dönüştüren tek bir özellik ekler. Kısa, kendi içinde bütün, ve her biri bakabileceğin gerçek bir git tag'iyle biter.</p>
+</section>
+
+<section class="chapter" id="ch21" data-chapter="21">
+<header>
+  <span class="chapter-num lang-en">Chapter 21</span>
+  <span class="chapter-num lang-tr">Bölüm 21</span>
+  <h2 class="lang-en">Line numbers that scroll in sync</h2>
+  <h2 class="lang-tr">Eşzamanlı kayan satır numaraları</h2>
+</header>
+
+<div class="tldr lang-en">
+  <span class="meta">~10 min · chapter 21</span>
+  <p><span class="lbl">TL;DR</span> Add a gutter column next to the textarea, render <code>1..N</code> into it on every input, and mirror the textarea's <code>scrollTop</code> onto the gutter so the numbers stay glued to their lines. Zero Rust changes.</p>
+</div>
+<div class="tldr lang-tr">
+  <span class="meta">~10 dk · bölüm 21</span>
+  <p><span class="lbl">Özet</span> Textarea'nın yanına bir "gutter" (oluk) sütunu ekle, her girişte içine <code>1..N</code> yazdır ve textarea'nın <code>scrollTop</code>'ını gutter'a kopyala — numaralar satırlarına yapışık kalsın. Sıfır Rust değişikliği.</p>
+</div>
+
+<p class="lang-en"><strong>Recap.</strong> fedit edits files, saves, remembers recents, and has a native menu. What it <em>doesn't</em> have is the single most basic editor affordance: line numbers.</p>
+<p class="lang-tr"><strong>Özetle.</strong> fedit dosya düzenliyor, kaydediyor, son kullanılanları hatırlıyor ve yerel bir menüsü var. Sahip <em>olmadığı</em> şey editörlerin en temel özelliği: satır numaraları.</p>
+
+<p class="lang-en"><strong>Goal.</strong> A narrow left-hand gutter that shows the line number for every row in the textarea and scrolls with it. Because the textarea is the thing that knows its own scroll position, JS drives the gutter — CSS just paints.</p>
+<p class="lang-tr"><strong>Hedef.</strong> Textarea'daki her satırın numarasını gösteren ve onunla birlikte kayan dar bir sol gutter. Textarea kendi kaydırma pozisyonunu bilen taraf olduğu için JS gutter'ı sürer — CSS sadece boyar.</p>
+
+<h3 class="lang-en">Diffs</h3>
+<h3 class="lang-tr">Diff'ler</h3>
+
+<div class="file-tab"><strong>src/index.html</strong></div>
+<pre class="code-block diff" data-file="src/index.html"><code class="language-diff">-      &lt;textarea
+-        id="editor"
+-        rows="16"
+-        spellcheck="false"
+-        placeholder="open a file, or start typing here"
+-      &gt;&lt;/textarea&gt;
++      &lt;div class="editor-wrap"&gt;
++        &lt;div class="gutter" id="gutter" aria-hidden="true"&gt;&lt;/div&gt;
++        &lt;textarea
++          id="editor"
++          rows="16"
++          spellcheck="false"
++          placeholder="open a file, or start typing here"
++        &gt;&lt;/textarea&gt;
++      &lt;/div&gt;</code></pre>
+
+<div class="file-tab"><strong>src/main.js</strong></div>
+<pre class="code-block diff" data-file="src/main.js"><code class="language-diff">   const editor = document.querySelector("#editor");
++  const gutter = document.querySelector("#gutter");
+   let localDirty = false;
+
++  function renderGutter() {
++    const lineCount = editor.value.length === 0 ? 1 : editor.value.split("\n").length;
++    const nums = new Array(lineCount);
++    for (let i = 0; i &lt; lineCount; i++) nums[i] = i + 1;
++    gutter.textContent = nums.join("\n");
++  }
++
++  function syncGutterScroll() {
++    gutter.scrollTop = editor.scrollTop;
++  }
+   …
+   editor.addEventListener("input", () =&gt; {
+     if (!localDirty) { setDirty(true); }
++    renderGutter();
+   });
++  editor.addEventListener("scroll", syncGutterScroll);</code></pre>
+
+<p class="lang-en"><code>renderGutter()</code> also runs after every code path that sets <code>editor.value</code> directly — open-file, recent click, new-file — because assigning to <code>.value</code> does not fire <code>input</code>. Miss one, and the gutter drifts silently.</p>
+<p class="lang-tr"><code>renderGutter()</code>, <code>editor.value</code>'yu doğrudan atayan her kod yolundan sonra da çalışır — open-file, recent click, new-file — çünkü <code>.value</code>'ya atama <code>input</code> olayını tetiklemez. Birini atlarsan gutter sessizce sapar.</p>
+
+<div class="file-tab"><strong>src/styles.css</strong> (the important bits)</div>
+<pre class="code-block diff" data-file="src/styles.css"><code class="language-diff">+.editor-wrap {
++  display: flex;
++  border-radius: var(--radius);
++  box-shadow: var(--shadow-sm);
++  background: var(--bg-raised);
++  overflow: hidden;
++  min-height: 60vh;
++}
++
++.gutter {
++  font-family: var(--font-mono);
++  font-size: 0.95rem;
++  line-height: 1.55;   /* MUST match #editor */
++  padding: var(--space-4) var(--space-3);
++  min-width: 2.8rem;
++  background: var(--bg-soft);
++  color: var(--text-muted);
++  text-align: right;
++  user-select: none;
++  overflow: hidden;
++  white-space: pre;
++}</code></pre>
+
+<p class="lang-en"><strong>Font metrics must match.</strong> The gutter and the textarea have to agree on <code>font-family</code>, <code>font-size</code>, <code>line-height</code>, and vertical padding, pixel for pixel. If the gutter's line-height is <code>1.5</code> and the editor's is <code>1.55</code>, the numbers start correct and drift by a fraction of a line for every row — by line 200 you're labelling the wrong line. The fix is mechanical: share the values via CSS variables or copy-paste. There's no font-metric inheritance for this case.</p>
+<p class="lang-tr"><strong>Font ölçüleri aynı olmalı.</strong> Gutter ve textarea <code>font-family</code>, <code>font-size</code>, <code>line-height</code> ve dikey padding'te, piksel piksel anlaşmak zorunda. Gutter'ın line-height'ı <code>1.5</code> ve editörünki <code>1.55</code> ise, numaralar doğru başlar ve her satır için bir satırın küçük bir kesri kadar sapar — 200. satırda yanlış satırı etiketliyor olursun. Çözümü mekanik: değerleri CSS değişkenleriyle paylaş ya da kopyala-yapıştır. Bu durum için font-ölçüsü kalıtımı yok.</p>
+
+<h3 class="lang-en">Run it</h3>
+<h3 class="lang-tr">Çalıştır</h3>
+<ul class="lang-en">
+  <li>Open a long file (try <code>src-tauri/src/lib.rs</code> — it's your own code). Line numbers appear on the left, grey, right-aligned.</li>
+  <li>Scroll the editor. The gutter scrolls with it — the numbers stay glued to their lines.</li>
+  <li>Press <kbd>Enter</kbd> somewhere in the middle. Every number below shifts down by one, instantly.</li>
+</ul>
+<ul class="lang-tr">
+  <li>Uzun bir dosya aç (kendi kodun olan <code>src-tauri/src/lib.rs</code>'yi dene). Sol tarafta, gri, sağa hizalı satır numaraları belirir.</li>
+  <li>Editörü kaydır. Gutter onunla kayar — numaralar satırlarına yapışık kalır.</li>
+  <li>Ortada bir yerde <kbd>Enter</kbd>'a bas. Altındaki her numara anında bir aşağı kayar.</li>
+</ul>
+
+<h3 class="lang-en">What just happened?</h3>
+<h3 class="lang-tr">Şimdi ne oldu?</h3>
+
+<p class="lang-en"><strong>DOM-bound state.</strong> The canonical buffer content lives in <code>editor.value</code>. The gutter is a pure projection of that state — given any textarea value, <code>renderGutter()</code> produces the unique correct gutter content. This "one-way projection" pattern is how frameworks like React frame rendering; here we're doing it by hand with a single function.</p>
+<p class="lang-tr"><strong>DOM-bağlı durum.</strong> Asıl tampon içeriği <code>editor.value</code>'da yaşıyor. Gutter o durumun saf bir izdüşümü — herhangi bir textarea değeri verildiğinde, <code>renderGutter()</code> tek doğru gutter içeriğini üretir. Bu "tek yönlü izdüşüm" deseni, React gibi framework'lerin rendering'i çerçeveleme biçimi; burada tek bir fonksiyonla elle yapıyoruz.</p>
+
+<p class="lang-en"><strong>Events you don't get for free.</strong> The DOM fires <code>input</code> only for user-typed changes, not for programmatic <code>editor.value = x</code> assignments. That's a footgun you meet once; after this chapter you'll instinctively call <code>renderGutter()</code> wherever you touch <code>.value</code>.</p>
+<p class="lang-tr"><strong>Bedava gelmeyen olaylar.</strong> DOM, <code>input</code>'u yalnızca kullanıcının yazdığı değişiklikler için tetikler, programatik <code>editor.value = x</code> atamaları için değil. Bir kez karşılaşacağın bir footgun; bu bölümden sonra <code>.value</code>'ya dokunduğun her yerde içgüdüsel olarak <code>renderGutter()</code> çağıracaksın.</p>
+
+<p class="lang-en"><strong>Scroll sync is the other half.</strong> <code>overflow: hidden</code> on <code>.gutter</code> means it can't scroll itself; we assign <code>gutter.scrollTop = editor.scrollTop</code> on every editor scroll, so the viewport window over the gutter always matches the viewport over the textarea. This is a standard editor-gutter pattern — VS Code, CodeMirror, and Monaco all do the same thing with more engineering around it.</p>
+<p class="lang-tr"><strong>Scroll senkronizasyonu işin diğer yarısı.</strong> <code>.gutter</code> üzerindeki <code>overflow: hidden</code> onun kendi başına kaymasını engeller; her editör kaydırmasında <code>gutter.scrollTop = editor.scrollTop</code> atarız, böylece gutter'ın görüntü penceresi textarea'nınkiyle daima eşleşir. Standart bir editör-gutter deseni — VS Code, CodeMirror ve Monaco hepsi etrafında daha fazla mühendislikle aynı şeyi yapıyor.</p>
+
+<div class="try-breaking lang-en">
+<strong>Try breaking it.</strong> Comment out the <code>renderGutter()</code> call inside the <code>editor.addEventListener("input", …)</code> handler. Reload. Type a few newlines. The gutter doesn't grow — the bottom lines have no number next to them. The app still works for open/save, but the gutter now lies about the buffer's shape. Put the call back. The entire bug surface here reduces to "did we forget to refresh the projection?" If you can answer that question at every call site, you can reason about any DOM-bound state.
+</div>
+<div class="try-breaking lang-tr">
+<strong>Şunu kırmayı dene.</strong> <code>editor.addEventListener("input", …)</code> handler'ının içindeki <code>renderGutter()</code> çağrısını yorum satırına al. Yeniden yükle. Birkaç satır sonu yaz. Gutter büyümez — alt satırların yanında numara olmaz. Uygulama open/save için hâlâ çalışır, ama gutter artık tamponun şekli hakkında yalan söylüyor. Çağrıyı geri koy. Buradaki tüm bug yüzeyi "izdüşümü yenilemeyi unuttuk mu?" sorusuna indirgenir. Bu soruyu her çağrı sahnesinde cevaplayabiliyorsan, herhangi bir DOM-bağlı durum hakkında mantık yürütebilirsin.
+</div>
+
+<p class="tag-link lang-en">Full code at this point: <a href="https://github.com/jihlenburg/fedit/tree/ch21" target="_blank" rel="noreferrer"><code>git checkout ch21</code></a>.</p>
+<p class="tag-link lang-tr">Bu noktadaki tam kod: <a href="https://github.com/jihlenburg/fedit/tree/ch21" target="_blank" rel="noreferrer"><code>git checkout ch21</code></a>.</p>
+
+<a class="mark-done" data-ch="21"><span class="lang-en">Mark chapter 21 done</span><span class="lang-tr">Bölüm 21'i tamamlandı olarak işaretle</span></a>
+</section>
+
+<section class="chapter" id="ch22" data-chapter="22">
+<header>
+  <span class="chapter-num lang-en">Chapter 22</span>
+  <span class="chapter-num lang-tr">Bölüm 22</span>
+  <h2 class="lang-en">Find and replace, with regex</h2>
+  <h2 class="lang-tr">Regex ile bul ve değiştir</h2>
+</header>
+
+<div class="tldr lang-en">
+  <span class="meta">~15 min · chapter 22</span>
+  <p><span class="lbl">TL;DR</span> Add the <code>regex</code> crate. Two new <code>#[tauri::command]</code>s — <code>find_matches</code> returns <code>Vec&lt;Match&gt;</code> byte ranges, <code>replace_matches</code> returns the rewritten string. <code>FeditError</code> learns a new <code>Regex</code> variant for free via <code>#[from]</code>. JS adds a find-bar, <kbd>Ctrl/Cmd+F</kbd>, next/prev/replace-all.</p>
+</div>
+<div class="tldr lang-tr">
+  <span class="meta">~15 dk · bölüm 22</span>
+  <p><span class="lbl">Özet</span> <code>regex</code> crate'ini ekle. İki yeni <code>#[tauri::command]</code> — <code>find_matches</code> <code>Vec&lt;Match&gt;</code> byte aralıkları döner, <code>replace_matches</code> yeniden yazılmış string'i döner. <code>FeditError</code>, <code>#[from]</code> sayesinde bedavaya yeni bir <code>Regex</code> varyantı öğrenir. JS bir find-bar, <kbd>Ctrl/Cmd+F</kbd>, sonraki/önceki/hepsini değiştir ekler.</p>
+</div>
+
+<p class="lang-en"><strong>Recap.</strong> Line numbers give you orientation. Find/replace gives you agency. Together they're the two affordances every editor needs before it feels like a real tool.</p>
+<p class="lang-tr"><strong>Özetle.</strong> Satır numaraları yön verir. Bul/değiştir hareket verir. Birlikte, her editörün gerçek bir araç gibi hissettirilmeden önce ihtiyaç duyduğu iki özellik.</p>
+
+<p class="lang-en"><strong>Goal.</strong> A find-bar that toggles with <kbd>Ctrl/Cmd+F</kbd>, with optional regex and optional case sensitivity. The search itself happens in Rust (one regex engine, one error message) and returns byte ranges the frontend turns into textarea selections. Replace-all is a single IPC call that returns the rewritten text.</p>
+<p class="lang-tr"><strong>Hedef.</strong> <kbd>Ctrl/Cmd+F</kbd> ile açılıp kapanan bir find-bar; opsiyonel regex ve opsiyonel büyük/küçük harf hassasiyetiyle. Aramanın kendisi Rust'ta olur (tek regex motoru, tek hata mesajı) ve ön yüzün textarea seçimine dönüştürdüğü byte aralıkları döner. Replace-all, yeniden yazılmış metni döndüren tek bir IPC çağrısı.</p>
+
+<h3 class="lang-en">Diffs</h3>
+<h3 class="lang-tr">Diff'ler</h3>
+
+<div class="file-tab"><strong>src-tauri/Cargo.toml</strong></div>
+<pre class="code-block diff" data-file="src-tauri/Cargo.toml"><code class="language-diff"> thiserror = "2"
++regex = "1"</code></pre>
+
+<div class="file-tab"><strong>src-tauri/src/lib.rs</strong> — error enum gains a variant</div>
+<pre class="code-block diff" data-file="src-tauri/src/lib.rs"><code class="language-diff"> enum FeditError {
+     #[error("io error: {0}")]
+     Io(#[from] std::io::Error),
+     #[error("serde error: {0}")]
+     Serde(#[from] serde_json::Error),
++    #[error("bad regex: {0}")]
++    Regex(#[from] regex::Error),
+     #[error("no file is open")]
+     NoPath,
+     #[error("state is poisoned")]
+     Poisoned,
+ }
+
+ impl serde::Serialize for FeditError {
+     …
+         let kind = match self {
+             FeditError::Io(_) =&gt; "Io",
+             FeditError::Serde(_) =&gt; "Serde",
++            FeditError::Regex(_) =&gt; "Regex",
+             FeditError::NoPath =&gt; "NoPath",
+             FeditError::Poisoned =&gt; "Poisoned",
+         };</code></pre>
+
+<div class="file-tab"><strong>src-tauri/src/lib.rs</strong> — the two new commands</div>
+<pre class="code-block diff" data-file="src-tauri/src/lib.rs"><code class="language-diff">+#[derive(Serialize)]
++struct Match {
++    start: usize,
++    end: usize,
++}
++
++#[tauri::command]
++fn find_matches(
++    haystack: String,
++    needle: String,
++    use_regex: bool,
++    case_sensitive: bool,
++) -&gt; Result&lt;Vec&lt;Match&gt;&gt; {
++    if needle.is_empty() { return Ok(vec![]); }
++    let pattern = if use_regex { needle.clone() } else { regex::escape(&amp;needle) };
++    let pattern = if case_sensitive { pattern } else { format!("(?i){pattern}") };
++    let re = regex::Regex::new(&amp;pattern)?;
++    Ok(re
++        .find_iter(&amp;haystack)
++        .map(|m| Match { start: m.start(), end: m.end() })
++        .collect())
++}
++
++#[tauri::command]
++fn replace_matches(
++    haystack: String,
++    needle: String,
++    replacement: String,
++    use_regex: bool,
++    case_sensitive: bool,
++) -&gt; Result&lt;String&gt; {
++    if needle.is_empty() { return Ok(haystack); }
++    let pattern = if use_regex { needle.clone() } else { regex::escape(&amp;needle) };
++    let pattern = if case_sensitive { pattern } else { format!("(?i){pattern}") };
++    let re = regex::Regex::new(&amp;pattern)?;
++    Ok(re.replace_all(&amp;haystack, replacement.as_str()).into_owned())
++}
+
+ // register them
+ .invoke_handler(tauri::generate_handler![
+     …
++    find_matches,
++    replace_matches,
+ ])</code></pre>
+
+<div class="file-tab"><strong>src/main.js</strong> — wiring sketch</div>
+<pre class="code-block diff" data-file="src/main.js"><code class="language-diff">+  async function runFind() {
++    const needle = findInput.value;
++    if (needle === "") { findState = { matches: [], index: -1 }; return; }
++    try {
++      const matches = await invoke("find_matches", {
++        haystack: editor.value, needle,
++        useRegex: findRegex.checked, caseSensitive: findCase.checked,
++      });
++      findState = { matches, index: matches.length ? 0 : -1 };
++      updateFindCount(); revealCurrentMatch();
++    } catch (err) {
++      findCount.textContent = `regex: ${err?.message ?? err}`;
++    }
++  }
++
++  document.addEventListener("keydown", (e) =&gt; {
++    const mod = e.metaKey || e.ctrlKey;
++    if (mod &amp;&amp; e.key === "f") { e.preventDefault(); openFindBar(); }
++  });</code></pre>
+
+<p class="lang-en">The full find-bar HTML (an <code>&lt;input&gt;</code> + <code>&lt;input&gt;</code> + two checkboxes + four buttons + a counter) and the remaining wiring (<code>step(±1)</code>, <code>replaceAll</code>, <kbd>Enter</kbd>/<kbd>Shift+Enter</kbd>/<kbd>Escape</kbd> handlers) are straightforward — full file at the tag below.</p>
+<p class="lang-tr">Find-bar'ın tam HTML'i (bir <code>&lt;input&gt;</code> + <code>&lt;input&gt;</code> + iki checkbox + dört buton + bir sayaç) ve kalan kablolama (<code>step(±1)</code>, <code>replaceAll</code>, <kbd>Enter</kbd>/<kbd>Shift+Enter</kbd>/<kbd>Escape</kbd> handler'ları) düz bir iş — tam dosya aşağıdaki tag'de.</p>
+
+<h3 class="lang-en">Run it</h3>
+<h3 class="lang-tr">Çalıştır</h3>
+<ul class="lang-en">
+  <li>Open a file. Press <kbd>Ctrl/Cmd+F</kbd>. The find-bar appears under the toolbar.</li>
+  <li>Type. Matches highlight as you type; the counter shows <em>3 / 17</em>.</li>
+  <li>Press <kbd>Enter</kbd> to go to the next match, <kbd>Shift+Enter</kbd> for previous. <kbd>Esc</kbd> closes the bar.</li>
+  <li>Tick <em>regex</em>. Try <code>\bfn\s+\w+</code> to find every Rust function definition.</li>
+  <li>Fill in the <em>replace with</em> field, click <em>Replace all</em>. Numbers update in the gutter. The dirty dot turns on.</li>
+  <li>Type a bad regex — <code>[unclosed</code> — and the counter shows <em>regex: regex parse error at position 0</em>. No panic, no silent failure; the error flows all the way back from <code>regex::Error</code> through <code>FeditError::Regex</code>, serialises into JSON, and prints.</li>
+</ul>
+<ul class="lang-tr">
+  <li>Bir dosya aç. <kbd>Ctrl/Cmd+F</kbd>'ye bas. Find-bar araç çubuğunun altında belirir.</li>
+  <li>Yaz. Eşleşmeler yazarken işaretlenir; sayaç <em>3 / 17</em>'yi gösterir.</li>
+  <li>Sonraki eşleşmeye gitmek için <kbd>Enter</kbd>, önceki için <kbd>Shift+Enter</kbd>. <kbd>Esc</kbd> çubuğu kapatır.</li>
+  <li><em>regex</em>'i işaretle. Her Rust fonksiyon tanımını bulmak için <code>\bfn\s+\w+</code>'yi dene.</li>
+  <li><em>replace with</em> alanını doldur, <em>Replace all</em>'a tıkla. Gutter'daki numaralar güncellenir. Dirty dot yanar.</li>
+  <li>Kötü bir regex yaz — <code>[unclosed</code> — ve sayaç <em>regex: regex parse error at position 0</em>'ı gösterir. Panic yok, sessiz başarısızlık yok; hata <code>regex::Error</code>'dan <code>FeditError::Regex</code> üzerinden JSON'a serileştirilip geri akar ve yazdırılır.</li>
+</ul>
+
+<h3 class="lang-en">What just happened?</h3>
+<h3 class="lang-tr">Şimdi ne oldu?</h3>
+
+<p class="lang-en"><strong><code>#[from]</code> earns its keep.</strong> Adding <code>Regex(#[from] regex::Error)</code> to the error enum is all it takes to make <code>regex::Regex::new(&amp;pattern)?</code> work. The <code>?</code> sees <code>regex::Error</code>, asks "is there a <code>From&lt;regex::Error&gt; for FeditError</code>?", the <code>#[from]</code> macro has already written one, done. You didn't write <code>.map_err(...)</code>, you didn't write <code>match</code>, you didn't write a conversion function. The error lineage stays intact all the way to the frontend.</p>
+<p class="lang-tr"><strong><code>#[from]</code> gerçekten çalışıyor.</strong> Hata enum'una <code>Regex(#[from] regex::Error)</code> eklemek, <code>regex::Regex::new(&amp;pattern)?</code>'i çalıştırmak için yeterli. <code>?</code>, <code>regex::Error</code>'u görür, "<code>From&lt;regex::Error&gt; for FeditError</code> var mı?" diye sorar, <code>#[from]</code> makrosu zaten bunu yazmıştır, iş tamam. <code>.map_err(...)</code> yazmadın, <code>match</code> yazmadın, dönüşüm fonksiyonu yazmadın. Hata soyağacı ön yüze kadar bozulmadan kalır.</p>
+
+<p class="lang-en"><strong>Why Rust owns the regex compile.</strong> Browsers ship their own regex engines, and they differ — Safari's JS regex, Firefox's, and Chromium's all have subtly different support for lookbehind, Unicode classes, and <code>(?i)</code> scoping. Compiling the regex in Rust via the <code>regex</code> crate means fedit's search behaves the same on every platform, and there's one error message string to handle. The frontend only cares about byte ranges.</p>
+<p class="lang-tr"><strong>Regex derlemesi neden Rust'ta.</strong> Tarayıcılar kendi regex motorlarıyla gelir ve birbirinden farklılar — Safari'nin JS regex'i, Firefox'un ve Chromium'unki lookbehind, Unicode sınıfları ve <code>(?i)</code> kapsamı için kısıtlı farklı desteklere sahip. Regex'i <code>regex</code> crate'i üzerinden Rust'ta derlemek, fedit'in aramasının her platformda aynı davranmasını sağlar ve ele alınacak tek bir hata mesajı stringi olur. Ön yüzün umursadığı tek şey byte aralıkları.</p>
+
+<p class="lang-en"><strong>Byte offsets, not character offsets.</strong> <code>Match { start: usize, end: usize }</code> carries byte offsets into the haystack. <code>textarea.setSelectionRange</code> expects code-unit offsets (UTF-16 surrogate pairs count as two), which for ASCII text are byte-identical. For text with multi-byte characters outside the BMP (emoji, ancient Han, etc.) the two differ — a polished editor would convert; fedit intentionally ships the simple version. That's the kind of trade-off every real editor makes somewhere.</p>
+<p class="lang-tr"><strong>Byte offset'leri, karakter offset'leri değil.</strong> <code>Match { start: usize, end: usize }</code>, haystack'e byte offset'leri taşır. <code>textarea.setSelectionRange</code> kod-birimi offset'leri bekler (UTF-16 surrogate çiftleri ikiye sayılır), ki ASCII metin için byte-özdeştir. BMP dışındaki çok baytlı karakterleri olan metin için (emoji, eski Han, vb.) ikisi farklıdır — cilalı bir editör dönüştürürdü; fedit bilinçli olarak basit sürümü gönderir. Her gerçek editörün bir yerlerde yaptığı tür bir ödünleşim.</p>
+
+<p class="lang-en"><strong>No new permissions.</strong> The <code>regex</code> crate is a Rust dependency, not a Tauri plugin. <code>capabilities/default.json</code> is unchanged — pure-Rust crates don't need allow-listing, only plugins whose commands the frontend calls through the Tauri bridge do.</p>
+<p class="lang-tr"><strong>Yeni izin yok.</strong> <code>regex</code> crate'i bir Rust bağımlılığı, Tauri eklentisi değil. <code>capabilities/default.json</code> değişmemiş — saf Rust crate'leri allow-list gerektirmez, yalnızca komutları ön yüzün Tauri köprüsü üzerinden çağırdığı eklentiler gerektirir.</p>
+
+<div class="try-breaking lang-en">
+<strong>Try breaking it.</strong> Remove the <code>regex::escape(&amp;needle)</code> in the literal-search branch and use <code>needle.clone()</code> instead. Save. Search for <code>a.b</code> in a file. <em>Literal</em> mode (the checkbox off) now finds <code>axb</code>, <code>a.b</code>, <code>a-b</code> — anywhere the regex <code>a.b</code> would match. The whole point of the <code>use_regex</code> flag is that literal mode must treat the pattern as literal bytes. <code>regex::escape</code> escapes every regex metacharacter (<code>.</code>, <code>*</code>, <code>[</code>, etc.) so the pattern matches exactly those characters. Put the escape back. This is the kind of bug that looks like it works and silently ships with the wrong behaviour — learn to be paranoid around "literal" claims in regex code.
+</div>
+<div class="try-breaking lang-tr">
+<strong>Şunu kırmayı dene.</strong> Literal-arama dalındaki <code>regex::escape(&amp;needle)</code>'i kaldır ve onun yerine <code>needle.clone()</code> kullan. Kaydet. Bir dosyada <code>a.b</code>'yi ara. <em>Literal</em> modda (checkbox kapalı) artık <code>axb</code>, <code>a.b</code>, <code>a-b</code>'yi buluyor — regex <code>a.b</code>'nin eşleşebileceği her yeri. <code>use_regex</code> bayrağının tüm amacı, literal modun pattern'e literal byte olarak davranması gerektiğidir. <code>regex::escape</code> her regex meta-karakterini (<code>.</code>, <code>*</code>, <code>[</code>, vb.) escape'ler, böylece pattern tam olarak o karakterlerle eşleşir. Escape'i geri koy. Bu, çalıyormuş gibi görünen ve sessizce yanlış davranışla gönderilen türde bir bug — regex kodunda "literal" iddialarına karşı paranoyak olmayı öğren.
+</div>
+
+<p class="tag-link lang-en">Full code at this point: <a href="https://github.com/jihlenburg/fedit/tree/ch22" target="_blank" rel="noreferrer"><code>git checkout ch22</code></a>.</p>
+<p class="tag-link lang-tr">Bu noktadaki tam kod: <a href="https://github.com/jihlenburg/fedit/tree/ch22" target="_blank" rel="noreferrer"><code>git checkout ch22</code></a>.</p>
+
+<a class="mark-done" data-ch="22"><span class="lang-en">Mark chapter 22 done</span><span class="lang-tr">Bölüm 22'yi tamamlandı olarak işaretle</span></a>
+</section>
+
 </main>
 </div>
 
@@ -7470,7 +7788,7 @@ Bu, hiçbir uyarı vermeden derlenir. Çalışma zamanında tanımsız davranı�
   const LS_DONE = "fedit-tut-done";
   const LS_SIDEBAR = "fedit-tut-sidebar";
   const LS_LANG = "fedit-tut-lang";
-  const TEACHING = new Set(["1","2","2b","3","4","5","7","8","9","11","12","13","15","16","17"]);
+  const TEACHING = new Set(["1","2","2b","3","4","5","7","8","9","11","12","13","15","16","17","21","22"]);
 
   const safeGet = (k) => { try { return localStorage.getItem(k); } catch (_) { return null; } };
   const safeSet = (k, v) => { try { localStorage.setItem(k, v); } catch (_) {} };
@@ -7688,6 +8006,8 @@ Bu, hiçbir uyarı vermeden derlenir. Çalışma zamanında tanımsız davranı�
     "13": "match",
     "15": "thiserror",
     "16": "iterator",
+    "21": "line-gutter",
+    "22": "regex-wrangler",
   };
   const badges = new Set();
   try { JSON.parse(safeGet(LS_BADGES) || "[]").forEach(v => badges.add(String(v))); } catch (_) {}
