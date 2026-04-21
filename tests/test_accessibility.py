@@ -18,7 +18,13 @@ from axe_playwright_python.sync_playwright import Axe  # noqa: E402
 ALLOWLIST: set[str] = set()
 
 
-def test_no_new_axe_violations(loaded_page):
+@pytest.mark.parametrize("theme", ["light", "dark"])
+def test_no_new_axe_violations(loaded_page, theme):
+    if theme == "dark":
+        loaded_page.click("#dark-toggle")
+        # Confirm the flip actually took — avoids a silent false negative
+        # where we'd audit light mode twice.
+        assert loaded_page.locator("html").get_attribute("data-theme") == "dark"
     axe = Axe()
     # Only audit serious / critical WCAG A/AA rules; leave "best-practice"
     # advice out of the gate until we're ready for that conversation.
@@ -35,7 +41,7 @@ def test_no_new_axe_violations(loaded_page):
         v for v in results.response["violations"] if v["id"] not in ALLOWLIST
     ]
     if offending:
-        lines = [f"axe-core found {len(offending)} unexpected violation(s):"]
+        lines = [f"axe-core found {len(offending)} unexpected violation(s) in {theme} mode:"]
         for v in offending[:10]:
             lines.append(
                 f"  [{v['impact']}] {v['id']}: {v['help']} ({len(v['nodes'])} node(s))"

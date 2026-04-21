@@ -98,3 +98,6 @@ jobs:
 
       - name: cargo check
         run: cargo check --manifest-path fedit/src-tauri/Cargo.toml --locked
+
+      - name: cargo clippy
+        run: cargo clippy --manifest-path fedit/src-tauri/Cargo.toml --all-targets --locked -- -D warnings

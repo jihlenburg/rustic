@@ -17,6 +17,7 @@
   --muted: #6b4a32;
   --accent: #a83913;
   --accent-hover: #872b0d;
+  --accent-fg: #ffffff;
   --accent-soft: #ffe0d6;
   --border: #c9b79c;
   --sidebar-bg: #efe3cb;
@@ -37,6 +38,7 @@ html[data-theme="dark"] {
   --muted: #bfaa8a;
   --accent: #ff7e4f;
   --accent-hover: #ffa982;
+  --accent-fg: #1c1611;
   --accent-soft: #4a2818;
   --border: #6b4a32;
   --sidebar-bg: #332718;
@@ -85,7 +87,7 @@ a:hover {
 
 a.skip {
   position: absolute; left: -9999px; top: 0.5rem;
-  background: var(--accent); color: #fff; padding: 0.5rem 0.75rem; border-radius: 4px;
+  background: var(--accent); color: var(--accent-fg); padding: 0.5rem 0.75rem; border-radius: 4px;
 }
 a.skip:focus { left: 0.5rem; }
 
@@ -505,7 +507,7 @@ details.sidebar .back-to-main a { color: var(--muted); }
 .playground-btn {
   display: inline-block;
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-fg);
   border: none;
   padding: 0.4rem 0.8rem;
   border-radius: 6px;
@@ -544,7 +546,7 @@ details.sidebar .back-to-main a { color: var(--muted); }
 .mark-done:hover { border-color: var(--accent); color: var(--accent); }
 .mark-done.checked {
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-fg);
   border-color: var(--accent);
 }
 .mark-done.checked::before { content: "✓ "; }
@@ -588,7 +590,7 @@ details.sidebar .back-to-main a { color: var(--muted); }
 .quiz .question label input { margin-right: 0.5rem; }
 .quiz .check-answer {
   margin-top: 0.5rem;
-  background: var(--accent); color: #fff;
+  background: var(--accent); color: var(--accent-fg);
   border: none; padding: 0.3rem 0.8rem;
   border-radius: 4px; cursor: pointer; font: inherit;
 }
@@ -795,7 +797,7 @@ ol.checklist li::before {
   display: inline-flex; align-items: center; justify-content: center;
   border-radius: 50%;
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-fg);
   font-size: 0.72rem;
   font-weight: 600;
   font-family: var(--font-body, inherit);
@@ -1718,7 +1720,7 @@ details.concept-card .cc-body pre {
 }
 .badge-strip .badge.earned {
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-fg);
   border-color: var(--accent);
   transform: scale(1.08);
 }
@@ -1892,7 +1894,7 @@ a.mark-done {
   padding: 0.65rem 1.1rem;
   border-radius: 999px;
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-fg);
   text-decoration: none;
   font-weight: 500;
   font-size: 0.95rem;
