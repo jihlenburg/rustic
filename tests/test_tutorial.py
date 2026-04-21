@@ -6,6 +6,8 @@ reported per-test, not as a single aggregate — so CI surfaces them
 individually and `pytest -k` lets you run one at a time.
 """
 
+import re
+
 from playwright.sync_api import expect
 
 
@@ -89,8 +91,7 @@ def test_ownership_badge_lights(page, base_url):
     page.reload(wait_until="load")
     page.click("a.mark-done[data-ch='4']")
     expect(page.locator(".badge[data-badge='ownership']")).to_have_class(
-        # to_have_class accepts a substring match via regex
-        __import__("re").compile(r"\bearned\b")
+        re.compile(r"\bearned\b")
     )
 
 
@@ -137,7 +138,7 @@ def test_no_orphan_sidebars(loaded_page, anchors_and_ids):
     assert not orphans, f"sidebars not linked from TOC/body: {orphans}"
 
 
-# ---------- 11. NEW: sidebar 'see also' cross-links resolve to existing sidebars ----------
+# ---------- 11. sidebar 'see also' cross-links resolve to existing sidebars ----------
 
 def test_see_also_links_resolve(loaded_page, anchors_and_ids):
     _, ids = anchors_and_ids
@@ -147,3 +148,67 @@ def test_see_also_links_resolve(loaded_page, anchors_and_ids):
     )
     missing = sorted({h[1:] for h in see_also_targets if h[1:] not in ids})
     assert not missing, f"cross-links to non-existent sidebars: {missing}"
+
+
+# ---------- 12. Turkish İ uppercase regression ----------
+
+def test_no_text_transform_uppercase_with_lowercase_i(loaded_page):
+    """Regression test for the bug where CSS `text-transform: uppercase`
+    under `<html lang="tr">` rendered English labels' lowercase `i` as `İ`
+    (dotted capital).
+
+    The fix was to pre-uppercase the content strings in ::before/::after
+    and drop `text-transform: uppercase` from the affected rules. If
+    anyone re-adds that property on an element containing lowercase `i`
+    (and the element isn't explicitly scoped to `lang="en"`), this test
+    fails in Turkish locale.
+    """
+    # Flip to Turkish so Turkish locale rules apply.
+    loaded_page.click("#lang-toggle")
+    expect(loaded_page.locator("html")).to_have_attribute("data-lang", "tr")
+
+    suspicious = loaded_page.evaluate("""
+        () => {
+            const bad = [];
+            for (const el of document.querySelectorAll('body *')) {
+                // Skip invisible elements — hidden .lang-en wrappers under
+                // Turkish locale can't exhibit the bug.
+                const rect = el.getBoundingClientRect();
+                if (rect.width * rect.height === 0) continue;
+                const style = getComputedStyle(el);
+                if (style.textTransform !== 'uppercase') continue;
+                // Explicit lang="en" anywhere up the tree opts out of
+                // Turkish locale uppercasing — that's the fix we want.
+                if (el.closest('[lang="en"]')) continue;
+                // Content inside .lang-tr wrappers is genuinely Turkish;
+                // i → İ is correct capitalization there.
+                if (el.closest('.lang-tr')) continue;
+                const before = getComputedStyle(el, '::before').content || '';
+                const after  = getComputedStyle(el, '::after').content  || '';
+                const direct = [...el.childNodes]
+                    .filter(n => n.nodeType === 3)
+                    .map(n => n.textContent).join('');
+                // Strip CSS `none` sentinel that non-existent pseudos yield.
+                const pseudoText = (before === 'none' ? '' : before) +
+                                   (after  === 'none' ? '' : after);
+                const all = direct + pseudoText;
+                if (/i/.test(all)) {
+                    bad.push({
+                        tag: el.tagName.toLowerCase(),
+                        cls: el.className || '',
+                        text: all.trim().slice(0, 60),
+                    });
+                    if (bad.length >= 10) break;
+                }
+            }
+            return bad;
+        }
+    """)
+
+    assert not suspicious, (
+        "Turkish İ regression risk: "
+        f"{len(suspicious)} element(s) have text-transform:uppercase and "
+        "contain lowercase 'i' without an lang='en' opt-out. "
+        "Either pre-uppercase the content (so the CSS transform is a no-op) "
+        f"or add lang='en' to the element. First offenders: {suspicious}"
+    )

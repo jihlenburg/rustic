@@ -34,6 +34,25 @@ def loaded_page(page, base_url):
 
 
 @pytest.fixture
+def mobile_page(browser, playwright, base_url):
+    """A page running in an iPhone 13 Mini emulation context.
+
+    Separate from the default `page` fixture so desktop tests keep their
+    1400×900 viewport; mobile tests opt in via this fixture.
+    """
+    device = playwright.devices["iPhone 13 Mini"]
+    context = browser.new_context(**device)
+    page = context.new_page()
+    page.goto(base_url, wait_until="load")
+    page.wait_for_function(
+        "() => document.querySelectorAll(\"code[class*='language-'] span\").length > 0",
+        timeout=5_000,
+    )
+    yield page
+    context.close()
+
+
+@pytest.fixture
 def anchors_and_ids(loaded_page):
     """(list of href="#foo" values, set of [id] values on the page)."""
     anchors = loaded_page.eval_on_selector_all(

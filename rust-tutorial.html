@@ -205,6 +205,7 @@ a.skip:focus { left: 0.5rem; }
 
 main {
   max-width: 72ch;
+  min-width: 0;
   font-size: 1.05rem;
 }
 
@@ -851,6 +852,22 @@ pre.code-block.compact {
   .site-header-inner .brand { flex: 1; }
   .progress { display: none; }
   main { font-size: 1rem; }
+  /* Long inline code chips (paths, URLs, long identifiers) would otherwise
+     force horizontal page scroll on narrow viewports. Let them break.
+     Prism sets `white-space: pre` on `code[class*="language-"]`, so we
+     have to override that too — scoped to inline chips, not `<pre>` blocks. */
+  :not(pre) > code,
+  :not(pre) > code[class*="language-"] {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: normal;
+  }
+  /* Wide tables become scroll containers instead of pushing the body. */
+  table.compare-table, table.tauri-map, table.crate-ref {
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
+  }
 }
 
 @media print {
