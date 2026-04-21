@@ -618,6 +618,8 @@ aside code:not(pre code),
 .compare-table code:not(pre code),
 .quiz code:not(pre code),
 .checkpoint-card code:not(pre code),
+.error-decoder code:not(pre code),
+.appendix code:not(pre code),
 details.sidebar summary code:not(pre code),
 details.sidebar .sidebar-body code:not([class*="language-"]):not(pre code) {
   font-family: "JetBrains Mono", ui-monospace, monospace !important;
@@ -639,6 +641,8 @@ details.sidebar .sidebar-body code:not([class*="language-"]):not(pre code) {
 .compare-table code[class*="language-"]:not(pre code),
 .quiz code[class*="language-"]:not(pre code),
 .checkpoint-card code[class*="language-"]:not(pre code),
+.error-decoder code[class*="language-"]:not(pre code),
+.appendix code[class*="language-"]:not(pre code),
 .callout code[class*="language-"]:not(pre code),
 p code[class*="language-"]:not(pre code),
 li code[class*="language-"]:not(pre code),
@@ -678,6 +682,61 @@ html[data-lang="tr"] .lang-en { display: none !important; }
   padding: 0.35rem 0.55rem;
   min-width: 2.5rem;
 }
+
+/* Header appendix quick-links (glossary / troubleshooting / cheatsheet) */
+.header-appendix-links {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+  margin-right: 0.5rem;
+}
+.header-appendix-links .appendix-link {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--muted);
+  text-decoration: none;
+  background: transparent;
+  transition: background 0.15s, color 0.15s;
+}
+.header-appendix-links .appendix-link:hover {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--accent);
+}
+@media (max-width: 760px) {
+  .header-appendix-links { display: none; }
+}
+
+/* TOC appendix section (after numbered chapters) */
+.toc-appendix-heading {
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 1.2rem 0 0.4rem 0;
+  padding-top: 0.8rem;
+  border-top: 1px dashed var(--rule);
+}
+.toc-appendix {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+.toc-appendix li { margin: 0.3rem 0; }
+.toc-appendix a {
+  display: block;
+  padding: 0.25rem 0.4rem;
+  border-radius: 4px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.92rem;
+}
+.toc-appendix a:hover { background: var(--surface); }
 
 .shortcut-keys kbd {
   font-family: "JetBrains Mono", ui-monospace, monospace;
@@ -905,6 +964,210 @@ aside.trap code {
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
   font-weight: 500;
+}
+
+/* ---------------------------------------------------------------------------
+ * Error decoder (.error-decoder)
+ *
+ * Small inline callout that turns a rustc error line into plain English.
+ * Two-line shape: the raw error on top (monospace, muted), the decoded
+ * meaning below (prose, body font).
+ * -------------------------------------------------------------------------*/
+.error-decoder {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--muted);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin: 1.2rem 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+.error-decoder .raw {
+  display: block;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.85rem;
+  color: var(--error-accent);
+  margin-bottom: 0.5rem;
+  white-space: pre-wrap;
+}
+.error-decoder .decoded {
+  color: var(--text);
+}
+.error-decoder .decoded strong {
+  color: var(--accent);
+  font-weight: 600;
+}
+.error-decoder .decoded::before {
+  content: "→ ";
+  color: var(--muted);
+  font-weight: 600;
+  margin-right: 0.2rem;
+}
+
+/* ---------------------------------------------------------------------------
+ * See-also cross-links (.see-also)
+ *
+ * Small muted footer that lives at the bottom of a sidebar body, pointing at
+ * sibling sidebars. Reader has just finished reading; this gives them a door
+ * to the next relevant topic instead of leaving them at the end of the details.
+ * -------------------------------------------------------------------------*/
+.see-also {
+  margin-top: 1rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--rule);
+  font-size: 0.88rem;
+  color: var(--muted);
+  font-style: italic;
+}
+.see-also strong {
+  color: var(--text);
+  font-style: normal;
+  letter-spacing: 0.02em;
+}
+.see-also a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--accent);
+}
+.see-also a:hover { border-bottom-style: solid; }
+
+/* ---------------------------------------------------------------------------
+ * Glossary (.glossary-grid)
+ *
+ * Two-column alphabetical term list. Definition list under the hood for
+ * semantics; visual grid on wide viewports, single column on narrow.
+ * -------------------------------------------------------------------------*/
+.glossary-grid dl {
+  display: grid;
+  grid-template-columns: minmax(8rem, 14rem) 1fr;
+  gap: 0.4rem 1.2rem;
+  margin: 0;
+}
+.glossary-grid dt {
+  font-weight: 600;
+  color: var(--text);
+  padding-top: 0.15rem;
+  border-top: 1px solid var(--rule);
+}
+.glossary-grid dd {
+  margin: 0;
+  color: var(--text);
+  padding-top: 0.15rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.96rem;
+  line-height: 1.55;
+}
+.glossary-grid dt:first-of-type,
+.glossary-grid dd:first-of-type { border-top: 0; }
+.glossary-grid dt a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--accent);
+}
+.glossary-grid dt a:hover { border-bottom-style: solid; }
+@media (max-width: 700px) {
+  .glossary-grid dl {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+  .glossary-grid dd { padding-bottom: 0.6rem; }
+}
+
+/* ---------------------------------------------------------------------------
+ * Troubleshooting (.troubleshoot)
+ *
+ * Grouped <details> entries where summary = symptom, body = cause + fix.
+ * -------------------------------------------------------------------------*/
+.troubleshoot h3 {
+  margin: 1.6rem 0 0.6rem;
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.25rem;
+}
+.troubleshoot details.symptom {
+  margin: 0.5rem 0;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--surface);
+}
+.troubleshoot details.symptom[open] {
+  background: var(--bg-raised, #fff);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.troubleshoot details.symptom summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text);
+  list-style: none;
+}
+.troubleshoot details.symptom summary::-webkit-details-marker { display: none; }
+.troubleshoot details.symptom summary::before {
+  content: "▸";
+  color: var(--accent);
+  margin-right: 0.5rem;
+  font-size: 0.8rem;
+  transition: transform 120ms ease;
+  display: inline-block;
+}
+.troubleshoot details.symptom[open] summary::before { transform: rotate(90deg); }
+.troubleshoot details.symptom p {
+  margin: 0.5rem 0 0.3rem;
+  font-size: 0.96rem;
+  line-height: 1.55;
+}
+.troubleshoot details.symptom strong { color: var(--accent); }
+
+/* ---------------------------------------------------------------------------
+ * Cheatsheet (.cheatsheet / .cheat-grid / .cheat-card)
+ *
+ * Dense syntax reference. Grid of cards on wide viewports; one column print.
+ * -------------------------------------------------------------------------*/
+.cheat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1rem;
+  margin: 1.2rem 0;
+}
+.cheat-card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 0.8rem 1rem 0.9rem;
+}
+.cheat-card h3 {
+  margin: 0 0 0.4rem;
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+.cheat-card pre {
+  margin: 0.2rem 0 0.4rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+.cheat-card ul {
+  margin: 0.3rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+.cheat-card ul li { margin: 0.15rem 0; }
+.cheat-card ul code { font-size: 0.85rem; }
+
+@media print {
+  /* Print just the cheatsheet section on demand — hide chrome when a reader
+     prints from within the cheatsheet anchor. */
+  body > *:not(#cheatsheet-print-root) { /* noop fallback */ }
+  .cheatsheet { break-inside: avoid; }
+  .cheat-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+  .cheat-card { break-inside: avoid; padding: 0.4rem 0.6rem; }
 }
 
 .badge-strip {
@@ -1216,6 +1479,11 @@ kbd {
       <span class="badge" data-badge="settings-sovereign" data-name="Settings Sovereign (ch 24)">⚙</span>
       <span class="badge" data-badge="palette-ranger" data-name="Palette Ranger (ch 25)">⌘</span>
     </div>
+    <nav class="header-appendix-links" aria-label="Appendices">
+      <a href="#glossary" class="appendix-link" title="Glossary / Sözlük"><span class="lang-en">Glossary</span><span class="lang-tr">Sözlük</span></a>
+      <a href="#troubleshooting" class="appendix-link" title="Troubleshooting / Sorun giderme"><span class="lang-en">Troubles</span><span class="lang-tr">Sorunlar</span></a>
+      <a href="#cheatsheet" class="appendix-link" title="Cheatsheet / Hızlı başvuru"><span class="lang-en">Cheat</span><span class="lang-tr">Özet</span></a>
+    </nav>
     <button id="lang-toggle" class="icon-btn" aria-label="Change language / Dili değiştir" title="English / Türkçe">TR</button>
     <button id="dark-toggle" class="icon-btn" aria-label="Toggle dark mode">🌓</button>
   </div>
@@ -1339,6 +1607,12 @@ kbd {
 <li><a href="#ch25" data-ch="25"><span class="lang-en">25 · Command palette</span><span class="lang-tr">25 · Komut paleti</span></a></li>
 <li><a href="#ch26" data-ch="26"><span class="lang-en">26 · 🎉 Checkpoint</span><span class="lang-tr">26 · 🎉 Kontrol noktası</span></a></li>
 </ol>
+<h3 class="toc-appendix-heading"><span class="lang-en">Appendices</span><span class="lang-tr">Ekler</span></h3>
+<ul class="toc-appendix">
+<li><a href="#glossary"><span class="lang-en">Glossary</span><span class="lang-tr">Sözlük</span></a></li>
+<li><a href="#troubleshooting"><span class="lang-en">Troubleshooting</span><span class="lang-tr">Sorun giderme</span></a></li>
+<li><a href="#cheatsheet"><span class="lang-en">Cheatsheet</span><span class="lang-tr">Hızlı başvuru</span></a></li>
+</ul>
 </div>
 </nav>
 
@@ -2597,6 +2871,9 @@ fn main() {
 <p class="lang-en"><strong>Common gotcha.</strong> "Use after move" errors look scary but read them literally. The compiler tells you which line moved the value and which line tried to use it after. Fix by either (a) taking a reference instead of moving, (b) calling <code>.clone()</code> when a cheap copy is genuinely fine, or (c) restructuring so the value is only used once.</p>
 <p class="lang-tr"><strong>Sık yapılan hata.</strong> "Use after move" hataları korkutucu görünür ama düz okunur. Derleyici sana hangi satırda taşındığını, hangi satırda sonradan kullanılmaya çalışıldığını söyler. Düzeltmek için üç yol: (a) taşımak yerine referans al, (b) ucuz bir kopya gerçekten yeterliyse <code>.clone()</code> çağır, ya da (c) değeri yalnızca bir kez kullanacak şekilde kodu yeniden düzenle.</p>
 
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-borrow">borrow & the borrow checker</a> · <a href="#sidebar-smart-ptrs">smart pointers</a> · <a href="#sidebar-lifetimes">lifetimes</a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-borrow">ödünç alma ve ödünç denetleyici</a> · <a href="#sidebar-smart-ptrs">akıllı işaretçiler</a> · <a href="#sidebar-lifetimes">yaşam süreleri</a>.</p>
+
 <p class="lang-en"><a class="back-link" href="#ch4">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch4">⟵ ana yola dön</a></p>
 </details>
@@ -2653,6 +2930,15 @@ fn echo(msg: String) -&gt; String {
   |     format!("you said: {msg} / {copy}")
   |                         ^^^ value borrowed here after move</code></pre>
 İki çözüm: <code>let copy = msg.clone();</code> (derin kopya) ya da referans al: <code>let copy = &amp;msg;</code>. Bitirince geri al.</div>
+
+<div class="error-decoder lang-en">
+  <code class="raw">error[E0382]: borrow of moved value: `msg`</code>
+  <p class="decoded"><strong>Decoded.</strong> You moved <code>msg</code> into another binding (or a function) and then tried to read <code>msg</code> again. Rust's borrow checker is refusing the second read because the original owner has given the value away. Fix: <code>.clone()</code> before the move, or borrow with <code>&amp;msg</code> so nothing moves at all.</p>
+</div>
+<div class="error-decoder lang-tr">
+  <code class="raw">error[E0382]: borrow of moved value: `msg`</code>
+  <p class="decoded"><strong>Çözüldü.</strong> <code>msg</code>'yi başka bir bağlamaya (ya da fonksiyona) taşıdın ve sonra tekrar okumaya çalıştın. Rust'ın borrow checker'ı ikinci okumayı reddediyor çünkü orijinal sahip değeri vermiş. Çözüm: taşımadan önce <code>.clone()</code>, ya da <code>&amp;msg</code> ile ödünç al, böylece hiçbir şey taşınmaz.</p>
+</div>
 
 <p class="tag-link lang-en">Full code at this point: <a href="https://github.com/jihlenburg/fedit/tree/ch04" target="_blank" rel="noreferrer"><code>git checkout ch04</code></a>.</p>
 <p class="tag-link lang-tr">Bu noktadaki tam kod: <a href="https://github.com/jihlenburg/fedit/tree/ch04" target="_blank" rel="noreferrer"><code>git checkout ch04</code></a>.</p>
@@ -2833,6 +3119,15 @@ Kaydet, <code>cargo check</code> şunu der:
   |     Ok(contents)
   |     ^^^^^^^^^^^^ expected `String`, found `Result&lt;String, String&gt;`</code></pre>
 Tabii ki — <code>?</code> olmadan <code>contents</code> hâlâ <code>Result</code> içinde sarılıdır. Geri koy. Her Rust eğitimi okuyucusu buna bir kere takılır.</div>
+
+<div class="error-decoder lang-en">
+  <code class="raw">error[E0308]: mismatched types — expected `String`, found `Result&lt;String, String&gt;`</code>
+  <p class="decoded"><strong>Decoded.</strong> You wrote <code>Ok(contents)</code> where <code>contents</code> is still a <code>Result</code>, so you're wrapping a <code>Result</code> inside another <code>Result</code>. The <code>?</code> operator <em>unwraps</em> the inner result (returning early on <code>Err</code>); without it you've double-wrapped. Put the <code>?</code> back.</p>
+</div>
+<div class="error-decoder lang-tr">
+  <code class="raw">error[E0308]: mismatched types — expected `String`, found `Result&lt;String, String&gt;`</code>
+  <p class="decoded"><strong>Çözüldü.</strong> <code>Ok(contents)</code> yazdın ama <code>contents</code> hâlâ bir <code>Result</code>, yani <code>Result</code>'ı başka bir <code>Result</code> içine sarıyorsun. <code>?</code> operatörü içteki result'ı <em>açar</em> (<code>Err</code> olursa erkenden döner); o olmadan iki kat sarılı kalır. <code>?</code>'yi geri koy.</p>
+</div>
 
 <p class="tag-link lang-en">Full code at this point: <a href="https://github.com/jihlenburg/fedit/tree/ch05" target="_blank" rel="noreferrer"><code>git checkout ch05</code></a>.</p>
 <p class="tag-link lang-tr">Bu noktadaki tam kod: <a href="https://github.com/jihlenburg/fedit/tree/ch05" target="_blank" rel="noreferrer"><code>git checkout ch05</code></a>.</p>
@@ -3563,6 +3858,9 @@ fn main() {
 <p class="lang-en"><strong>Lifetimes.</strong> The <code>'a</code> annotations you'll see in some signatures are how Rust names reference lifetimes. For fedit we avoid them — every function takes owned arguments (<code>String</code>, not <code>&amp;str</code>) because the <code>#[tauri::command]</code> macro crosses process boundaries. You'll meet <code>'a</code> in larger projects; you don't need to understand them for this one.</p>
 <p class="lang-tr"><strong>Lifetime'lar.</strong> Bazı imzalarda göreceğin <code>'a</code> anotasyonları, Rust'ın referans yaşam sürelerine isim verme şeklidir. fedit için onlardan kaçınıyoruz — her fonksiyon sahipli argümanlar alır (<code>&amp;str</code> değil, <code>String</code>) çünkü <code>#[tauri::command]</code> makrosu süreç sınırlarını aşar. Daha büyük projelerde <code>'a</code> ile tanışacaksın; bunda anlamak zorunda değilsin.</p>
 
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-ownership">ownership</a> · <a href="#sidebar-lifetimes">lifetimes</a> · <a href="#sidebar-mutex">interior mutability &amp; <code>Mutex</code></a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-ownership">sahiplik</a> · <a href="#sidebar-lifetimes">yaşam süreleri</a> · <a href="#sidebar-mutex">iç mutability ve <code>Mutex</code></a>.</p>
+
 <p class="lang-en"><a class="back-link" href="#ch9">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch9">⟵ ana yola dön</a></p>
 </details>
@@ -3953,11 +4251,23 @@ fn main() {
 <p class="lang-en"><strong>What <code>.unwrap()</code> is doing here.</strong> <code>lock</code> returns <code>Result&lt;MutexGuard, PoisonError&gt;</code>. A mutex is <em>poisoned</em> if a thread holding the lock panicked. In production code you decide: propagate? recover? In fedit we use <code>.map_err(|e| e.to_string())?</code> to surface it as a regular Tauri error.</p>
 <p class="lang-tr"><strong><code>.unwrap()</code> burada ne yapıyor.</strong> <code>lock</code>, <code>Result&lt;MutexGuard, PoisonError&gt;</code> döndürür. Bir mutex, kilidi tutan iş parçacığı panic attıysa <em>zehirlenmiş</em> sayılır. Prodüksiyon kodunda karar verirsin: ilet mi, kurtar mı? fedit'te onu normal bir Tauri hatası olarak yüzeye çıkarmak için <code>.map_err(|e| e.to_string())?</code> kullanıyoruz.</p>
 
+<div class="error-decoder lang-en">
+  <code class="raw">thread '…' panicked at 'called `Result::unwrap()` on an `Err` value: PoisonError { .. }'</code>
+  <p class="decoded"><strong>Decoded.</strong> Another thread panicked while holding this mutex, so Rust now refuses to hand out fresh <code>MutexGuard</code>s by default — the data <em>might</em> be half-written. Two honest fixes: (1) investigate <em>why</em> the first thread panicked and fix that bug — poison is usually a symptom, not the disease; (2) if you know the data is still consistent, call <code>.into_inner()</code> on the <code>PoisonError</code> to take the guard anyway. Don't just sprinkle <code>.unwrap()</code>s elsewhere and hope — map the error through your Tauri command return type so the frontend sees it.</p>
+</div>
+<div class="error-decoder lang-tr">
+  <code class="raw">thread '…' panicked at 'called `Result::unwrap()` on an `Err` value: PoisonError { .. }'</code>
+  <p class="decoded"><strong>Çözüldü.</strong> Bu mutex'i tutan başka bir iş parçacığı panic attı; bu yüzden Rust varsayılan olarak yeni <code>MutexGuard</code> dağıtmayı reddediyor — veri yarı yazılmış olabilir. İki dürüst çözüm: (1) ilk iş parçacığının <em>neden</em> panic attığını araştır ve o hatayı düzelt — zehirlenme genelde belirtidir, hastalık değil; (2) verinin hâlâ tutarlı olduğunu biliyorsan, guard'ı yine de almak için <code>PoisonError</code> üzerinde <code>.into_inner()</code> çağır. Başka yerlere <code>.unwrap()</code> serpiştirip umma — hatayı Tauri komutunun dönüş türünden yansıt ki ön yüz görsün.</p>
+</div>
+
 <p class="lang-en"><strong>Why <code>AppState</code> and not globals?</strong> Rust discourages mutable statics. <code>static mut</code> is unsafe and linters will yell. A managed state on the app handle is the clean, idiomatic, thread-safe way — and it's trivially testable: you can construct an <code>AppState</code> in a unit test and call your methods on it directly, without booting a Tauri app.</p>
 <p class="lang-tr"><strong>Neden <code>AppState</code>, global değil?</strong> Rust mutable static'leri hoş karşılamaz. <code>static mut</code> unsafe'dir ve linterlar bağırır. App handle üzerindeki yönetilen bir durum, temiz, deyimsel, iş parçacığı-güvenli yoldur — ve kolayca test edilir: bir birim testinde <code>AppState</code> oluşturup metotlarını doğrudan çağırabilirsin; Tauri uygulamasını başlatmana gerek yok.</p>
 
 <p class="lang-en"><strong>Deadlock footguns.</strong> The one trap: holding a <code>MutexGuard</code> across an <code>.await</code>. If an <code>async</code> function needs to hold a lock across awaits, use <code>tokio::sync::Mutex</code> (async-aware) instead of <code>std::sync::Mutex</code>. Our commands don't <code>.await</code> while holding the lock, so we stick with <code>std::sync::Mutex</code>.</p>
 <p class="lang-tr"><strong>Kilitlenme tuzakları.</strong> Tek tuzak: <code>MutexGuard</code>'ı bir <code>.await</code> boyunca tutmak. Bir <code>async</code> fonksiyonun await'lar boyunca kilit tutması gerekiyorsa, <code>std::sync::Mutex</code> yerine <code>tokio::sync::Mutex</code>'i (async-farkında) kullan. Komutlarımız kilit tutarken <code>.await</code> yapmıyor, bu yüzden <code>std::sync::Mutex</code>'te kalıyoruz.</p>
+
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-send-sync"><code>Send</code> / <code>Sync</code></a> · <a href="#sidebar-channels">channels (<code>mpsc</code>)</a> · <a href="#sidebar-async-intro"><code>async</code> / <code>.await</code></a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-send-sync"><code>Send</code> / <code>Sync</code></a> · <a href="#sidebar-channels">kanallar (<code>mpsc</code>)</a> · <a href="#sidebar-async-intro"><code>async</code> / <code>.await</code></a>.</p>
 
 <p class="lang-en"><a class="back-link" href="#ch11">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch11">⟵ ana yola dön</a></p>
@@ -4015,6 +4325,9 @@ fn longest&lt;'a&gt;(x: &amp;'a str, y: &amp;'a str) -&gt; &amp;'a str {
 <p class="lang-en"><strong>Common trap.</strong> A function returning a reference to a local — the local dies at end of scope, so the returned reference would dangle. Rust refuses to compile it; clone or return an owned value instead.</p>
 <p class="lang-tr"><strong>Sık yapılan tuzak.</strong> Bir yerele referans döndüren bir fonksiyon — yerel scope sonunda ölür, dönen referans sarkar. Rust bunu derlemeyi reddeder; onun yerine klonla veya sahip olunan bir değer döndür.</p>
 
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-ownership">ownership</a> · <a href="#sidebar-borrow">borrow checker</a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-ownership">sahiplik</a> · <a href="#sidebar-borrow">ödünç denetleyici</a>.</p>
+
 <p class="lang-en"><a class="back-link" href="#ch11">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch11">⟵ ana yola dön</a></p>
 </details>
@@ -4051,6 +4364,9 @@ fn main() {
 
 <p class="lang-en"><strong>Common trap.</strong> Reaching for <code>Rc&lt;T&gt;</code> and then trying to send it to another thread. The compiler refuses — <code>Rc</code> isn't <code>Send</code>. Switch to <code>Arc</code> for the cross-thread case (next sidebar explains why).</p>
 <p class="lang-tr"><strong>Sık yapılan tuzak.</strong> <code>Rc&lt;T&gt;</code>'ye uzanıp sonra başka bir iş parçacığına göndermeye çalışmak. Derleyici reddeder — <code>Rc</code>, <code>Send</code> değil. İş parçacıkları arası durum için <code>Arc</code>'a geç (bir sonraki kenar çubuğu nedenini açıklıyor).</p>
+
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-mutex"><code>Mutex</code> &amp; interior mutability</a> · <a href="#sidebar-send-sync"><code>Send</code> / <code>Sync</code></a> · <a href="#sidebar-ownership">ownership</a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-mutex"><code>Mutex</code> ve iç mutability</a> · <a href="#sidebar-send-sync"><code>Send</code> / <code>Sync</code></a> · <a href="#sidebar-ownership">sahiplik</a>.</p>
 
 <p class="lang-en"><a class="back-link" href="#ch11">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch11">⟵ ana yola dön</a></p>
@@ -4112,6 +4428,9 @@ fn main() {
 
 <p class="lang-en"><strong>Common trap.</strong> Implementing your own type and getting "<code>MyType</code> isn't <code>Send</code>" because one field is <code>Rc</code>. Either swap that field to <code>Arc</code>, or accept the type is single-threaded — there's no way to "force" <code>Send</code> short of <code>unsafe impl Send</code>, which is a promise to the compiler that you've manually verified the soundness.</p>
 <p class="lang-tr"><strong>Sık yapılan tuzak.</strong> Kendi türünü yazıp bir alanı <code>Rc</code> olduğu için "<code>MyType</code> isn't <code>Send</code>" almak. Ya o alanı <code>Arc</code>'la değiştir ya da türün tek iş parçacıklı olduğunu kabul et — <code>Send</code>'i "zorlamanın" yolu yok; tek seçenek <code>unsafe impl Send</code>, ki bu da derleyiciye sağlamlığı elle doğruladığın sözünü vermektir.</p>
+
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-mutex"><code>Mutex</code></a> · <a href="#sidebar-channels">channels</a> · <a href="#sidebar-unsafe-primer"><code>unsafe</code> primer</a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-mutex"><code>Mutex</code></a> · <a href="#sidebar-channels">kanallar</a> · <a href="#sidebar-unsafe-primer"><code>unsafe</code>'e giriş</a>.</p>
 
 <p class="lang-en"><a class="back-link" href="#ch11">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch11">⟵ ana yola dön</a></p>
@@ -4285,6 +4604,15 @@ help: consider `.await`ing on the `Future`
 <p class="lang-en"><strong>Common gotcha — the forgotten <code>.await</code>.</strong> The compiler will warn ("unused <code>impl Future</code> that must be used; futures do nothing unless you <code>.await</code> or poll them"). In a long chain of method calls people miss it and spend half an hour debugging code that was never executed in the first place. If a function is doing nothing at all, the first thing to check is: did I call it? Did I <code>.await</code> it?</p>
 <p class="lang-tr"><strong>Sık yapılan tuzak — unutulmuş <code>.await</code>.</strong> Derleyici uyarır ("unused <code>impl Future</code> that must be used; futures do nothing unless you <code>.await</code> or poll them"). Uzun metot zincirlerinde insanlar bunu kaçırır ve hiç çalıştırılmamış bir kodu yarım saat debug eder. Bir fonksiyon tamamen hiçbir şey yapmıyorsa, ilk bakılacak şey şu: onu çağırdım mı, <code>.await</code> ettim mi?</p>
 
+<div class="error-decoder lang-en">
+  <code class="raw">error[E0308]: mismatched types — expected `u32`, found `impl Future&lt;Output = u32&gt;`</code>
+  <p class="decoded"><strong>Decoded.</strong> You called an <code>async fn</code> and tried to use the return value as if it were the "ready" type. But <code>async fn foo() -&gt; u32</code> does not return <code>u32</code> — it returns a Future. You have to <code>.await</code> it inside another <code>async</code> context so the runtime can poll it to completion. Fix: add <code>.await</code> right at the call site. If you're in a non-async function, you need a runtime (<code>#[tokio::main]</code>, <code>block_on(fut)</code>).</p>
+</div>
+<div class="error-decoder lang-tr">
+  <code class="raw">error[E0308]: mismatched types — expected `u32`, found `impl Future&lt;Output = u32&gt;`</code>
+  <p class="decoded"><strong>Çözüldü.</strong> Bir <code>async fn</code> çağırdın ve dönüş değerini "hazır" türmüş gibi kullanmaya çalıştın. Ama <code>async fn foo() -&gt; u32</code>, <code>u32</code> döndürmez — bir Future döndürür. Çalışma zamanının onu tamamlayana kadar yoklayabilmesi için başka bir <code>async</code> bağlamında <code>.await</code> etmen gerekir. Çözüm: çağrı yerine <code>.await</code> ekle. Async olmayan bir fonksiyondaysan, bir çalışma zamanına ihtiyacın var (<code>#[tokio::main]</code>, <code>block_on(fut)</code>).</p>
+</div>
+
 <p class="lang-en"><strong>See also.</strong> <a href="#sidebar-mutex">Mutex / shared state</a> (use <code>tokio::sync::Mutex</code> if you must hold a lock across <code>.await</code>) · <a href="#sidebar-channels">channels (mpsc)</a> (send values between async tasks without sharing memory).</p>
 <p class="lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-mutex">Mutex / paylaşılan durum</a> (bir kilidi <code>.await</code> boyunca tutman gerekiyorsa <code>tokio::sync::Mutex</code> kullan) · <a href="#sidebar-channels">kanallar (mpsc)</a> (bellek paylaşmadan async görevler arasında değer gönder).</p>
 
@@ -4420,6 +4748,9 @@ fn main() {
 
 <p class="lang-en"><em>See also:</em> <a href="#sidebar-mutex">Mutex / shared state</a> · <a href="#sidebar-send-sync">Send &amp; Sync</a>.</p>
 <p class="lang-tr"><em>Ayrıca bkz:</em> <a href="#sidebar-mutex">Mutex / paylaşılan durum</a> · <a href="#sidebar-send-sync">Send ve Sync</a>.</p>
+
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-mutex"><code>Mutex</code> &amp; shared state</a> · <a href="#sidebar-send-sync"><code>Send</code> / <code>Sync</code></a> · <a href="#sidebar-async-intro"><code>async</code> / <code>.await</code></a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-mutex"><code>Mutex</code> ve paylaşılan durum</a> · <a href="#sidebar-send-sync"><code>Send</code> / <code>Sync</code></a> · <a href="#sidebar-async-intro"><code>async</code> / <code>.await</code></a>.</p>
 
 <p class="lang-en"><a class="back-link" href="#ch11">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch11">⟵ ana yola dön</a></p>
@@ -4723,6 +5054,9 @@ fn main() {} // ignore — Playground demands a `main`</code></pre>
 <p class="lang-en"><strong>Common trap.</strong> Forgetting <code>use super::*;</code> inside the <code>tests</code> module — your tests can't see the items in the parent module without it. The compiler error is helpful (<em>cannot find function `add` in this scope</em>); the muscle-memory fix is "always start <code>tests</code> mods with <code>use super::*;</code>".</p>
 <p class="lang-tr"><strong>Sık yapılan tuzak.</strong> <code>tests</code> modülü içinde <code>use super::*;</code>'ı unutmak — onsuz testlerin ana modüldeki öğeleri göremez. Derleyici hatası yardımcıdır (<em>cannot find function `add` in this scope</em>); kas hafızalı çözüm "her zaman <code>tests</code> modlarına <code>use super::*;</code> ile başla"dır.</p>
 
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-doctests">doctests</a> · <a href="#sidebar-cfg-features"><code>cfg</code> &amp; feature flags</a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-doctests">doctest'ler</a> · <a href="#sidebar-cfg-features"><code>cfg</code> ve özellik bayrakları</a>.</p>
+
 <p class="lang-en"><a class="back-link" href="#ch12">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch12">⟵ ana yola dön</a></p>
 </details>
@@ -4833,6 +5167,9 @@ fn main() {}</code></pre>
 
 <p class="lang-en"><strong>How they differ from <code>#[test]</code>.</strong> Each doctest is compiled as its own tiny binary — one per fenced block. That's great for isolation and for teaching, but it's slow: hundreds of doctests mean hundreds of invocations of the compiler. <code>#[test]</code> functions, by contrast, are all linked into a single test binary. Rule of thumb: use doctests to prove the public API reads the way the docs claim; use <code>#[test]</code> for bulk coverage.</p>
 <p class="lang-tr"><strong><code>#[test]</code>'ten farkları.</strong> Her doctest kendi küçücük binary'si olarak derlenir — çitli blok başına bir tane. Bu yalıtım ve öğretim için harikadır, ama yavaştır: yüzlerce doctest yüzlerce derleyici çağrısı demektir. <code>#[test]</code> fonksiyonları ise hepsi tek bir test binary'sine bağlanır. Kural: public API'nin dokümanların iddia ettiği gibi okunduğunu kanıtlamak için doctest kullan; yığın kapsama için <code>#[test]</code> kullan.</p>
+
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-testing">testing (<code>#[test]</code>, <code>#[cfg(test)]</code>)</a> · <a href="#sidebar-cfg-features"><code>cfg</code> &amp; feature flags</a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-testing">test etme (<code>#[test]</code>, <code>#[cfg(test)]</code>)</a> · <a href="#sidebar-cfg-features"><code>cfg</code> ve özellik bayrakları</a>.</p>
 
 <p class="lang-en"><a class="back-link" href="#ch12">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch12">⟵ ana yola dön</a></p>
@@ -5095,6 +5432,9 @@ if matches!(x, Some(n) if n &gt; 0) {
 <p class="lang-en"><strong>Exhaustiveness is a feature.</strong> When you later add a <code>Cancelled</code> variant to some status enum, every <code>match</code> that didn't have <code>_ =&gt;</code> as a fallback will fail to compile until you've thought about how to handle the new case. This sounds annoying; in practice it's the reason Rust refactors feel safe.</p>
 <p class="lang-tr"><strong>Kapsayıcılık bir özellik.</strong> Daha sonra bir status enum'una <code>Cancelled</code> varyantı eklediğinde, <code>_ =&gt;</code>'i geri dönüş olarak taşımayan her <code>match</code>, yeni durumu nasıl ele alacağını düşünene kadar derlenmeyecek. Bu sinir bozucu gibi görünür; pratikte Rust refactor'larının güvenli hissettirmesinin nedeni budur.</p>
 
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-pattern-depth">pattern-matching depth</a> · <a href="#sidebar-enums">enums</a> · <a href="#sidebar-option"><code>Option</code></a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-pattern-depth">desen eşleme derinliği</a> · <a href="#sidebar-enums">enum'lar</a> · <a href="#sidebar-option"><code>Option</code></a>.</p>
+
 <p class="lang-en"><a class="back-link" href="#ch13">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch13">⟵ ana yola dön</a></p>
 </details>
@@ -5317,6 +5657,9 @@ Derleyici çözümü bile öneriyor: <code>else { … }</code> ekle ki <code>Non
 
 <p class="lang-en"><strong>See also.</strong> <a class="sidebar-link" href="#sidebar-match">⟶ <code>match</code> and pattern matching</a> for exhaustiveness and the <code>matches!</code> macro, and <a class="sidebar-link" href="#sidebar-result">⟶ <code>Result</code> and the <code>?</code> operator</a> for how <code>let … else</code> pairs with early-return error handling.</p>
 <p class="lang-tr"><strong>Ayrıca bak.</strong> Kapsayıcılık ve <code>matches!</code> makrosu için <a class="sidebar-link" href="#sidebar-match">⟶ <code>match</code> ve desen eşleştirme</a>, <code>let … else</code>'in erken-dönüşlü hata yönetimiyle nasıl eşleştiği için <a class="sidebar-link" href="#sidebar-result">⟶ <code>Result</code> ve <code>?</code> operatörü</a>.</p>
+
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-match"><code>match</code></a> · <a href="#sidebar-enums">enums</a> · <a href="#sidebar-option"><code>Option</code></a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-match"><code>match</code></a> · <a href="#sidebar-enums">enum'lar</a> · <a href="#sidebar-option"><code>Option</code></a>.</p>
 
 <p class="lang-en"><a class="back-link" href="#ch13">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch13">⟵ ana yola dön</a></p>
@@ -5620,6 +5963,9 @@ fn main() {
 <p class="lang-en"><strong><code>thiserror</code> vs <code>anyhow</code>.</strong> Two error crates you'll see in real Rust projects. <code>thiserror</code> (what we used) defines <em>your</em> error type — good for library code and APIs. <code>anyhow</code> gives you a catch-all <code>anyhow::Error</code> — good for app code where you don't care about distinguishing variants. Tauri commands need a typed error (so JS can tell variants apart), so <code>thiserror</code> is the right choice here.</p>
 <p class="lang-tr"><strong><code>thiserror</code> vs <code>anyhow</code>.</strong> Gerçek Rust projelerinde göreceğin iki hata crate'i. <code>thiserror</code> (kullandığımız) <em>senin</em> hata türünü tanımlar — kütüphane kodu ve API'ler için iyi. <code>anyhow</code> sana her şeyi kapsayan bir <code>anyhow::Error</code> verir — varyantları ayırt etmeyi umursamadığın uygulama kodu için iyi. Tauri komutları tür belirtili bir hata gerektirir (JS varyantları ayırt edebilsin diye), bu yüzden burada doğru seçim <code>thiserror</code>.</p>
 
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-match"><code>match</code></a> · <a href="#sidebar-pattern-depth">pattern-matching depth</a> · <a href="#sidebar-anyhow-vs-thiserror">error types with <code>thiserror</code></a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-match"><code>match</code></a> · <a href="#sidebar-pattern-depth">desen eşleme derinliği</a> · <a href="#sidebar-anyhow-vs-thiserror"><code>thiserror</code> ile hata türleri</a>.</p>
+
 <p class="lang-en"><a class="back-link" href="#ch15">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch15">⟵ ana yola dön</a></p>
 </details>
@@ -5671,6 +6017,9 @@ fn main() {
 
 <p class="lang-en"><strong>Common trap.</strong> Trying to debug <em>into</em> a macro at runtime — there's nothing there; it ran at compile time. To inspect what was generated, use <code>cargo expand</code>.</p>
 <p class="lang-tr"><strong>Sık yapılan tuzak.</strong> Çalışma zamanında bir makroya <em>girip</em> hata ayıklamaya çalışmak — orada hiçbir şey yok; o derleme zamanında çalıştı. Üretilen şeyi incelemek için <code>cargo expand</code> kullan.</p>
+
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-traits">traits &amp; <code>#[derive]</code></a> · <a href="#sidebar-anyhow-vs-thiserror"><code>thiserror</code> (derive-macro in practice)</a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-traits">trait'ler ve <code>#[derive]</code></a> · <a href="#sidebar-anyhow-vs-thiserror"><code>thiserror</code> (pratikte derive-makrosu)</a>.</p>
 
 <p class="lang-en"><a class="back-link" href="#ch15">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch15">⟵ ana yola dön</a></p>
@@ -5916,6 +6265,9 @@ Derleyici açıkça söylüyor: <code>?</code> <code>From</code> ister ve sen ve
 <p class="lang-en"><em>See also:</em> <a href="#sidebar-result"><code>Result</code> and <code>?</code></a>, <a href="#sidebar-macros">macros</a> (for <code>#[derive(thiserror::Error)]</code>, which writes these <code>From</code> impls for you).</p>
 <p class="lang-tr"><em>Ayrıca bak:</em> <a href="#sidebar-result"><code>Result</code> ve <code>?</code></a>, <a href="#sidebar-macros">makrolar</a> (<code>#[derive(thiserror::Error)]</code> bu <code>From</code> impl'lerini senin yerine yazar).</p>
 
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-traits">traits &amp; <code>#[derive]</code></a> · <a href="#sidebar-anyhow-vs-thiserror"><code>thiserror</code> vs <code>anyhow</code></a> · <a href="#sidebar-result"><code>Result</code> and the <code>?</code> operator</a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-traits">trait'ler ve <code>#[derive]</code></a> · <a href="#sidebar-anyhow-vs-thiserror"><code>thiserror</code> ile <code>anyhow</code></a> · <a href="#sidebar-result"><code>Result</code> ve <code>?</code> operatörü</a>.</p>
+
 <p class="lang-en"><a class="back-link" href="#ch15">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch15">⟵ ana yola dön</a></p>
 </details>
@@ -6024,6 +6376,9 @@ fn main() -&gt; Result&lt;()&gt; {
 
 <p class="lang-en"><em>See also:</em> <a href="#sidebar-result">Result / ?</a> · <a href="#sidebar-enums">enums with data</a>.</p>
 <p class="lang-tr"><em>Ayrıca bakınız:</em> <a href="#sidebar-result">Result / ?</a> · <a href="#sidebar-enums">veri taşıyan enum'lar</a>.</p>
+
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-result"><code>Result</code> &amp; <code>?</code></a> · <a href="#sidebar-from-into"><code>From</code> / <code>Into</code></a> · <a href="#sidebar-enums">enums</a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-result"><code>Result</code> ve <code>?</code></a> · <a href="#sidebar-from-into"><code>From</code> / <code>Into</code></a> · <a href="#sidebar-enums">enum'lar</a>.</p>
 
 <p class="lang-en"><a class="back-link" href="#ch15">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch15">⟵ ana yola dön</a></p>
@@ -6260,6 +6615,15 @@ self.recent = self.recent.iter().take(MAX_RECENT).cloned().collect();</code></pr
 <p class="lang-en"><strong>Two performance surprises.</strong> First, this style is <em>usually</em> as fast as a hand-written loop — the compiler inlines aggressively. Second, it's <em>often faster</em> than a loop written by someone who forgot to preallocate <code>Vec::with_capacity</code>, because <code>collect</code> hints at the expected size when the iterator knows (via <code>size_hint</code>).</p>
 <p class="lang-tr"><strong>İki performans sürprizi.</strong> Birincisi, bu stil <em>genellikle</em> el yazısı bir döngü kadar hızlıdır — derleyici agresifçe inline eder. İkincisi, <code>Vec::with_capacity</code> ile önceden alan ayırmayı unutan birinin yazdığı döngüden <em>çoğu zaman daha hızlıdır</em>, çünkü iteratör biliyorsa <code>collect</code>, beklenen boyutu (<code>size_hint</code> üzerinden) ipucu olarak verir.</p>
 
+<div class="error-decoder lang-en">
+  <code class="raw">error[E0382]: use of moved value: `iter` — value used here after move</code>
+  <p class="decoded"><strong>Decoded.</strong> Consuming adapters like <code>.collect()</code>, <code>.sum()</code>, and <code>.count()</code> <em>take</em> the iterator by value — once they're done, the iterator is gone. Trying to call another method on the same iterator afterwards is a use-after-move. Fix: either split into two fresh iterator chains (e.g., <code>v.iter().sum()</code> then <code>v.iter().count()</code>), or <code>.clone()</code> the iterator before the first consume if it's <code>Clone</code>. Also double-check you didn't mean <code>.iter()</code> (borrowing) where you wrote <code>.into_iter()</code> (consuming).</p>
+</div>
+<div class="error-decoder lang-tr">
+  <code class="raw">error[E0382]: use of moved value: `iter` — value used here after move</code>
+  <p class="decoded"><strong>Çözüldü.</strong> <code>.collect()</code>, <code>.sum()</code>, <code>.count()</code> gibi tüketen adaptörler iteratörü değeri olarak <em>alır</em> — işleri bitince iteratör gider. Sonrasında aynı iteratör üzerinde başka bir metot çağırmak, taşıma-sonrası kullanımdır. Çözüm: ya iki taze iteratör zincirine böl (<code>v.iter().sum()</code>, ardından <code>v.iter().count()</code>), ya da iteratör <code>Clone</code> ise ilk tüketimden önce <code>.clone()</code> et. Ayrıca <code>.into_iter()</code> (tüketen) yazdığın yerde aslında <code>.iter()</code> (ödünç alan) mı demek istediğini gözden geçir.</p>
+</div>
+
 <p class="lang-en"><strong>The adaptor vocabulary worth memorising.</strong></p>
 <p class="lang-tr"><strong>Ezberlenmeye değer adaptör sözlüğü.</strong></p>
 
@@ -6273,6 +6637,9 @@ self.recent = self.recent.iter().take(MAX_RECENT).cloned().collect();</code></pr
   <li><em>Birleştir:</em> <code>zip</code>, <code>chain</code>, <code>enumerate</code>.</li>
   <li><em>Tüket:</em> <code>collect</code>, <code>fold</code>, <code>sum</code>, <code>product</code>, <code>count</code>, <code>max</code>, <code>min</code>, <code>any</code>, <code>all</code>, <code>for_each</code>.</li>
 </ul>
+
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-closures">closures</a> · <a href="#sidebar-collections">collections (<code>Vec</code>, <code>HashMap</code>)</a> · <a href="#sidebar-generics">generics</a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-closures">closure'lar</a> · <a href="#sidebar-collections">koleksiyonlar (<code>Vec</code>, <code>HashMap</code>)</a> · <a href="#sidebar-generics">jenerikler</a>.</p>
 
 <p class="lang-en"><a class="back-link" href="#ch16">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch16">⟵ ana yola dön</a></p>
@@ -6317,6 +6684,9 @@ fn main() {
 
 <p class="lang-en"><strong>In fedit.</strong> We've quietly been using traits all along: <code>#[derive(Default)]</code> on <code>AppState</code> is <em>"please implement the <code>Default</code> trait,"</em> which <code>AppState::default()</code> then calls; <code>#[derive(Serialize, Deserialize)]</code> on <code>Persisted</code> is how it round-trips through JSON. Our custom <code>impl serde::Serialize for FeditError</code> in chapter 15 is a hand-written trait impl.</p>
 <p class="lang-tr"><strong>fedit'te.</strong> Aslında baştan beri trait'leri sessizce kullanıyoruz: <code>AppState</code> üzerindeki <code>#[derive(Default)]</code>, <em>"lütfen <code>Default</code> trait'ini uygula"</em> demek ve <code>AppState::default()</code> bunu çağırır; <code>Persisted</code> üzerindeki <code>#[derive(Serialize, Deserialize)]</code>, JSON üzerinden gidip gelmesini sağlar. 15. bölümde gördüğümüz özel <code>impl serde::Serialize for FeditError</code>, elle yazılmış bir trait impl'idir.</p>
+
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-from-into"><code>From</code> / <code>Into</code></a> · <a href="#sidebar-generics">generics</a> · <a href="#sidebar-closures">closures &amp; the <code>Fn</code> family</a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-from-into"><code>From</code> / <code>Into</code></a> · <a href="#sidebar-generics">jenerikler</a> · <a href="#sidebar-closures">closure'lar ve <code>Fn</code> ailesi</a>.</p>
 
 <p class="lang-en"><a class="back-link" href="#ch16">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch16">⟵ ana yola dön</a></p>
@@ -6412,6 +6782,9 @@ fn main() {
 <p class="lang-en"><strong>Common trap.</strong> Trying to capture <code>&amp;mut</code> twice — the borrow checker says no. The fix is usually either <code>Rc&lt;RefCell&lt;T&gt;&gt;</code> for single-thread shared mutation, or restructuring so only one closure mutates the value.</p>
 <p class="lang-tr"><strong>Sık yapılan tuzak.</strong> Aynı değeri iki kez <code>&amp;mut</code> yakalamaya çalışmak — ödünç denetleyicisi hayır der. Çözüm genelde ya tek-iş parçacıklı paylaşımlı değişim için <code>Rc&lt;RefCell&lt;T&gt;&gt;</code>, ya da değeri yalnızca tek bir closure'ın değiştirmesi için yeniden yapılandırmaktır.</p>
 
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-iter">iterators &amp; the pipeline style</a> · <a href="#sidebar-traits">traits (including <code>Fn</code> / <code>FnMut</code> / <code>FnOnce</code>)</a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-iter">iteratörler ve zincir stili</a> · <a href="#sidebar-traits">trait'ler (<code>Fn</code> / <code>FnMut</code> / <code>FnOnce</code> dahil)</a>.</p>
+
 <p class="lang-en"><a class="back-link" href="#ch16">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch16">⟵ ana yola dön</a></p>
 </details>
@@ -6471,6 +6844,9 @@ fn main() {
 
 <p class="lang-en"><strong>Common trap.</strong> Returning <code>impl Trait</code> from a function with <em>multiple</em> return paths that have <em>different</em> concrete types. The compiler refuses — <code>impl Trait</code> means "one specific type the caller doesn't need to name." For two genuine types use <code>Box&lt;dyn Trait&gt;</code>, which gives up the static dispatch in exchange for the flexibility.</p>
 <p class="lang-tr"><strong>Sık yapılan tuzak.</strong> Bir fonksiyondan <em>farklı</em> somut tipleri dönen <em>birden fazla</em> yolla <code>impl Trait</code> döndürmek. Derleyici reddeder — <code>impl Trait</code> "çağıranın adını söylemesine gerek olmayan tek belirli bir tip" demektir. Gerçekten iki tip varsa <code>Box&lt;dyn Trait&gt;</code> kullan; esneklik için statik dispatch'ten vazgeçer.</p>
+
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-traits">traits</a> · <a href="#sidebar-closures">closures &amp; <code>Fn</code>-family traits</a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-traits">trait'ler</a> · <a href="#sidebar-closures">closure'lar ve <code>Fn</code>-ailesi trait'leri</a>.</p>
 
 <p class="lang-en"><a class="back-link" href="#ch16">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch16">⟵ ana yola dön</a></p>
@@ -7221,6 +7597,9 @@ Neden? Daha küçük derleme (daha az bağımlılık derlenir), daha küçük bi
   <li><strong>Aynı ada sahip ve örtüşen cfg'li iki öğe</strong> çakışır. Önermeleri karşılıklı dışlayıcı yap (örn. <code>cfg(unix)</code> + <code>cfg(not(unix))</code>), örtüşen değil.</li>
 </ul>
 
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-testing">testing (<code>#[cfg(test)]</code>)</a> · <a href="#sidebar-doctests">doctests</a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-testing">test etme (<code>#[cfg(test)]</code>)</a> · <a href="#sidebar-doctests">doctest'ler</a>.</p>
+
 <p class="lang-en"><a class="back-link" href="#ch19">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch19">⟵ ana yola dön</a></p>
 
@@ -7469,6 +7848,9 @@ Bu, hiçbir uyarı vermeden derlenir. Çalışma zamanında tanımsız davranı�
 
 <p class="lang-en"><em>See also:</em> <a href="#sidebar-send-sync">Send &amp; Sync</a> — the two <code>unsafe</code> traits you most often meet without realising it, because the compiler auto-derives them almost everywhere.</p>
 <p class="lang-tr"><em>Ayrıca bkz.:</em> <a href="#sidebar-send-sync">Send &amp; Sync</a> — derleyici neredeyse her yerde otomatik türettiği için farkına varmadan en sık karşılaştığın iki <code>unsafe</code> trait.</p>
+
+<p class="see-also lang-en"><strong>See also.</strong> <a href="#sidebar-send-sync"><code>Send</code> / <code>Sync</code></a> · <a href="#sidebar-smart-ptrs">smart pointers</a>.</p>
+<p class="see-also lang-tr"><strong>Ayrıca bakınız.</strong> <a href="#sidebar-send-sync"><code>Send</code> / <code>Sync</code></a> · <a href="#sidebar-smart-ptrs">akıllı işaretçiler</a>.</p>
 
 <p class="lang-en"><a class="back-link" href="#ch20">⟵ back to the main track</a></p>
 <p class="lang-tr"><a class="back-link" href="#ch20">⟵ ana yola dön</a></p>
@@ -8686,6 +9068,1212 @@ Bu, hiçbir uyarı vermeden derlenir. Çalışma zamanında tanımsız davranı�
 </div>
 
 <a class="mark-done" data-ch="26"><span class="lang-en">Mark chapter 26 done</span><span class="lang-tr">Bölüm 26'yı tamamlandı olarak işaretle</span></a>
+</section>
+
+<section id="glossary" class="appendix">
+  <h2><span class="lang-en">Glossary</span><span class="lang-tr">Sözlük</span></h2>
+  <p class="tldr">
+    <span class="lang-en"><strong>TL;DR.</strong> Short definitions for every term you met. Click a term to jump to where it's explained in detail.</span>
+    <span class="lang-tr"><strong>Özet.</strong> Karşılaştığın her terim için kısa tanımlar. Ayrıntılı açıklamasına atlamak için terime tıkla.</span>
+  </p>
+
+  <div class="glossary-grid lang-en">
+    <dl>
+      <dt id="gloss-accelerator"><a href="#ch23">accelerator</a></dt>
+      <dd>A keyboard shortcut string like <code>CmdOrCtrl+S</code> attached to a menu item.</dd>
+
+      <dt id="gloss-allowlist"><a href="#ch20">allowlist</a></dt>
+      <dd>Legacy Tauri 1 term for what Tauri 2 now expresses as capabilities and permissions.</dd>
+
+      <dt id="gloss-anyhow"><a href="#sidebar-anyhow-vs-thiserror">anyhow</a></dt>
+      <dd>A crate providing <code>anyhow::Result</code>, a catch-all error type ideal for application code.</dd>
+
+      <dt id="gloss-apphandle"><a href="#ch19">AppHandle</a></dt>
+      <dd>A cloneable handle to the running Tauri app, used to emit events or access windows.</dd>
+
+      <dt id="gloss-arc"><a href="#sidebar-smart-ptrs">Arc</a></dt>
+      <dd>Atomically reference-counted pointer allowing shared ownership across threads.</dd>
+
+      <dt id="gloss-async"><a href="#sidebar-async-intro">async</a></dt>
+      <dd>Keyword marking a function that returns a <code>Future</code> instead of running immediately.</dd>
+
+      <dt id="gloss-await"><a href="#sidebar-async-intro">await</a></dt>
+      <dd>Suspends the current task until a <code>Future</code> produces its value.</dd>
+
+      <dt id="gloss-binary"><a href="#ch1">binary</a></dt>
+      <dd>A crate that compiles to an executable program, with a <code>main</code> function.</dd>
+
+      <dt id="gloss-borrow"><a href="#sidebar-borrow">borrow</a></dt>
+      <dd>Temporarily accessing a value through a reference without taking ownership.</dd>
+
+      <dt id="gloss-borrow-checker"><a href="#sidebar-borrow">borrow checker</a></dt>
+      <dd>The compiler pass that enforces Rust's aliasing and mutability rules at compile time.</dd>
+
+      <dt id="gloss-capability"><a href="#ch20">capability</a></dt>
+      <dd>A Tauri 2 JSON file that grants specific permissions to specific windows.</dd>
+
+      <dt id="gloss-cargo"><a href="#ch1">cargo</a></dt>
+      <dd>Rust's build tool and package manager, used for compiling, testing, and publishing.</dd>
+
+      <dt id="gloss-cfg"><a href="#sidebar-cfg-features">cfg</a></dt>
+      <dd>Attribute like <code>#[cfg(test)]</code> that compiles code only when a condition holds.</dd>
+
+      <dt id="gloss-channel"><a href="#sidebar-channels">channel</a></dt>
+      <dd>A typed pipe that sends messages from one thread or task to another.</dd>
+
+      <dt id="gloss-clone"><a href="#ch6">Clone</a></dt>
+      <dd>A trait providing an explicit <code>.clone()</code> method to duplicate a value.</dd>
+
+      <dt id="gloss-closure"><a href="#sidebar-closures">closure</a></dt>
+      <dd>An anonymous function like <code>|x| x + 1</code> that can capture variables from its scope.</dd>
+
+      <dt id="gloss-collect"><a href="#sidebar-iter">collect</a></dt>
+      <dd>Iterator method that gathers items into a collection such as <code>Vec</code> or <code>HashMap</code>.</dd>
+
+      <dt id="gloss-command"><a href="#ch19">tauri::command</a></dt>
+      <dd>Attribute marking a Rust function callable from JavaScript via <code>invoke</code>.</dd>
+
+      <dt id="gloss-copy"><a href="#ch6">Copy</a></dt>
+      <dd>A marker trait for types whose values are duplicated by a cheap memcpy on assignment.</dd>
+
+      <dt id="gloss-crate"><a href="#ch1">crate</a></dt>
+      <dd>The Rust unit of compilation: one library or binary, plus its dependencies.</dd>
+
+      <dt id="gloss-debug"><a href="#ch8">Debug</a></dt>
+      <dd>Trait producing developer-facing output via <code>{:?}</code> and <code>{:#?}</code>.</dd>
+
+      <dt id="gloss-default"><a href="#ch8">Default</a></dt>
+      <dd>Trait giving a type a sensible zero-argument <code>Default::default()</code> value.</dd>
+
+      <dt id="gloss-derive"><a href="#ch8">derive</a></dt>
+      <dd>Attribute like <code>#[derive(Debug, Clone)]</code> that auto-generates trait implementations.</dd>
+
+      <dt id="gloss-display"><a href="#ch8">Display</a></dt>
+      <dd>Trait producing user-facing output via <code>{}</code> in format strings.</dd>
+
+      <dt id="gloss-doctest"><a href="#sidebar-doctests">doctest</a></dt>
+      <dd>A runnable code example inside a <code>///</code> doc comment, verified by <code>cargo test</code>.</dd>
+
+      <dt id="gloss-drop"><a href="#ch5">Drop</a></dt>
+      <dd>Trait whose <code>drop</code> method runs automatically when a value goes out of scope.</dd>
+
+      <dt id="gloss-dyn"><a href="#sidebar-traits">dyn</a></dt>
+      <dd>Keyword for dynamic trait objects like <code>Box&lt;dyn Fn()&gt;</code>, dispatched via vtable.</dd>
+
+      <dt id="gloss-emit"><a href="#ch19">emit</a></dt>
+      <dd>Sends an event from Rust to JavaScript listeners on a window or app.</dd>
+
+      <dt id="gloss-enum"><a href="#sidebar-enums">enum</a></dt>
+      <dd>A type that is exactly one of several named variants, each possibly carrying data.</dd>
+
+      <dt id="gloss-expect"><a href="#ch11">expect</a></dt>
+      <dd>Like <code>unwrap</code> but panics with a custom message you provide.</dd>
+
+      <dt id="gloss-feature"><a href="#sidebar-cfg-features">feature flag</a></dt>
+      <dd>A named toggle in <code>Cargo.toml</code> that conditionally includes code or dependencies.</dd>
+
+      <dt id="gloss-filter"><a href="#sidebar-iter">filter</a></dt>
+      <dd>Iterator adapter that keeps only items for which a predicate returns <code>true</code>.</dd>
+
+      <dt id="gloss-fn-traits"><a href="#sidebar-closures">Fn / FnMut / FnOnce</a></dt>
+      <dd>Traits describing how a closure captures its environment: by ref, by mut ref, by value.</dd>
+
+      <dt id="gloss-fold"><a href="#sidebar-iter">fold</a></dt>
+      <dd>Iterator method that reduces a sequence to a single value using an accumulator.</dd>
+
+      <dt id="gloss-from"><a href="#sidebar-from-into">From</a></dt>
+      <dd>Trait for infallible conversions: <code>impl From&lt;A&gt; for B</code> gives <code>B::from(a)</code>.</dd>
+
+      <dt id="gloss-generics"><a href="#sidebar-generics">generics</a></dt>
+      <dd>Type parameters like <code>Vec&lt;T&gt;</code> that let code work over many types with zero cost.</dd>
+
+      <dt id="gloss-hashmap"><a href="#sidebar-collections">HashMap</a></dt>
+      <dd>Key-value collection with average O(1) lookup, from <code>std::collections</code>.</dd>
+
+      <dt id="gloss-if-let"><a href="#sidebar-match">if let</a></dt>
+      <dd>Compact pattern match that runs a block only when one specific pattern matches.</dd>
+
+      <dt id="gloss-immutable"><a href="#ch2">immutable</a></dt>
+      <dd>The default binding mode in Rust: the value behind <code>let x</code> cannot change.</dd>
+
+      <dt id="gloss-impl"><a href="#ch7">impl</a></dt>
+      <dd>Keyword introducing a block of methods or a trait implementation for a type.</dd>
+
+      <dt id="gloss-into"><a href="#sidebar-from-into">Into</a></dt>
+      <dd>Trait automatically derived from <code>From</code>, giving <code>a.into()</code> conversions.</dd>
+
+      <dt id="gloss-invoke"><a href="#ch19">invoke</a></dt>
+      <dd>JavaScript function that calls a <code>#[tauri::command]</code> and awaits its result.</dd>
+
+      <dt id="gloss-iter"><a href="#sidebar-iter">iter</a></dt>
+      <dd>Produces an iterator of references over a collection, without consuming it.</dd>
+
+      <dt id="gloss-lifetime"><a href="#sidebar-lifetimes">lifetime</a></dt>
+      <dd>A compile-time label like <code>'a</code> saying how long a reference stays valid.</dd>
+
+      <dt id="gloss-library"><a href="#ch1">library</a></dt>
+      <dd>A crate without a <code>main</code>, meant to be used by other crates.</dd>
+
+      <dt id="gloss-listen"><a href="#ch19">listen</a></dt>
+      <dd>Subscribes to a named event on a Tauri window, in Rust or JavaScript.</dd>
+
+      <dt id="gloss-macro"><a href="#sidebar-macros">macro</a></dt>
+      <dd>Code that writes code, invoked with a <code>!</code> such as <code>println!</code> or <code>vec!</code>.</dd>
+
+      <dt id="gloss-match"><a href="#sidebar-match">match</a></dt>
+      <dd>Exhaustive pattern-matching expression over enums, tuples, literals, and more.</dd>
+
+      <dt id="gloss-menu"><a href="#ch23">menu</a></dt>
+      <dd>A Tauri construct describing the application's menu bar and its items.</dd>
+
+      <dt id="gloss-module"><a href="#ch9">module</a></dt>
+      <dd>A <code>mod</code>-delimited namespace grouping related items inside a crate.</dd>
+
+      <dt id="gloss-mutable"><a href="#ch2">mutable</a></dt>
+      <dd>A binding declared with <code>let mut</code> whose value you are allowed to change.</dd>
+
+      <dt id="gloss-mutex"><a href="#sidebar-mutex">Mutex</a></dt>
+      <dd>A lock that gives one thread at a time exclusive access to the data inside.</dd>
+
+      <dt id="gloss-option"><a href="#ch10">Option&lt;T&gt;</a></dt>
+      <dd>Enum with variants <code>Some(T)</code> and <code>None</code>, replacing null pointers.</dd>
+
+      <dt id="gloss-ownership"><a href="#sidebar-ownership">ownership</a></dt>
+      <dd>Every value has exactly one owner; when the owner leaves scope, the value is dropped.</dd>
+
+      <dt id="gloss-panic"><a href="#ch11">panic</a></dt>
+      <dd>An unrecoverable error that unwinds the stack, usually triggered by a bug.</dd>
+
+      <dt id="gloss-pattern"><a href="#sidebar-pattern-depth">pattern</a></dt>
+      <dd>The left side of a <code>match</code> or <code>let</code> that destructures a value.</dd>
+
+      <dt id="gloss-plugin"><a href="#ch20">plugin</a></dt>
+      <dd>A reusable Tauri module exposing commands, permissions, and JS bindings.</dd>
+
+      <dt id="gloss-plugin-dialog"><a href="#ch21">plugin-dialog</a></dt>
+      <dd>Official Tauri plugin for native open, save, and message dialog windows.</dd>
+
+      <dt id="gloss-plugin-store"><a href="#ch24">plugin-store</a></dt>
+      <dd>Official Tauri plugin storing JSON key-value data that persists between runs.</dd>
+
+      <dt id="gloss-question-mark"><a href="#sidebar-result"><code>?</code> operator</a></dt>
+      <dd>Propagates errors: returns early on <code>Err</code>, unwraps on <code>Ok</code>.</dd>
+
+      <dt id="gloss-rc"><a href="#sidebar-smart-ptrs">Rc</a></dt>
+      <dd>Single-threaded reference-counted pointer for shared ownership.</dd>
+
+      <dt id="gloss-refcell"><a href="#ch13">RefCell</a></dt>
+      <dd>Provides interior mutability with borrow rules checked at runtime, not compile time.</dd>
+
+      <dt id="gloss-result"><a href="#sidebar-result">Result&lt;T, E&gt;</a></dt>
+      <dd>Enum with variants <code>Ok(T)</code> and <code>Err(E)</code>, Rust's standard error type.</dd>
+
+      <dt id="gloss-send"><a href="#sidebar-send-sync">Send</a></dt>
+      <dd>Marker trait for types that can be safely transferred to another thread.</dd>
+
+      <dt id="gloss-setup"><a href="#ch19">setup</a></dt>
+      <dd>A closure passed to the Tauri builder to initialize state when the app starts.</dd>
+
+      <dt id="gloss-shadowing"><a href="#ch2">shadowing</a></dt>
+      <dd>Declaring a new binding with the same name as an earlier one, hiding it.</dd>
+
+      <dt id="gloss-slice"><a href="#ch4">slice</a></dt>
+      <dd>A view <code>&amp;[T]</code> into a contiguous sequence, borrowed from an array or vec.</dd>
+
+      <dt id="gloss-smart-ptr"><a href="#sidebar-smart-ptrs">smart pointer</a></dt>
+      <dd>A type like <code>Box</code>, <code>Rc</code>, or <code>Arc</code> that owns data plus extra behaviour.</dd>
+
+      <dt id="gloss-state"><a href="#ch19">State</a></dt>
+      <dd>A Tauri wrapper giving commands shared access to app-wide data.</dd>
+
+      <dt id="gloss-string"><a href="#ch4">String vs &amp;str</a></dt>
+      <dd><code>String</code> owns a growable UTF-8 buffer; <code>&amp;str</code> borrows a slice of one.</dd>
+
+      <dt id="gloss-struct"><a href="#ch7">struct</a></dt>
+      <dd>A named record type bundling several fields under one name.</dd>
+
+      <dt id="gloss-submenu"><a href="#ch23">submenu</a></dt>
+      <dd>A nested menu that opens from a parent menu item.</dd>
+
+      <dt id="gloss-sync"><a href="#sidebar-send-sync">Sync</a></dt>
+      <dd>Marker trait for types whose <code>&amp;T</code> can be shared across threads safely.</dd>
+
+      <dt id="gloss-testing"><a href="#sidebar-testing">testing</a></dt>
+      <dd>Writing <code>#[test]</code> functions that <code>cargo test</code> compiles and runs.</dd>
+
+      <dt id="gloss-thiserror"><a href="#sidebar-anyhow-vs-thiserror">thiserror</a></dt>
+      <dd>A crate for deriving clean custom error enums, ideal for library code.</dd>
+
+      <dt id="gloss-trait"><a href="#sidebar-traits">trait</a></dt>
+      <dd>A named set of methods a type can implement, similar to an interface.</dd>
+
+      <dt id="gloss-tryfrom"><a href="#sidebar-from-into">TryFrom</a></dt>
+      <dd>Trait for fallible conversions, returning <code>Result&lt;B, E&gt;</code>.</dd>
+
+      <dt id="gloss-tuple"><a href="#ch2">tuple</a></dt>
+      <dd>A fixed-size anonymous record like <code>(i32, String)</code>, accessed by position.</dd>
+
+      <dt id="gloss-unsafe"><a href="#sidebar-unsafe-primer">unsafe</a></dt>
+      <dd>Keyword unlocking operations the compiler cannot verify, such as raw pointer deref.</dd>
+
+      <dt id="gloss-unwrap"><a href="#ch11">unwrap</a></dt>
+      <dd>Extracts the inner value of <code>Option</code> or <code>Result</code>, panicking on <code>None</code>/<code>Err</code>.</dd>
+
+      <dt id="gloss-vec"><a href="#ch4">Vec&lt;T&gt;</a></dt>
+      <dd>Heap-allocated growable array, Rust's everyday list type.</dd>
+
+      <dt id="gloss-webview"><a href="#ch18">WebView</a></dt>
+      <dd>The native HTML-rendering component that displays a Tauri window's UI.</dd>
+
+      <dt id="gloss-webview-window"><a href="#ch18">webview window</a></dt>
+      <dd>A native window that hosts exactly one <code>WebView</code>, created by Tauri.</dd>
+
+      <dt id="gloss-window"><a href="#ch18">window</a></dt>
+      <dd>An operating-system window managed by Tauri, identified by a label.</dd>
+    </dl>
+  </div>
+
+  <div class="glossary-grid lang-tr">
+    <dl>
+      <dt id="gloss-accelerator-tr"><a href="#ch23">kısayol (accelerator)</a></dt>
+      <dd>Menü öğesine bağlanan <code>CmdOrCtrl+S</code> gibi klavye kısayol dizesi.</dd>
+
+      <dt id="gloss-allowlist-tr"><a href="#ch20">allowlist</a></dt>
+      <dd>Tauri 1'deki izin listesi; Tauri 2'de yerini capability ve permission almıştır.</dd>
+
+      <dt id="gloss-anyhow-tr"><a href="#sidebar-anyhow-vs-thiserror">anyhow</a></dt>
+      <dd>Uygulama kodu için ideal, kapsayıcı <code>anyhow::Result</code> türünü sağlayan crate.</dd>
+
+      <dt id="gloss-apphandle-tr"><a href="#ch19">AppHandle</a></dt>
+      <dd>Çalışan Tauri uygulamasına klonlanabilir tutamaç; olay göndermek ve pencerelere erişmek için kullanılır.</dd>
+
+      <dt id="gloss-arc-tr"><a href="#sidebar-smart-ptrs">Arc</a></dt>
+      <dd>Atomik sayaçlı akıllı işaretçi; paylaşımlı sahipliği iş parçacıkları arasında güvenle sağlar.</dd>
+
+      <dt id="gloss-async-tr"><a href="#sidebar-async-intro">async</a></dt>
+      <dd>Fonksiyonu hemen çalıştırmak yerine bir <code>Future</code> döndürecek şekilde işaretleyen anahtar sözcük.</dd>
+
+      <dt id="gloss-await-tr"><a href="#sidebar-async-intro">await</a></dt>
+      <dd>Bir <code>Future</code> sonuç üretene kadar mevcut görevi askıya alır.</dd>
+
+      <dt id="gloss-binary-tr"><a href="#ch1">ikili (binary)</a></dt>
+      <dd><code>main</code> fonksiyonu içeren, çalıştırılabilir programa derlenen crate.</dd>
+
+      <dt id="gloss-borrow-tr"><a href="#sidebar-borrow">ödünç alma (borrow)</a></dt>
+      <dd>Sahipliği almadan, bir referans üzerinden değere geçici olarak erişmek.</dd>
+
+      <dt id="gloss-borrow-checker-tr"><a href="#sidebar-borrow">ödünç denetleyici</a></dt>
+      <dd>Rust'ın takma ad ve değiştirilebilirlik kurallarını derleme zamanında zorlayan derleyici aşaması.</dd>
+
+      <dt id="gloss-capability-tr"><a href="#ch20">capability (yetenek)</a></dt>
+      <dd>Belirli pencerelere belirli izinleri veren Tauri 2 JSON dosyası.</dd>
+
+      <dt id="gloss-cargo-tr"><a href="#ch1">cargo</a></dt>
+      <dd>Rust'ın paket yöneticisi ve derleme aracı; projeyi derler, test eder ve yayımlar.</dd>
+
+      <dt id="gloss-cfg-tr"><a href="#sidebar-cfg-features">cfg</a></dt>
+      <dd><code>#[cfg(test)]</code> gibi, kodu yalnızca bir koşul sağlandığında derleyen öznitelik.</dd>
+
+      <dt id="gloss-channel-tr"><a href="#sidebar-channels">kanal (channel)</a></dt>
+      <dd>Bir iş parçacığından veya görevden diğerine mesaj taşıyan türlü boru.</dd>
+
+      <dt id="gloss-clone-tr"><a href="#ch6">Clone</a></dt>
+      <dd>Değeri kopyalamak için açık bir <code>.clone()</code> metodu sağlayan trait.</dd>
+
+      <dt id="gloss-closure-tr"><a href="#sidebar-closures">closure (kapatma)</a></dt>
+      <dd>Kapsamındaki değişkenleri yakalayabilen, <code>|x| x + 1</code> gibi isimsiz fonksiyon.</dd>
+
+      <dt id="gloss-collect-tr"><a href="#sidebar-iter">collect</a></dt>
+      <dd>Iterator öğelerini <code>Vec</code> veya <code>HashMap</code> gibi bir koleksiyona toplayan metot.</dd>
+
+      <dt id="gloss-command-tr"><a href="#ch19">tauri::command</a></dt>
+      <dd>Bir Rust fonksiyonunu JavaScript tarafından <code>invoke</code> ile çağrılabilir yapan öznitelik.</dd>
+
+      <dt id="gloss-copy-tr"><a href="#ch6">Copy</a></dt>
+      <dd>Değerleri atama sırasında ucuz bir bellek kopyasıyla çoğaltılan türler için işaretçi trait.</dd>
+
+      <dt id="gloss-crate-tr"><a href="#ch1">crate</a></dt>
+      <dd>Rust'ın derleme birimi: bir kütüphane veya ikili, bağımlılıklarıyla birlikte.</dd>
+
+      <dt id="gloss-debug-tr"><a href="#ch8">Debug</a></dt>
+      <dd><code>{:?}</code> ve <code>{:#?}</code> ile geliştirici odaklı çıktı üreten trait.</dd>
+
+      <dt id="gloss-default-tr"><a href="#ch8">Default</a></dt>
+      <dd>Bir türe argümansız <code>Default::default()</code> değerini veren trait.</dd>
+
+      <dt id="gloss-derive-tr"><a href="#ch8">derive</a></dt>
+      <dd><code>#[derive(Debug, Clone)]</code> gibi, trait gerçeklemelerini otomatik üreten öznitelik.</dd>
+
+      <dt id="gloss-display-tr"><a href="#ch8">Display</a></dt>
+      <dd>Format dizelerinde <code>{}</code> ile kullanıcıya yönelik çıktı üreten trait.</dd>
+
+      <dt id="gloss-doctest-tr"><a href="#sidebar-doctests">doctest</a></dt>
+      <dd><code>///</code> dokümantasyon yorumu içindeki, <code>cargo test</code> ile doğrulanan çalıştırılabilir örnek.</dd>
+
+      <dt id="gloss-drop-tr"><a href="#ch5">Drop</a></dt>
+      <dd>Değer kapsam dışına çıkınca <code>drop</code> metodu otomatik çağrılan trait.</dd>
+
+      <dt id="gloss-dyn-tr"><a href="#sidebar-traits">dyn</a></dt>
+      <dd><code>Box&lt;dyn Fn()&gt;</code> gibi dinamik trait nesneleri için anahtar sözcük; vtable üzerinden dağıtılır.</dd>
+
+      <dt id="gloss-emit-tr"><a href="#ch19">emit</a></dt>
+      <dd>Rust tarafından JavaScript dinleyicilerine bir pencere veya uygulama üzerinden olay gönderir.</dd>
+
+      <dt id="gloss-enum-tr"><a href="#sidebar-enums">enum</a></dt>
+      <dd>Birden çok adlandırılmış varyanttan tam olarak biri olan, her biri veri taşıyabilen tür.</dd>
+
+      <dt id="gloss-expect-tr"><a href="#ch11">expect</a></dt>
+      <dd><code>unwrap</code>'a benzer ama verdiğin özel mesajla panik yapar.</dd>
+
+      <dt id="gloss-feature-tr"><a href="#sidebar-cfg-features">feature flag (özellik bayrağı)</a></dt>
+      <dd><code>Cargo.toml</code>'da adlandırılmış anahtar; kodu veya bağımlılıkları koşullu olarak dahil eder.</dd>
+
+      <dt id="gloss-filter-tr"><a href="#sidebar-iter">filter</a></dt>
+      <dd>Yalnızca yüklemi <code>true</code> dönen öğeleri tutan iterator uyarlayıcı.</dd>
+
+      <dt id="gloss-fn-traits-tr"><a href="#sidebar-closures">Fn / FnMut / FnOnce</a></dt>
+      <dd>Bir closure'un ortamını nasıl yakaladığını açıklayan üç trait: referansla, değiştirilebilir referansla, değer olarak.</dd>
+
+      <dt id="gloss-fold-tr"><a href="#sidebar-iter">fold</a></dt>
+      <dd>Bir diziyi biriktirici kullanarak tek bir değere indirgeyen iterator metodu.</dd>
+
+      <dt id="gloss-from-tr"><a href="#sidebar-from-into">From</a></dt>
+      <dd>Hatasız dönüşümler için trait: <code>impl From&lt;A&gt; for B</code>, <code>B::from(a)</code>'yı verir.</dd>
+
+      <dt id="gloss-generics-tr"><a href="#sidebar-generics">generics (jenerikler)</a></dt>
+      <dd><code>Vec&lt;T&gt;</code> gibi tür parametreleri; kodun maliyetsiz biçimde birçok tür için çalışmasını sağlar.</dd>
+
+      <dt id="gloss-hashmap-tr"><a href="#sidebar-collections">HashMap</a></dt>
+      <dd>Ortalama O(1) aramalı anahtar-değer koleksiyonu; <code>std::collections</code> içinde.</dd>
+
+      <dt id="gloss-if-let-tr"><a href="#sidebar-match">if let</a></dt>
+      <dd>Yalnızca tek bir desen eşleştiğinde blok çalıştıran kompakt desen eşlemesi.</dd>
+
+      <dt id="gloss-immutable-tr"><a href="#ch2">değişmez (immutable)</a></dt>
+      <dd>Rust'ta varsayılan bağlama modu: <code>let x</code>'in ardındaki değer değiştirilemez.</dd>
+
+      <dt id="gloss-impl-tr"><a href="#ch7">impl</a></dt>
+      <dd>Bir tür için metot bloğu veya trait gerçeklemesi başlatan anahtar sözcük.</dd>
+
+      <dt id="gloss-into-tr"><a href="#sidebar-from-into">Into</a></dt>
+      <dd><code>From</code>'dan otomatik türetilen, <code>a.into()</code> dönüşümleri sağlayan trait.</dd>
+
+      <dt id="gloss-invoke-tr"><a href="#ch19">invoke</a></dt>
+      <dd>Bir <code>#[tauri::command]</code>'ı çağırıp sonucunu bekleyen JavaScript fonksiyonu.</dd>
+
+      <dt id="gloss-iter-tr"><a href="#sidebar-iter">iter</a></dt>
+      <dd>Koleksiyonu tüketmeden, referanslardan oluşan bir iterator üretir.</dd>
+
+      <dt id="gloss-lifetime-tr"><a href="#sidebar-lifetimes">yaşam süresi (lifetime)</a></dt>
+      <dd>Bir referansın ne kadar geçerli kalacağını belirten <code>'a</code> gibi derleme zamanı etiketi.</dd>
+
+      <dt id="gloss-library-tr"><a href="#ch1">kütüphane (library)</a></dt>
+      <dd><code>main</code> içermeyen, başka crate'ler tarafından kullanılmak için yazılmış crate.</dd>
+
+      <dt id="gloss-listen-tr"><a href="#ch19">listen</a></dt>
+      <dd>Rust veya JavaScript'te, bir Tauri penceresinde adlandırılmış bir olaya abone olur.</dd>
+
+      <dt id="gloss-macro-tr"><a href="#sidebar-macros">makro (macro)</a></dt>
+      <dd>Kod yazan kod; <code>println!</code> veya <code>vec!</code> gibi <code>!</code> ile çağrılır.</dd>
+
+      <dt id="gloss-match-tr"><a href="#sidebar-match">match</a></dt>
+      <dd>Enum, tuple, sabit ve daha fazlası üzerinde tüm durumları kapsayan desen eşleme ifadesi.</dd>
+
+      <dt id="gloss-menu-tr"><a href="#ch23">menu</a></dt>
+      <dd>Uygulamanın menü çubuğunu ve öğelerini tanımlayan Tauri yapısı.</dd>
+
+      <dt id="gloss-module-tr"><a href="#ch9">modül (module)</a></dt>
+      <dd>Bir crate içinde ilgili öğeleri gruplayan, <code>mod</code> ile sınırlanmış ad alanı.</dd>
+
+      <dt id="gloss-mutable-tr"><a href="#ch2">değiştirilebilir (mutable)</a></dt>
+      <dd><code>let mut</code> ile tanımlanan, değeri değiştirilmesine izin verilen bağlama.</dd>
+
+      <dt id="gloss-mutex-tr"><a href="#sidebar-mutex">Mutex</a></dt>
+      <dd>İçindeki veriye aynı anda yalnızca bir iş parçacığının erişmesini sağlayan kilit.</dd>
+
+      <dt id="gloss-option-tr"><a href="#ch10">Option&lt;T&gt;</a></dt>
+      <dd><code>Some(T)</code> ve <code>None</code> varyantlarına sahip, null işaretçilerin yerini alan enum.</dd>
+
+      <dt id="gloss-ownership-tr"><a href="#sidebar-ownership">sahiplik (ownership)</a></dt>
+      <dd>Her değerin tek bir sahibi vardır; sahip kapsam dışına çıkınca değer bırakılır.</dd>
+
+      <dt id="gloss-panic-tr"><a href="#ch11">panik (panic)</a></dt>
+      <dd>Yığını çözen, genellikle bir hatadan kaynaklanan kurtarılamaz hata durumu.</dd>
+
+      <dt id="gloss-pattern-tr"><a href="#sidebar-pattern-depth">desen (pattern)</a></dt>
+      <dd>Değeri parçalarına ayıran, <code>match</code> veya <code>let</code>'in sol tarafındaki ifade.</dd>
+
+      <dt id="gloss-plugin-tr"><a href="#ch20">plugin (eklenti)</a></dt>
+      <dd>Komutlar, izinler ve JS bağlamaları sunan, yeniden kullanılabilir Tauri modülü.</dd>
+
+      <dt id="gloss-plugin-dialog-tr"><a href="#ch21">plugin-dialog</a></dt>
+      <dd>Yerli aç/kaydet ve mesaj iletişim pencereleri için resmi Tauri eklentisi.</dd>
+
+      <dt id="gloss-plugin-store-tr"><a href="#ch24">plugin-store</a></dt>
+      <dd>Çalıştırmalar arasında JSON anahtar-değer verisini saklayan resmi Tauri eklentisi.</dd>
+
+      <dt id="gloss-question-mark-tr"><a href="#sidebar-result"><code>?</code> operatörü</a></dt>
+      <dd>Hataları yayar: <code>Err</code>'de erken döner, <code>Ok</code>'ta iç değeri çıkarır.</dd>
+
+      <dt id="gloss-rc-tr"><a href="#sidebar-smart-ptrs">Rc</a></dt>
+      <dd>Tek iş parçacıklı, paylaşımlı sahiplik için sayaçlı akıllı işaretçi.</dd>
+
+      <dt id="gloss-refcell-tr"><a href="#ch13">RefCell</a></dt>
+      <dd>İç değiştirilebilirlik sağlar; ödünç kurallarını derleme zamanı yerine çalışma zamanında denetler.</dd>
+
+      <dt id="gloss-result-tr"><a href="#sidebar-result">Result&lt;T, E&gt;</a></dt>
+      <dd><code>Ok(T)</code> ve <code>Err(E)</code> varyantlı, Rust'ın standart hata türü.</dd>
+
+      <dt id="gloss-send-tr"><a href="#sidebar-send-sync">Send</a></dt>
+      <dd>Başka bir iş parçacığına güvenle taşınabilen türler için işaretçi trait.</dd>
+
+      <dt id="gloss-setup-tr"><a href="#ch19">setup</a></dt>
+      <dd>Uygulama başlatılırken durumu hazırlamak için Tauri builder'a verilen closure.</dd>
+
+      <dt id="gloss-shadowing-tr"><a href="#ch2">gölgeleme (shadowing)</a></dt>
+      <dd>Aynı ada sahip yeni bir bağlama oluşturarak öncekini gizlemek.</dd>
+
+      <dt id="gloss-slice-tr"><a href="#ch4">dilim (slice)</a></dt>
+      <dd>Bir dizi veya <code>Vec</code>'den ödünç alınan, bitişik diziye bakan <code>&amp;[T]</code> görünümü.</dd>
+
+      <dt id="gloss-smart-ptr-tr"><a href="#sidebar-smart-ptrs">akıllı işaretçi</a></dt>
+      <dd>Veriyi sahiplenip ek davranış ekleyen <code>Box</code>, <code>Rc</code> veya <code>Arc</code> gibi tür.</dd>
+
+      <dt id="gloss-state-tr"><a href="#ch19">State</a></dt>
+      <dd>Komutlara uygulama genelinde paylaşılan veriye erişim veren Tauri sarmalayıcısı.</dd>
+
+      <dt id="gloss-string-tr"><a href="#ch4">String ve &amp;str</a></dt>
+      <dd><code>String</code> büyüyen UTF-8 tamponuna sahiptir; <code>&amp;str</code> ise bunun bir dilimini ödünç alır.</dd>
+
+      <dt id="gloss-struct-tr"><a href="#ch7">struct (yapı)</a></dt>
+      <dd>Birden çok alanı tek bir ad altında toplayan, adlandırılmış kayıt türü.</dd>
+
+      <dt id="gloss-submenu-tr"><a href="#ch23">alt menü (submenu)</a></dt>
+      <dd>Üst menü öğesinden açılan iç içe menü.</dd>
+
+      <dt id="gloss-sync-tr"><a href="#sidebar-send-sync">Sync</a></dt>
+      <dd><code>&amp;T</code>'si iş parçacıkları arasında güvenle paylaşılabilen türler için işaretçi trait.</dd>
+
+      <dt id="gloss-testing-tr"><a href="#sidebar-testing">test etme</a></dt>
+      <dd><code>#[test]</code> fonksiyonları yazmak; <code>cargo test</code> bunları derler ve çalıştırır.</dd>
+
+      <dt id="gloss-thiserror-tr"><a href="#sidebar-anyhow-vs-thiserror">thiserror</a></dt>
+      <dd>Temiz özel hata enum'ları türetmek için kütüphane kodunda ideal crate.</dd>
+
+      <dt id="gloss-trait-tr"><a href="#sidebar-traits">trait</a></dt>
+      <dd>Bir türün gerçekleyebileceği, arayüze benzer adlandırılmış metot kümesi.</dd>
+
+      <dt id="gloss-tryfrom-tr"><a href="#sidebar-from-into">TryFrom</a></dt>
+      <dd>Başarısız olabilecek dönüşümler için trait; <code>Result&lt;B, E&gt;</code> döndürür.</dd>
+
+      <dt id="gloss-tuple-tr"><a href="#ch2">tuple (çoklu)</a></dt>
+      <dd>Konuma göre erişilen, <code>(i32, String)</code> gibi sabit boyutlu isimsiz kayıt.</dd>
+
+      <dt id="gloss-unsafe-tr"><a href="#sidebar-unsafe-primer">unsafe</a></dt>
+      <dd>Ham işaretçi dereferanslama gibi derleyicinin doğrulayamadığı işlemleri açan anahtar sözcük.</dd>
+
+      <dt id="gloss-unwrap-tr"><a href="#ch11">unwrap</a></dt>
+      <dd><code>Option</code> veya <code>Result</code>'ın iç değerini çıkarır; <code>None</code>/<code>Err</code> olursa panik yapar.</dd>
+
+      <dt id="gloss-vec-tr"><a href="#ch4">Vec&lt;T&gt;</a></dt>
+      <dd>Öbek üzerinde büyüyebilen dizi; Rust'ın günlük liste türü.</dd>
+
+      <dt id="gloss-webview-tr"><a href="#ch18">WebView</a></dt>
+      <dd>Bir Tauri penceresinin arayüzünü gösteren yerli HTML render bileşeni.</dd>
+
+      <dt id="gloss-webview-window-tr"><a href="#ch18">webview penceresi</a></dt>
+      <dd>Tauri tarafından oluşturulan, tam olarak bir <code>WebView</code> barındıran yerli pencere.</dd>
+
+      <dt id="gloss-window-tr"><a href="#ch18">pencere (window)</a></dt>
+      <dd>Tauri tarafından etikete göre yönetilen işletim sistemi penceresi.</dd>
+    </dl>
+  </div>
+</section>
+
+<section id="troubleshooting" class="appendix">
+  <h2><span class="lang-en">Troubleshooting</span><span class="lang-tr">Sorun giderme</span></h2>
+  <p class="tldr">
+    <span class="lang-en"><strong>TL;DR.</strong> When something breaks, read the first error (not the last), match its shape below, and apply the fix. Most problems are ownership, ACL, or missing system dependencies.</span>
+    <span class="lang-tr"><strong>Ozet.</strong> Bir sey bozuldugunda son degil ilk hatayi oku, sekline gore asagidan eslestir ve onerilen duzeltmeyi uygula. Sorunlarin cogu <code>ownership</code>, ACL ya da eksik sistem bagimliliklari yuzunden olur.</span>
+  </p>
+
+  <div class="troubleshoot lang-en">
+    <h3>Rust compiler errors</h3>
+
+    <details class="symptom">
+      <summary><code>error[E0382]: borrow of moved value</code></summary>
+      <p><strong>Cause.</strong> You moved a value (passed it by value, or returned it) and then tried to use it again.</p>
+      <p><strong>Fix.</strong> Clone (<code>.clone()</code>) before the first use, borrow (<code>&amp;x</code>) instead of moving, or restructure so the second use happens before the move.</p>
+    </details>
+
+    <details class="symptom">
+      <summary><code>error[E0502]: cannot borrow ... as mutable because it is also borrowed as immutable</code></summary>
+      <p><strong>Cause.</strong> Two live references exist at the same time and one of them wants to mutate. The borrow checker forbids this.</p>
+      <p><strong>Fix.</strong> End the immutable borrow first (drop it, put it in a smaller scope with <code>{ ... }</code>), or collect what you need into an owned value before mutating.</p>
+    </details>
+
+    <details class="symptom">
+      <summary><code>cannot move out of borrowed content</code></summary>
+      <p><strong>Cause.</strong> You tried to take ownership of something you only have a reference to (for example destructuring from behind <code>&amp;</code>).</p>
+      <p><strong>Fix.</strong> Call <code>.clone()</code> or <code>.to_owned()</code>, or change the binding to match by reference (<code>ref</code> / <code>&amp;</code> in the pattern).</p>
+    </details>
+
+    <details class="symptom">
+      <summary><code>mismatched types: expected &amp;str, found String</code> (or the reverse)</summary>
+      <p><strong>Cause.</strong> Rust will not silently convert between owned <code>String</code> and borrowed <code>&amp;str</code>.</p>
+      <p><strong>Fix.</strong> Pass <code>&amp;my_string</code> to get a <code>&amp;str</code>, or call <code>.to_string()</code> / <code>String::from(...)</code> to get an owned <code>String</code>.</p>
+    </details>
+
+    <details class="symptom">
+      <summary><code>future cannot be sent between threads safely</code></summary>
+      <p><strong>Cause.</strong> An <code>async</code> block captured something that is not <code>Send</code> (often an <code>Rc</code>, a <code>MutexGuard</code>, or a raw pointer) across an <code>.await</code>.</p>
+      <p><strong>Fix.</strong> Drop the guard before <code>.await</code> (end its scope), swap <code>Rc</code> for <code>Arc</code>, or move the non-<code>Send</code> work into a synchronous block.</p>
+    </details>
+
+    <details class="symptom">
+      <summary><code>mismatched types: expected fn pointer, found fn item</code></summary>
+      <p><strong>Cause.</strong> Each function has its own zero-sized type; it coerces to a <code>fn</code> pointer only in specific positions, and generic functions confuse the coercion.</p>
+      <p><strong>Fix.</strong> Add an explicit cast like <code>my_fn as fn(_) -&gt; _</code>, or wrap it in a closure: <code>|x| my_fn(x)</code>.</p>
+    </details>
+
+    <details class="symptom">
+      <summary><code>no method named 'unwrap' found for enum Option&lt;&amp;T&gt;</code></summary>
+      <p><strong>Cause.</strong> You called <code>.as_ref()</code> (or similar) before <code>.unwrap()</code>, so you have an <code>Option&lt;&amp;T&gt;</code>, and <code>T</code> lacks the method you wanted on the inner value.</p>
+      <p><strong>Fix.</strong> Flip the order (<code>opt.unwrap().as_ref()</code>), or use <code>.copied()</code> / <code>.cloned()</code> to turn <code>Option&lt;&amp;T&gt;</code> into <code>Option&lt;T&gt;</code>.</p>
+    </details>
+
+    <details class="symptom">
+      <summary><code>cannot find macro 'println' in this scope</code></summary>
+      <p><strong>Cause.</strong> You are in a <code>no_std</code> crate (or a build script context) where the <code>std</code> prelude is not loaded.</p>
+      <p><strong>Fix.</strong> Add <code>extern crate std;</code>, enable the <code>std</code> feature of the crate, or use a <code>no_std</code>-friendly alternative like the <code>log</code> crate.</p>
+    </details>
+
+    <h3>Tauri runtime &amp; build</h3>
+
+    <details class="symptom">
+      <summary><code>Command '...' not allowed by ACL</code></summary>
+      <p><strong>Cause.</strong> Tauri 2 gates every command behind a capability. The frontend tried to invoke a command that is not listed.</p>
+      <p><strong>Fix.</strong> Add the command to <code>src-tauri/capabilities/default.json</code> under <code>permissions</code> (for example <code>"fedit:allow-save-file"</code>), then restart <code>cargo tauri dev</code>.</p>
+    </details>
+
+    <details class="symptom">
+      <summary>Window opens, then closes instantly</summary>
+      <p><strong>Cause.</strong> The system webview is missing. On Windows that is WebView2, on Linux it is <code>webkit2gtk-4.1</code>.</p>
+      <p><strong>Fix.</strong> Install the WebView2 runtime on Windows, or <code>apt install libwebkit2gtk-4.1-dev</code> (and <code>libjavascriptcoregtk-4.1</code>) on Debian/Ubuntu.</p>
+    </details>
+
+    <details class="symptom">
+      <summary><code>cargo tauri dev</code> hangs on first run</summary>
+      <p><strong>Cause.</strong> Tauri is waiting for the frontend dev server URL to respond, but Vite/Next is still booting (or downloading deps).</p>
+      <p><strong>Fix.</strong> Run the frontend once by hand (<code>npm run dev</code>) to warm caches, then raise <code>build.devUrl</code> readiness by increasing <code>beforeDevCommand</code>'s timeout in <code>tauri.conf.json</code>.</p>
+    </details>
+
+    <details class="symptom">
+      <summary><code>plugin-store v1 / v2 mismatch</code></summary>
+      <p><strong>Cause.</strong> The Rust crate <code>tauri-plugin-store</code> and its JS counterpart <code>@tauri-apps/plugin-store</code> are on different majors.</p>
+      <p><strong>Fix.</strong> Pin both to the same major (both <code>2.x</code> for Tauri 2). Re-run <code>cargo update -p tauri-plugin-store</code> and <code>npm i @tauri-apps/plugin-store@^2</code>.</p>
+    </details>
+
+    <details class="symptom">
+      <summary>IPC call returns <code>null</code> when you expected a value</summary>
+      <p><strong>Cause.</strong> Your command returned <code>()</code> or an un-serializable type, which serde turns into <code>null</code> on the JS side.</p>
+      <p><strong>Fix.</strong> Return <code>Result&lt;T, String&gt;</code> with a real <code>T</code> that implements <code>Serialize</code>, and <code>await</code> it as <code>invoke&lt;T&gt;(...)</code> in TypeScript.</p>
+    </details>
+
+    <details class="symptom">
+      <summary><code>window.__TAURI__ is undefined</code> in the devtools console</summary>
+      <p><strong>Cause.</strong> Either <code>withGlobalTauri</code> is not set, or your script ran before Tauri injected the bridge.</p>
+      <p><strong>Fix.</strong> Set <code>"withGlobalTauri": true</code> under <code>app</code> in <code>tauri.conf.json</code>, or import from <code>@tauri-apps/api</code> directly and wait for <code>DOMContentLoaded</code> before calling <code>invoke</code>.</p>
+    </details>
+
+    <h3>Platform-specific</h3>
+
+    <details class="symptom">
+      <summary>macOS: <code>code signing not configured</code> on <code>cargo tauri build</code></summary>
+      <p><strong>Cause.</strong> Release builds on macOS expect a signing identity; without one, bundling fails or produces an unnotarized app.</p>
+      <p><strong>Fix.</strong> Set up a Developer ID certificate in Keychain, or pass <code>--config bundle.macOS.signingIdentity="-"</code> for a local ad-hoc signature during development.</p>
+    </details>
+
+    <details class="symptom">
+      <summary>Linux: <code>GLIBCXX_3.4.XX not found</code> on older distros</summary>
+      <p><strong>Cause.</strong> You built against a newer <code>libstdc++</code> than the target system ships.</p>
+      <p><strong>Fix.</strong> Build on the oldest distro you want to support (for example in an Ubuntu 22.04 Docker image), or ship an AppImage / Flatpak that bundles its own runtime.</p>
+    </details>
+
+    <details class="symptom">
+      <summary>Windows: <code>MSVC toolchain missing</code></summary>
+      <p><strong>Cause.</strong> Rust on Windows needs the Microsoft linker, which comes with Visual Studio Build Tools.</p>
+      <p><strong>Fix.</strong> Install "Visual Studio Build Tools" with the "Desktop development with C++" workload, then restart your shell so <code>link.exe</code> is on <code>PATH</code>.</p>
+    </details>
+
+    <details class="symptom">
+      <summary>All platforms: Node version mismatch</summary>
+      <p><strong>Cause.</strong> The frontend tooling (Vite, Tauri CLI wrappers) pins a Node major and fails on older or newer ones with cryptic ESM errors.</p>
+      <p><strong>Fix.</strong> Use the version in <code>.nvmrc</code> via <code>nvm use</code> (or <code>fnm use</code>, <code>volta</code>). Re-run <code>npm ci</code> after switching.</p>
+    </details>
+  </div>
+
+  <div class="troubleshoot lang-tr">
+    <h3>Rust derleyici hatalari</h3>
+
+    <details class="symptom">
+      <summary><code>error[E0382]: borrow of moved value</code></summary>
+      <p><strong>Sebep.</strong> Bir degeri tasidin (<code>move</code> ettin) ve sonra tekrar kullanmaya calistin. Deger artik baska bir yerde.</p>
+      <p><strong>Cozum.</strong> Ilk kullanimdan once <code>.clone()</code> cagir, tasimak yerine <code>&amp;x</code> ile odunc ver (<code>borrow</code>), ya da kodu ikinci kullanim tasimadan once olacak sekilde yeniden duzenle.</p>
+    </details>
+
+    <details class="symptom">
+      <summary><code>error[E0502]: cannot borrow ... as mutable because it is also borrowed as immutable</code></summary>
+      <p><strong>Sebep.</strong> Ayni anda iki canli referans var ve biri degistirmek istiyor. <code>borrow checker</code> buna izin vermez.</p>
+      <p><strong>Cozum.</strong> Once degismez <code>borrow</code>'u bitir (kapsamini <code>{ ... }</code> ile daralt), ya da ihtiyacin olan veriyi degistirmeden once kendi degiskenine kopyala.</p>
+    </details>
+
+    <details class="symptom">
+      <summary><code>cannot move out of borrowed content</code></summary>
+      <p><strong>Sebep.</strong> Sadece referansina sahip oldugun bir seyin sahipligini (<code>ownership</code>) almaya calistin; ornegin <code>&amp;</code> arkasindan <code>destructure</code> ettin.</p>
+      <p><strong>Cozum.</strong> <code>.clone()</code> ya da <code>.to_owned()</code> kullan, veya pattern'i <code>ref</code> / <code>&amp;</code> ile referansa gore eslestir.</p>
+    </details>
+
+    <details class="symptom">
+      <summary><code>mismatched types: expected &amp;str, found String</code> (veya tersi)</summary>
+      <p><strong>Sebep.</strong> Rust sahipli <code>String</code> ile odunc <code>&amp;str</code> arasinda sessizce donusum yapmaz.</p>
+      <p><strong>Cozum.</strong> <code>&amp;str</code> istiyorsan <code>&amp;my_string</code> gonder; <code>String</code> istiyorsan <code>.to_string()</code> ya da <code>String::from(...)</code> cagir.</p>
+    </details>
+
+    <details class="symptom">
+      <summary><code>future cannot be sent between threads safely</code></summary>
+      <p><strong>Sebep.</strong> Bir <code>async</code> blok, <code>.await</code> uzerinden <code>Send</code> olmayan bir sey yakaladi (genelde <code>Rc</code>, <code>MutexGuard</code> veya ham isaretci).</p>
+      <p><strong>Cozum.</strong> <code>.await</code>'ten once <code>guard</code>'i dusur (kapsamini bitir), <code>Rc</code> yerine <code>Arc</code> kullan, ya da <code>Send</code> olmayan isi senkron bir bloga tasi.</p>
+    </details>
+
+    <details class="symptom">
+      <summary><code>mismatched types: expected fn pointer, found fn item</code></summary>
+      <p><strong>Sebep.</strong> Her fonksiyonun kendine ozgu sifir boyutlu bir tipi vardir; <code>fn</code> isaretcisine sadece belirli yerlerde otomatik donusur ve generic fonksiyonlar bu donusumu bozar.</p>
+      <p><strong>Cozum.</strong> Acik cast ekle: <code>my_fn as fn(_) -&gt; _</code>, ya da bir closure'a sar: <code>|x| my_fn(x)</code>.</p>
+    </details>
+
+    <details class="symptom">
+      <summary><code>no method named 'unwrap' found for enum Option&lt;&amp;T&gt;</code></summary>
+      <p><strong>Sebep.</strong> <code>.unwrap()</code>'tan once <code>.as_ref()</code> cagirdin; elinde <code>Option&lt;&amp;T&gt;</code> var ve icteki referans istedigin metodu sunmuyor.</p>
+      <p><strong>Cozum.</strong> Sirayi degistir (<code>opt.unwrap().as_ref()</code>), ya da <code>Option&lt;&amp;T&gt;</code>'yi <code>Option&lt;T&gt;</code>'ye cevirmek icin <code>.copied()</code> / <code>.cloned()</code> kullan.</p>
+    </details>
+
+    <details class="symptom">
+      <summary><code>cannot find macro 'println' in this scope</code></summary>
+      <p><strong>Sebep.</strong> <code>no_std</code> bir crate'tesin (ya da build script baglami) ve <code>std</code> prelude yuklu degil.</p>
+      <p><strong>Cozum.</strong> <code>extern crate std;</code> ekle, crate'in <code>std</code> ozelligini ac, ya da <code>log</code> crate'i gibi <code>no_std</code> uyumlu bir alternatife gec.</p>
+    </details>
+
+    <h3>Tauri calisma zamani ve derleme</h3>
+
+    <details class="symptom">
+      <summary><code>Command '...' not allowed by ACL</code></summary>
+      <p><strong>Sebep.</strong> Tauri 2 her komutu bir yetenek (<code>capability</code>) arkasina koyar. Frontend, listede olmayan bir komutu cagirdi.</p>
+      <p><strong>Cozum.</strong> <code>src-tauri/capabilities/default.json</code> icindeki <code>permissions</code> dizisine komutu ekle (orn. <code>"fedit:allow-save-file"</code>), sonra <code>cargo tauri dev</code>'i yeniden baslat.</p>
+    </details>
+
+    <details class="symptom">
+      <summary>Pencere aciliyor ve hemen kapaniyor</summary>
+      <p><strong>Sebep.</strong> Sistem webview'i eksik. Windows'ta WebView2, Linux'ta <code>webkit2gtk-4.1</code>.</p>
+      <p><strong>Cozum.</strong> Windows icin WebView2 runtime kur; Debian/Ubuntu icin <code>apt install libwebkit2gtk-4.1-dev</code> (ve <code>libjavascriptcoregtk-4.1</code>) calistir.</p>
+    </details>
+
+    <details class="symptom">
+      <summary><code>cargo tauri dev</code> ilk calistirmada takiliyor</summary>
+      <p><strong>Sebep.</strong> Tauri frontend dev server'inin URL'sinin cevap vermesini bekliyor, ama Vite/Next hala aciliyor (ya da bagimlilik indiriyor).</p>
+      <p><strong>Cozum.</strong> Frontend'i bir kez elle calistir (<code>npm run dev</code>) ve onbelleklemesini sagla; sonra <code>tauri.conf.json</code> icindeki <code>beforeDevCommand</code> timeout degerini arttir.</p>
+    </details>
+
+    <details class="symptom">
+      <summary><code>plugin-store v1 / v2 mismatch</code></summary>
+      <p><strong>Sebep.</strong> Rust tarafindaki <code>tauri-plugin-store</code> ile JS tarafindaki <code>@tauri-apps/plugin-store</code> farkli majorlerde.</p>
+      <p><strong>Cozum.</strong> Ikisini de ayni major'a sabitle (Tauri 2 icin <code>2.x</code>). <code>cargo update -p tauri-plugin-store</code> ve <code>npm i @tauri-apps/plugin-store@^2</code> calistir.</p>
+    </details>
+
+    <details class="symptom">
+      <summary>IPC cagrisi beklenen deger yerine <code>null</code> donuyor</summary>
+      <p><strong>Sebep.</strong> Komutun <code>()</code> ya da serilestirilemeyen bir tip dondurdu; serde bunu JS tarafinda <code>null</code>'a cevirir.</p>
+      <p><strong>Cozum.</strong> <code>Result&lt;T, String&gt;</code> dondur ve <code>T</code>'nin <code>Serialize</code> implementasyonu olsun. TypeScript'te <code>invoke&lt;T&gt;(...)</code> seklinde <code>await</code> et.</p>
+    </details>
+
+    <details class="symptom">
+      <summary>Devtools konsolunda <code>window.__TAURI__ is undefined</code></summary>
+      <p><strong>Sebep.</strong> Ya <code>withGlobalTauri</code> ayarli degil, ya da scriptin Tauri kopruyu enjekte etmeden once calisti.</p>
+      <p><strong>Cozum.</strong> <code>tauri.conf.json</code> icinde <code>app</code> altina <code>"withGlobalTauri": true</code> koy, ya da <code>@tauri-apps/api</code>'den direkt import et ve <code>invoke</code>'tan once <code>DOMContentLoaded</code>'i bekle.</p>
+    </details>
+
+    <h3>Platforma ozel</h3>
+
+    <details class="symptom">
+      <summary>macOS: <code>cargo tauri build</code> sirasinda <code>code signing not configured</code></summary>
+      <p><strong>Sebep.</strong> macOS release build'leri bir imza kimligi bekler; yoksa bundling ya basarisiz olur ya da notarize edilmemis bir app uretir.</p>
+      <p><strong>Cozum.</strong> Keychain'de Developer ID sertifikasi kur, ya da gelistirme icin <code>--config bundle.macOS.signingIdentity="-"</code> ile ad-hoc imza kullan.</p>
+    </details>
+
+    <details class="symptom">
+      <summary>Linux: eski dagitimlarda <code>GLIBCXX_3.4.XX not found</code></summary>
+      <p><strong>Sebep.</strong> Hedef sistemin sahip oldugundan daha yeni bir <code>libstdc++</code>'a karsi derledin.</p>
+      <p><strong>Cozum.</strong> Desteklemek istedigin en eski dagitimda build al (orn. Ubuntu 22.04 Docker imaji), ya da kendi runtime'ini paketleyen bir AppImage / Flatpak dagit.</p>
+    </details>
+
+    <details class="symptom">
+      <summary>Windows: <code>MSVC toolchain missing</code></summary>
+      <p><strong>Sebep.</strong> Windows'ta Rust, Microsoft linker'ini kullanir ve bu Visual Studio Build Tools ile gelir.</p>
+      <p><strong>Cozum.</strong> "Visual Studio Build Tools"'u "Desktop development with C++" workload'u ile kur, sonra shell'i yeniden ac ki <code>link.exe</code> <code>PATH</code>'te olsun.</p>
+    </details>
+
+    <details class="symptom">
+      <summary>Tum platformlar: Node surumu uyusmazligi</summary>
+      <p><strong>Sebep.</strong> Frontend araclari (Vite, Tauri CLI sarmalayicilari) bir Node major'u sabitler ve eski/yeni surumlerde anlasilmaz ESM hatalari verir.</p>
+      <p><strong>Cozum.</strong> <code>.nvmrc</code>'deki surumu <code>nvm use</code> (veya <code>fnm use</code>, <code>volta</code>) ile sec. Sonra <code>npm ci</code>'yi tekrar calistir.</p>
+    </details>
+  </div>
+</section>
+
+<section id="cheatsheet" class="appendix cheatsheet">
+  <h2><span class="lang-en">Cheatsheet</span><span class="lang-tr">Hızlı başvuru</span></h2>
+  <p class="tldr">
+    <span class="lang-en"><strong>TL;DR.</strong> Everything you need to skim when you've forgotten the syntax. Press Cmd/Ctrl+P to print this page.</span>
+    <span class="lang-tr"><strong>Özet.</strong> Sözdizimini unuttuğunda göz atacağın her şey. Yazdırmak için Cmd/Ctrl+P.</span>
+  </p>
+
+  <div class="cheat-grid lang-en">
+
+    <section class="cheat-card">
+      <h3>1. Variable bindings</h3>
+<pre><code class="language-rust">let x = 5;
+let mut y = 0;
+let (a, b) = (1, 2);
+let Some(v) = maybe else { return; };
+let x = x + 1; // shadowing</code></pre>
+      <ul>
+        <li><code>let</code> &mdash; immutable by default</li>
+        <li><code>let mut</code> &mdash; rebindable / in-place mutation</li>
+        <li>tuple / struct destructuring</li>
+        <li><code>let &hellip; else</code> &mdash; bind-or-bail</li>
+        <li>shadowing &mdash; reuse name, new type OK</li>
+      </ul>
+    </section>
+
+    <section class="cheat-card">
+      <h3>2. Flow control</h3>
+<pre><code class="language-rust">if a &gt; 0 { &hellip; } else if b { &hellip; } else { &hellip; }
+if let Some(v) = opt { use(v); }
+while cond { &hellip; }
+while let Some(x) = iter.next() { &hellip; }
+for i in 0..10 { &hellip; }
+loop { if done { break value; } }
+match n {
+    0 | 1 =&gt; "small",
+    x if x &lt; 10 =&gt; "mid",
+    _ =&gt; "big",
+}</code></pre>
+      <ul>
+        <li><code>if let</code> / <code>while let</code> &mdash; single-arm match</li>
+        <li><code>0..10</code> exclusive, <code>0..=10</code> inclusive</li>
+        <li><code>loop</code> can return a value via <code>break v</code></li>
+        <li><code>match</code> is exhaustive; <code>_</code> catch-all</li>
+        <li>guards with <code>if</code>, or-patterns with <code>|</code></li>
+      </ul>
+    </section>
+
+    <section class="cheat-card">
+      <h3>3. Structs &amp; enums</h3>
+<pre><code class="language-rust">struct Point { x: f32, y: f32 }
+struct Pair(i32, i32);      // tuple struct
+struct Marker;              // unit struct
+
+enum Shape {
+    Circle(f32),
+    Rect { w: f32, h: f32 },
+    None,
+}
+let p = Point { x: 1.0, y: 2.0 };
+let s = Shape::Rect { w: 3.0, h: 4.0 };</code></pre>
+      <ul>
+        <li><code>Option&lt;T&gt;</code> &mdash; <code>Some(x)</code> / <code>None</code></li>
+        <li><code>Result&lt;T, E&gt;</code> &mdash; <code>Ok(x)</code> / <code>Err(e)</code></li>
+        <li>field init shorthand: <code>Point { x, y }</code></li>
+        <li>update syntax: <code>Point { x: 0.0, ..other }</code></li>
+      </ul>
+    </section>
+
+    <section class="cheat-card">
+      <h3>4. Traits &amp; impls</h3>
+<pre><code class="language-rust">impl Point {
+    fn new(x: f32, y: f32) -&gt; Self { Self { x, y } }
+}
+trait Area { fn area(&amp;self) -&gt; f32; }
+impl Area for Point { fn area(&amp;self) -&gt; f32 { 0.0 } }
+
+fn biggest&lt;T&gt;(xs: &amp;[T]) -&gt; &amp;T where T: Ord { &hellip; }
+fn make() -&gt; impl Area { Point::new(0.0, 0.0) }
+fn dynamic(a: &amp;dyn Area) { a.area(); }</code></pre>
+      <ul>
+        <li><code>impl Foo</code> &mdash; inherent methods</li>
+        <li><code>impl Trait for Foo</code> &mdash; trait implementation</li>
+        <li><code>where</code> &mdash; cleaner bounds</li>
+        <li><code>impl Trait</code> return &mdash; static dispatch</li>
+        <li><code>dyn Trait</code> &mdash; dynamic dispatch, vtable</li>
+      </ul>
+    </section>
+
+    <section class="cheat-card">
+      <h3>5. Ownership &amp; borrows</h3>
+<pre><code class="language-rust">let s = String::from("hi");
+let r: &amp;str = &amp;s;           // shared borrow
+let m: &amp;mut String = &amp;mut s2; // unique borrow
+let c = s.clone();           // deep copy
+let n: i32 = 7;              // Copy, no move
+
+fn longest&lt;'a&gt;(x: &amp;'a str, y: &amp;'a str) -&gt; &amp;'a str { x }
+static MSG: &amp;'static str = "forever";</code></pre>
+      <ul>
+        <li><code>&amp;T</code> &mdash; many readers, no writer</li>
+        <li><code>&amp;mut T</code> &mdash; one writer, no readers</li>
+        <li>move by default; <code>Copy</code> types duplicate</li>
+        <li><code>.clone()</code> &mdash; explicit deep copy</li>
+        <li><code>'a</code> &mdash; lifetime; <code>'static</code> &mdash; whole program</li>
+      </ul>
+    </section>
+
+    <section class="cheat-card">
+      <h3>6. Error handling</h3>
+<pre><code class="language-rust">fn read() -&gt; Result&lt;String, MyError&gt; {
+    let s = std::fs::read_to_string("f")?;
+    let n: i32 = s.trim().parse().map_err(MyError::Parse)?;
+    let first = s.chars().next().ok_or(MyError::Empty)?;
+    Ok(s)
+}
+
+#[derive(thiserror::Error, Debug)]
+enum MyError {
+    #[error("io")] Io(#[from] std::io::Error),
+    #[error("parse")] Parse(std::num::ParseIntError),
+    #[error("empty")] Empty,
+}</code></pre>
+      <ul>
+        <li><code>?</code> &mdash; early-return on <code>Err</code>/<code>None</code></li>
+        <li><code>#[from]</code> &mdash; auto <code>From</code> conversion</li>
+        <li><code>.map_err()</code> &mdash; transform error type</li>
+        <li><code>.ok_or(e)</code> &mdash; <code>Option</code> &rarr; <code>Result</code></li>
+      </ul>
+    </section>
+
+    <section class="cheat-card">
+      <h3>7. Common iterator methods</h3>
+<pre><code class="language-rust">let v = vec![1, 2, 3, 4];
+let doubled: Vec&lt;_&gt; = v.iter().map(|x| x * 2).collect();
+let evens: Vec&lt;_&gt; = v.iter().filter(|x| *x % 2 == 0).collect();
+let parsed: Vec&lt;i32&gt; = ss.iter().filter_map(|s| s.parse().ok()).collect();
+let sum: i32 = v.iter().sum();
+let prod = v.iter().fold(1, |acc, x| acc * x);
+for (i, x) in v.iter().enumerate() { &hellip; }
+let pairs: Vec&lt;_&gt; = a.iter().zip(b.iter()).collect();</code></pre>
+      <ul>
+        <li><code>.iter()</code> borrow / <code>.into_iter()</code> own / <code>.iter_mut()</code></li>
+        <li><code>.take(n)</code> / <code>.skip(n)</code> &mdash; slice a stream</li>
+        <li><code>.any()</code> / <code>.all()</code> &mdash; bool quantifiers</li>
+        <li><code>.find()</code> &mdash; first match as <code>Option</code></li>
+        <li><code>.collect::&lt;Vec&lt;_&gt;&gt;()</code> &mdash; materialize</li>
+      </ul>
+    </section>
+
+    <section class="cheat-card">
+      <h3>8. Derives</h3>
+<pre><code class="language-rust">#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
+struct Id(u32);
+
+#[derive(serde::Serialize, serde::Deserialize)]
+struct Msg { text: String }</code></pre>
+      <ul>
+        <li><code>Debug</code> &mdash; <code>{:?}</code> printing, always add</li>
+        <li><code>Clone</code> &mdash; explicit <code>.clone()</code></li>
+        <li><code>Copy</code> &mdash; implicit bitwise dup (small types)</li>
+        <li><code>PartialEq</code>/<code>Eq</code> &mdash; <code>==</code> comparison</li>
+        <li><code>Hash</code> &mdash; use as <code>HashMap</code> key</li>
+        <li><code>Default</code> &mdash; <code>T::default()</code></li>
+        <li><code>Serialize</code>/<code>Deserialize</code> &mdash; JSON via serde</li>
+      </ul>
+    </section>
+
+    <section class="cheat-card">
+      <h3>9. Tauri command shape</h3>
+<pre><code class="language-rust">use tauri::{State, AppHandle, Emitter};
+use std::sync::Mutex;
+
+struct Store(Mutex&lt;Vec&lt;String&gt;&gt;);
+
+#[tauri::command]
+fn add(item: String, store: State&lt;Store&gt;, app: AppHandle)
+    -&gt; Result&lt;usize, String&gt;
+{
+    let mut g = store.0.lock().map_err(|e| e.to_string())?;
+    g.push(item);
+    app.emit("changed", g.len()).ok();
+    Ok(g.len())
+}</code></pre>
+<pre><code class="language-rust">// JavaScript side
+import { invoke } from "@tauri-apps/api/core";
+import { listen } from "@tauri-apps/api/event";
+const n = await invoke("add", { item: "hi" });
+await listen("changed", (e) =&gt; console.log(e.payload));</code></pre>
+      <ul>
+        <li><code>#[tauri::command]</code> &mdash; exposes Rust fn to JS</li>
+        <li><code>State&lt;T&gt;</code> &mdash; shared app state (wrap in <code>Mutex</code>)</li>
+        <li><code>AppHandle</code> + <code>Emitter</code> &mdash; push events to JS</li>
+        <li>return <code>Result&lt;T, E: Serialize&gt;</code> &mdash; errors reach JS</li>
+        <li><code>invoke("name", { arg })</code> &mdash; camelCase args</li>
+      </ul>
+    </section>
+
+    <section class="cheat-card">
+      <h3>10. Cargo &amp; tooling</h3>
+<pre><code class="language-rust">cargo new myapp           // new binary crate
+cargo new --lib mylib     // new library crate
+cargo add serde --features derive
+cargo check               // fast type-check
+cargo build --release
+cargo test                // unit + integration
+cargo test --doc          // doctests only
+cargo clippy -- -D warnings
+cargo fmt</code></pre>
+<pre><code class="language-rust"># Cargo.toml feature flags
+[features]
+default = ["json"]
+json = ["dep:serde_json"]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", optional = true }</code></pre>
+      <ul>
+        <li><code>cargo check</code> &mdash; fastest feedback loop</li>
+        <li><code>cargo clippy</code> &mdash; lint, catches idiom issues</li>
+        <li><code>cargo fmt</code> &mdash; auto-format, run before commit</li>
+        <li>feature flags &mdash; opt-in compile-time toggles</li>
+      </ul>
+    </section>
+
+  </div>
+
+  <div class="cheat-grid lang-tr">
+
+    <section class="cheat-card">
+      <h3>1. Degisken baglamalari</h3>
+<pre><code class="language-rust">let x = 5;
+let mut y = 0;
+let (a, b) = (1, 2);
+let Some(v) = maybe else { return; };
+let x = x + 1; // golgeleme</code></pre>
+      <ul>
+        <li><code>let</code> &mdash; varsayilan olarak degismez</li>
+        <li><code>let mut</code> &mdash; yeniden atanabilir / yerinde degisim</li>
+        <li>tuple / struct ayristirma</li>
+        <li><code>let &hellip; else</code> &mdash; bagla ya da cik</li>
+        <li>golgeleme &mdash; ayni ad, yeni tur olabilir</li>
+      </ul>
+    </section>
+
+    <section class="cheat-card">
+      <h3>2. Akis kontrolu</h3>
+<pre><code class="language-rust">if a &gt; 0 { &hellip; } else if b { &hellip; } else { &hellip; }
+if let Some(v) = opt { use(v); }
+while cond { &hellip; }
+while let Some(x) = iter.next() { &hellip; }
+for i in 0..10 { &hellip; }
+loop { if done { break value; } }
+match n {
+    0 | 1 =&gt; "kucuk",
+    x if x &lt; 10 =&gt; "orta",
+    _ =&gt; "buyuk",
+}</code></pre>
+      <ul>
+        <li><code>if let</code> / <code>while let</code> &mdash; tek kollu match</li>
+        <li><code>0..10</code> haric, <code>0..=10</code> dahil</li>
+        <li><code>loop</code> <code>break v</code> ile deger dondurebilir</li>
+        <li><code>match</code> tum durumlari kapsar; <code>_</code> her seyi yakalar</li>
+        <li><code>if</code> ile kosul, <code>|</code> ile veya-deseni</li>
+      </ul>
+    </section>
+
+    <section class="cheat-card">
+      <h3>3. Struct ve enum</h3>
+<pre><code class="language-rust">struct Point { x: f32, y: f32 }
+struct Pair(i32, i32);      // tuple struct
+struct Marker;              // birim struct
+
+enum Shape {
+    Circle(f32),
+    Rect { w: f32, h: f32 },
+    None,
+}
+let p = Point { x: 1.0, y: 2.0 };
+let s = Shape::Rect { w: 3.0, h: 4.0 };</code></pre>
+      <ul>
+        <li><code>Option&lt;T&gt;</code> &mdash; <code>Some(x)</code> / <code>None</code></li>
+        <li><code>Result&lt;T, E&gt;</code> &mdash; <code>Ok(x)</code> / <code>Err(e)</code></li>
+        <li>alan kisa yazimi: <code>Point { x, y }</code></li>
+        <li>guncelleme: <code>Point { x: 0.0, ..other }</code></li>
+      </ul>
+    </section>
+
+    <section class="cheat-card">
+      <h3>4. Trait ve impl</h3>
+<pre><code class="language-rust">impl Point {
+    fn new(x: f32, y: f32) -&gt; Self { Self { x, y } }
+}
+trait Area { fn area(&amp;self) -&gt; f32; }
+impl Area for Point { fn area(&amp;self) -&gt; f32 { 0.0 } }
+
+fn biggest&lt;T&gt;(xs: &amp;[T]) -&gt; &amp;T where T: Ord { &hellip; }
+fn make() -&gt; impl Area { Point::new(0.0, 0.0) }
+fn dynamic(a: &amp;dyn Area) { a.area(); }</code></pre>
+      <ul>
+        <li><code>impl Foo</code> &mdash; kendine ait metotlar</li>
+        <li><code>impl Trait for Foo</code> &mdash; trait gerceklemesi</li>
+        <li><code>where</code> &mdash; daha temiz kisitlar</li>
+        <li><code>impl Trait</code> donusu &mdash; statik dagitim</li>
+        <li><code>dyn Trait</code> &mdash; dinamik dagitim, vtable</li>
+      </ul>
+    </section>
+
+    <section class="cheat-card">
+      <h3>5. Sahiplik ve odunc</h3>
+<pre><code class="language-rust">let s = String::from("hi");
+let r: &amp;str = &amp;s;           // paylasimli odunc
+let m: &amp;mut String = &amp;mut s2; // benzersiz odunc
+let c = s.clone();           // derin kopya
+let n: i32 = 7;              // Copy, tasima yok
+
+fn longest&lt;'a&gt;(x: &amp;'a str, y: &amp;'a str) -&gt; &amp;'a str { x }
+static MSG: &amp;'static str = "sonsuza dek";</code></pre>
+      <ul>
+        <li><code>&amp;T</code> &mdash; cok okuyucu, yazici yok</li>
+        <li><code>&amp;mut T</code> &mdash; tek yazici, okuyucu yok</li>
+        <li>varsayilan tasima; <code>Copy</code> turler kopyalanir</li>
+        <li><code>.clone()</code> &mdash; acik derin kopya</li>
+        <li><code>'a</code> &mdash; yasam suresi; <code>'static</code> &mdash; tum program</li>
+      </ul>
+    </section>
+
+    <section class="cheat-card">
+      <h3>6. Hata yonetimi</h3>
+<pre><code class="language-rust">fn read() -&gt; Result&lt;String, MyError&gt; {
+    let s = std::fs::read_to_string("f")?;
+    let n: i32 = s.trim().parse().map_err(MyError::Parse)?;
+    let first = s.chars().next().ok_or(MyError::Empty)?;
+    Ok(s)
+}
+
+#[derive(thiserror::Error, Debug)]
+enum MyError {
+    #[error("io")] Io(#[from] std::io::Error),
+    #[error("parse")] Parse(std::num::ParseIntError),
+    #[error("empty")] Empty,
+}</code></pre>
+      <ul>
+        <li><code>?</code> &mdash; <code>Err</code>/<code>None</code> olunca erken cikis</li>
+        <li><code>#[from]</code> &mdash; otomatik <code>From</code> donusumu</li>
+        <li><code>.map_err()</code> &mdash; hata turunu donustur</li>
+        <li><code>.ok_or(e)</code> &mdash; <code>Option</code> &rarr; <code>Result</code></li>
+      </ul>
+    </section>
+
+    <section class="cheat-card">
+      <h3>7. Yaygin iterator metotlari</h3>
+<pre><code class="language-rust">let v = vec![1, 2, 3, 4];
+let doubled: Vec&lt;_&gt; = v.iter().map(|x| x * 2).collect();
+let evens: Vec&lt;_&gt; = v.iter().filter(|x| *x % 2 == 0).collect();
+let parsed: Vec&lt;i32&gt; = ss.iter().filter_map(|s| s.parse().ok()).collect();
+let sum: i32 = v.iter().sum();
+let prod = v.iter().fold(1, |acc, x| acc * x);
+for (i, x) in v.iter().enumerate() { &hellip; }
+let pairs: Vec&lt;_&gt; = a.iter().zip(b.iter()).collect();</code></pre>
+      <ul>
+        <li><code>.iter()</code> odunc / <code>.into_iter()</code> sahip / <code>.iter_mut()</code></li>
+        <li><code>.take(n)</code> / <code>.skip(n)</code> &mdash; akisi dilimle</li>
+        <li><code>.any()</code> / <code>.all()</code> &mdash; bool niceleyiciler</li>
+        <li><code>.find()</code> &mdash; ilk eslesme <code>Option</code> olarak</li>
+        <li><code>.collect::&lt;Vec&lt;_&gt;&gt;()</code> &mdash; somutlastir</li>
+      </ul>
+    </section>
+
+    <section class="cheat-card">
+      <h3>8. Derive'lar</h3>
+<pre><code class="language-rust">#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
+struct Id(u32);
+
+#[derive(serde::Serialize, serde::Deserialize)]
+struct Msg { text: String }</code></pre>
+      <ul>
+        <li><code>Debug</code> &mdash; <code>{:?}</code> yazdirma, her zaman ekle</li>
+        <li><code>Clone</code> &mdash; acik <code>.clone()</code></li>
+        <li><code>Copy</code> &mdash; orta ustu bit kopyasi (kucuk turler)</li>
+        <li><code>PartialEq</code>/<code>Eq</code> &mdash; <code>==</code> karsilastirma</li>
+        <li><code>Hash</code> &mdash; <code>HashMap</code> anahtari olarak</li>
+        <li><code>Default</code> &mdash; <code>T::default()</code></li>
+        <li><code>Serialize</code>/<code>Deserialize</code> &mdash; serde ile JSON</li>
+      </ul>
+    </section>
+
+    <section class="cheat-card">
+      <h3>9. Tauri komut sekli</h3>
+<pre><code class="language-rust">use tauri::{State, AppHandle, Emitter};
+use std::sync::Mutex;
+
+struct Store(Mutex&lt;Vec&lt;String&gt;&gt;);
+
+#[tauri::command]
+fn add(item: String, store: State&lt;Store&gt;, app: AppHandle)
+    -&gt; Result&lt;usize, String&gt;
+{
+    let mut g = store.0.lock().map_err(|e| e.to_string())?;
+    g.push(item);
+    app.emit("changed", g.len()).ok();
+    Ok(g.len())
+}</code></pre>
+<pre><code class="language-rust">// JavaScript tarafi
+import { invoke } from "@tauri-apps/api/core";
+import { listen } from "@tauri-apps/api/event";
+const n = await invoke("add", { item: "hi" });
+await listen("changed", (e) =&gt; console.log(e.payload));</code></pre>
+      <ul>
+        <li><code>#[tauri::command]</code> &mdash; Rust fn'yi JS'e acar</li>
+        <li><code>State&lt;T&gt;</code> &mdash; paylasilan durum (<code>Mutex</code> ile sar)</li>
+        <li><code>AppHandle</code> + <code>Emitter</code> &mdash; JS'e olay gonderir</li>
+        <li><code>Result&lt;T, E: Serialize&gt;</code> dondur &mdash; hatalar JS'e gider</li>
+        <li><code>invoke("name", { arg })</code> &mdash; camelCase argumanlar</li>
+      </ul>
+    </section>
+
+    <section class="cheat-card">
+      <h3>10. Cargo ve araclar</h3>
+<pre><code class="language-rust">cargo new myapp           // yeni ikili crate
+cargo new --lib mylib     // yeni kutuphane crate
+cargo add serde --features derive
+cargo check               // hizli tur kontrolu
+cargo build --release
+cargo test                // birim + entegrasyon
+cargo test --doc          // sadece doctest
+cargo clippy -- -D warnings
+cargo fmt</code></pre>
+<pre><code class="language-rust"># Cargo.toml ozellik bayraklari
+[features]
+default = ["json"]
+json = ["dep:serde_json"]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", optional = true }</code></pre>
+      <ul>
+        <li><code>cargo check</code> &mdash; en hizli geri bildirim</li>
+        <li><code>cargo clippy</code> &mdash; lint, deyim sorunlarini yakalar</li>
+        <li><code>cargo fmt</code> &mdash; otomatik bicim, commit oncesi calistir</li>
+        <li>ozellik bayraklari &mdash; derleme zamani acilir anahtarlar</li>
+      </ul>
+    </section>
+
+  </div>
 </section>
 
 </main>

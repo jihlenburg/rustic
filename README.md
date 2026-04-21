@@ -24,7 +24,7 @@ git submodule update --init --recursive
 | Path | What it is |
 |------|-----------|
 | [rust-tutorial.html](rust-tutorial.html) | The tutorial itself — one self-contained HTML file. Open it in any browser. Twin-track reading: a main chapter track on the left, collapsible concept sidebars on the right. Bilingual (English ↔ Türkçe, header toggle). Progress, theme, and language are saved to `localStorage`. |
-| [fedit/](https://github.com/jihlenburg/fedit) | The Tauri 2 project you're going to build, pinned as a submodule. Thirteen per-chapter git tags (`ch01` … `ch17`, skipping frontend-only chapters) let you jump to any chapter's state. |
+| [fedit/](https://github.com/jihlenburg/fedit) | The Tauri 2 project you're going to build, pinned as a submodule. Per-chapter git tags (`ch01` … `ch25`, skipping frontend-only chapters) let you jump to any chapter's state. |
 | [docs/architecture.md](docs/architecture.md) | The design document that drives the tutorial's structure. The authoritative spec — updated in lockstep with the code. Useful if you want to fork and rework it. |
 
 ## Start here
@@ -38,7 +38,7 @@ git submodule update --init --recursive
 ```bash
 cd fedit
 npm install
-git checkout ch05          # or ch10, ch15, ch17 — any chapter's state
+git checkout ch05          # or ch10, ch15, ch22, ch25 — any chapter's state
 npm run tauri dev
 ```
 
@@ -55,25 +55,36 @@ Installers land in `src-tauri/target/release/bundle/` — a `.dmg` on macOS, `.m
 
 ## What you'll learn
 
-**Rust:** ownership and borrowing, `Option` and `Result`, `?`, `match`, structs and `impl` blocks, enums with data, `Mutex` and shared state, `Vec` and iterators, traits and `#[derive]`, custom error types with `thiserror`, serde.
+**Rust:** ownership and borrowing, `Option` and `Result`, `?`, `match`, structs and `impl` blocks, enums with data, `Mutex` and shared state, `Vec` and iterators, traits and `#[derive]`, custom error types with `thiserror`, serde, `From` / `Into` conversions, deep pattern matching (guards, `if-let`, `let-else`), `anyhow` vs `thiserror`, channels (`mpsc`), `async` / `.await` (and why Tauri commands can be async), `#[cfg]` attributes and feature flags, doctests, and a guided tour of `unsafe`.
 
-**Tauri 2:** the plugin model, the deny-by-default permissions / capabilities system, `State<T>`, `AppHandle`, `#[tauri::command]`, custom `Serialize` for error shapes, window events, the menu API with `CmdOrCtrl` accelerators, `tauri-plugin-dialog`, `tauri-plugin-store`, and how to bundle the final product.
+**Tauri 2:** the plugin model, the deny-by-default permissions / capabilities system, `State<T>`, `AppHandle`, `#[tauri::command]`, custom `Serialize` for error shapes, window events, the menu API with `CmdOrCtrl` accelerators, `tauri-plugin-dialog`, `tauri-plugin-store`, scroll-synced UI, the `regex` crate, a tab-model rewrite of `AppState`, hot-applied settings, and a fuzzy-search command palette.
 
-**Good habits along the way:** read compiler errors as help (every chapter has a *try breaking it* exercise), prefer narrow permissions to broad ones, treat errors as data, write methods on domain types.
+**Good habits along the way:** read compiler errors as help (every chapter has a *try breaking it* exercise, and inline "compile-error decoder" callouts translate rustc into plain English at the spots where you'll first meet E0382 / E0308 / poison errors), prefer narrow permissions to broad ones, treat errors as data, write methods on domain types.
 
 ## The shape of the tutorial
 
-Twenty-one chapters plus one optional CSS interlude, roughly four arcs:
+Twenty-eight teaching units (chapters 0–26 plus the 2b CSS interlude) in five arcs:
 
-- **0 – Setup.** Per-OS install instructions. WebView2 on Windows 10.
+- **0 — Setup.** Per-OS install instructions. WebView2 on Windows 10.
 - **1–6 — First window, first Rust, first file read.** Ownership, `String` vs `&str`, `Result` + `?`.
 - **2b — Beautify fedit (optional CSS primer).** Six short CSS moves that turn the naked window into something you'd screenshot. Teaches CSS custom properties, flexbox, focus rings, and a one-attribute dark mode. Zero Rust.
 - **7–10 — A real file picker and editable buffer.** Plugins, permissions, `Option`, serde, references and borrowing.
 - **11–14 — State, methods, and save-as.** `Mutex<AppState>`, `impl`, `match`.
 - **15–18 — A proper error type, recent files, a native menu.** `thiserror`, `Vec` + iterators, traits, `MenuBuilder`.
 - **19–20 — Ship it.** Bundle, WebView2, CI, where to go next.
+- **21–26 — Make it a *good* editor.** A scroll-synced line-number gutter (ch21), find/replace with the `regex` crate (ch22), tabs built on a `Vec<FileBuf>` rewrite of `AppState` (ch23), settings that hot-apply via `tauri-plugin-store` and `#[serde(default)]` (ch24), a fuzzy Ctrl/Cmd+Shift+P command palette (ch25), and a consolidating checkpoint quiz (ch26).
 
-Checkpoints with quizzes at chapters 6, 10, 14, and 18. Every chapter and sidebar is written in both English and Turkish — flip with the `EN ↔ TR` button in the header.
+Checkpoints with quizzes at chapters 6, 10, 14, 18, and 26. Every chapter and sidebar is written in both English and Turkish — flip with the `EN ↔ TR` button in the header.
+
+Thirty-four concept sidebars cover the Rust topics the main track only touches — `ownership`, `borrow` / `borrow checker`, `lifetimes`, smart pointers, `Send`/`Sync`, `Mutex` / interior mutability, channels, `async` / `.await`, `From` / `Into`, `thiserror` vs `anyhow`, `cfg` + feature flags, doctests, macros, the `unsafe` primer, and more. Each sidebar ends with a "See also" footer so a reader can hop between related ideas.
+
+## Reference material
+
+Three appendices live after chapter 26, reachable from the header quick-links and the TOC:
+
+- **Glossary** — ~80 alphabetised Rust + Tauri terms, each with a one-line definition and a jump-link back to where it's explained.
+- **Troubleshooting** — 18 common compile / runtime / build symptoms grouped by area (Rust compiler errors, Tauri runtime & build, platform-specific), each with Cause / Fix.
+- **Cheatsheet** — 10 dense cards (bindings, flow control, structs & enums, traits, ownership, errors, iterators, derives, Tauri command shape, cargo & tooling) — print-stylesheet-safe, pairs two columns on paper.
 
 ## Requirements, in short
 
