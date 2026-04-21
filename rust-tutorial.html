@@ -18579,7 +18579,12 @@ serde_json = { version = "1", optional = true }</code></pre>
   document.querySelectorAll(".mark-done").forEach(btn => {
     const ch = String(btn.dataset.ch);
     if (done.has(ch)) btn.classList.add("checked");
-    btn.addEventListener("click", () => {
+    // The HTML uses <a class="mark-done"> without href — that's not in
+    // the default tab order and doesn't activate on Enter. Make it
+    // keyboard-operable without changing the markup everywhere.
+    if (!btn.hasAttribute("tabindex")) btn.setAttribute("tabindex", "0");
+    if (!btn.hasAttribute("role")) btn.setAttribute("role", "button");
+    const toggle = () => {
       if (done.has(ch)) {
         done.delete(ch);
         btn.classList.remove("checked");
@@ -18590,6 +18595,13 @@ serde_json = { version = "1", optional = true }</code></pre>
       saveDone();
       refreshProgress();
       refreshMarkDoneLabels();
+    };
+    btn.addEventListener("click", toggle);
+    btn.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggle();
+      }
     });
   });
   refreshMarkDoneLabels();
