@@ -15,8 +15,8 @@
   --surface: #f4e9d3;
   --text: #2a1f1a;
   --muted: #6b4a32;
-  --accent: #c8441b;
-  --accent-hover: #a83913;
+  --accent: #a83913;
+  --accent-hover: #872b0d;
   --accent-soft: #ffe0d6;
   --border: #c9b79c;
   --sidebar-bg: #efe3cb;
@@ -402,6 +402,13 @@ code.language-diff .diff-add { background: rgba(130, 208, 140, 0.14); color: #b6
 code.language-diff .diff-del { background: rgba(235, 120, 120, 0.14); color: #ffc4c4; }
 [data-theme="light"] code.language-diff .diff-add { background: rgba(40, 140, 60, 0.10); color: #1d6a2b; }
 [data-theme="light"] code.language-diff .diff-del { background: rgba(200, 70, 70, 0.10); color: #992222; }
+/* Prism's default prism-tomorrow theme paints inserted/deleted diff
+   tokens in #008000 / #800000, which fail WCAG contrast against our
+   dark `--code-bg`. Align them with our own diff-add/diff-del palette. */
+code.language-diff .token.inserted,
+code.language-diff .token.inserted-sign { color: #b6e3b9; }
+code.language-diff .token.deleted,
+code.language-diff .token.deleted-sign  { color: #ffc4c4; }
 
 .callout.diff-primer {
   border-left: 4px solid var(--accent);

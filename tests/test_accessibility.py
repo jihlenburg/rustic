@@ -15,12 +15,7 @@ from axe_playwright_python.sync_playwright import Axe  # noqa: E402
 # Rule IDs that are currently accepted (remove as they get fixed).
 # Each entry should include a comment with the count as of allowlist time
 # and a pointer to the issue/tracking note.
-ALLOWLIST: set[str] = {
-    # 896 nodes as of the CI bring-up. Primarily chip/label colour pairs on
-    # coloured backgrounds and subtle muted-text on off-white surfaces. Needs
-    # a dedicated pass through the palette — tracked separately from CI work.
-    "color-contrast",
-}
+ALLOWLIST: set[str] = set()
 
 
 def test_no_new_axe_violations(loaded_page):

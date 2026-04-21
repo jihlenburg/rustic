@@ -21,7 +21,13 @@ def test_no_console_errors(page, base_url):
         lambda m: m.type == "error" and errors.append(f"console: {m.text}"),
     )
     page.goto(base_url, wait_until="load")
-    page.wait_for_load_state("networkidle")
+    # Wait for the same signal the rest of the suite uses (Prism finished
+    # tokenising). `networkidle` is flaky on Firefox — Google Fonts keeps
+    # opening long-lived connections.
+    page.wait_for_function(
+        "() => document.querySelectorAll(\"code[class*='language-'] span\").length > 0",
+        timeout=5_000,
+    )
     assert not errors, f"console errors on load: {errors}"
 
 
