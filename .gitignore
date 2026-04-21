@@ -8,3 +8,9 @@
 # Internal working notes — never publish.
 logbook.md
 todo.md
+
+# Python test environment + cache
+.venv/
+.pytest_cache/
+__pycache__/
+*.pyc

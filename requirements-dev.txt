@@ -1,0 +1,6 @@
+# Tutorial test suite dependencies.
+pytest>=8.0
+pytest-playwright>=0.5
+pytest-xdist>=3.5
+playwright>=1.44
+axe-playwright-python>=0.1.4
