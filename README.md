@@ -25,7 +25,7 @@ git submodule update --init --recursive
 |------|-----------|
 | [rust-tutorial.html](rust-tutorial.html) | The tutorial itself — one self-contained HTML file. Open it in any browser. Twin-track reading: a main chapter track on the left, collapsible concept sidebars on the right. Bilingual (English ↔ Türkçe, header toggle). Progress, theme, and language are saved to `localStorage`. |
 | [fedit/](https://github.com/jihlenburg/fedit) | The Tauri 2 project you're going to build, pinned as a submodule. Thirteen per-chapter git tags (`ch01` … `ch17`, skipping frontend-only chapters) let you jump to any chapter's state. |
-| [rust-tutorial-architecture.md](rust-tutorial-architecture.md) | The design document that drove the tutorial's structure. Useful if you want to fork and rework it. |
+| [docs/architecture.md](docs/architecture.md) | The design document that drives the tutorial's structure. The authoritative spec — updated in lockstep with the code. Useful if you want to fork and rework it. |
 
 ## Start here
 

@@ -18,7 +18,7 @@ Hooks: both repos ship a tracked `.githooks/commit-msg`. After cloning either on
 
 ## Authoritative spec
 
-`rust-tutorial-architecture.md` at the repo root is the source of truth for structure, pedagogy, design, and acceptance criteria. **If anything in this file conflicts with the architecture document, the architecture document wins.** Read it before planning any non-trivial change.
+`docs/architecture.md` at the repo root is the source of truth for structure, pedagogy, design, and acceptance criteria. **If anything in this file conflicts with the architecture document, the architecture document wins.** Read it before planning any non-trivial change.
 
 ## Commands
 
@@ -55,7 +55,7 @@ python3 -m http.server 8000
 .
 ├── AGENTS.md                        # this file
 ├── README.md                        # human-facing
-├── rust-tutorial-architecture.md    # authoritative spec
+├── docs/architecture.md            # authoritative spec
 ├── rust-tutorial.html               # the tutorial (single self-contained file)
 ├── scripts/                         # validation helpers
 └── fedit/                           # the Tauri 2.0 editor project
@@ -102,7 +102,7 @@ These are invariants because the tutorial breaks if they drift. Do not "improve"
 
 ## Version constraints
 
-Hard requirements. If a user reports a version mismatch, update `rust-tutorial-architecture.md` Section 3 first, then propagate.
+Hard requirements. If a user reports a version mismatch, update `docs/architecture.md` Section 3 first, then propagate.
 
 - Tauri: `2.x` (stable since Oct 2, 2024). Do not suggest v1 anywhere.
 - Rust edition: `2024` (stable since Rust 1.85, Feb 2025). Every `Cargo.toml` has `edition = "2024"`.
@@ -126,7 +126,7 @@ No more, no less. Over-granted permissions are a bug.
 
 ## Adding or editing a chapter
 
-1. Edit `rust-tutorial-architecture.md` first if the change is structural (new chapter, renumbering, new sidebar). The architecture doc is the plan; everything else follows from it.
+1. Edit `docs/architecture.md` first if the change is structural (new chapter, renumbering, new sidebar). The architecture doc is the plan; everything else follows from it.
 2. Make the code changes in `fedit/` on a feature branch. Commit, then `git tag chNN` if it's a tagged chapter.
 3. Update `rust-tutorial.html`:
    - The chapter prose and diff blocks.
@@ -162,7 +162,7 @@ done
 git -C fedit checkout main
 ```
 
-See also the full acceptance checklist in **Section 13 of `rust-tutorial-architecture.md`**.
+See also the full acceptance checklist in **Section 13 of `docs/architecture.md`**.
 
 ## Common pitfalls (ranked by how often they happen)
 
@@ -177,7 +177,7 @@ See also the full acceptance checklist in **Section 13 of `rust-tutorial-archite
 
 ## What not to do
 
-- Do not add new sidebars beyond the 14 listed in architecture doc Section 6 without updating that document first.
+- Do not add new sidebars without first updating the inventory in Section 6 of `docs/architecture.md`.
 - Do not add per-chapter quizzes. Quizzes live at checkpoints (ch. 6, 10, 14, 18) only.
 - Do not use `localStorage` or `sessionStorage` anywhere without `try/catch` — incognito throws.
 - Do not introduce bundlers, TypeScript, or any build tooling into the frontend.

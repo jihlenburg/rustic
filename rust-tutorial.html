@@ -1792,8 +1792,8 @@ fn main() {
 <div class="try-breaking lang-tr">
 <strong>Kırmayı dene.</strong> <code>src-tauri/Cargo.toml</code>'da <code>edition = "2024"</code>'ü <code>edition = "2099"</code> yap. Kaydet ve <code>cargo check --manifest-path src-tauri/Cargo.toml</code> çalıştır. Hatayı oku — geçerli edition'ları listeler. <code>2024</code>'e geri alarak düzelt. Cargo sorunlarının %80'ini böyle çözeceksin: hatayı oku, sana ne istediğini söyler.</div>
 
-<p class="tag-link lang-en">Full code at this point: <a href="https://github.com/you/fedit/tree/ch01" target="_blank" rel="noreferrer"><code>git checkout ch01</code></a> in the <code>fedit/</code> repo.</p>
-<p class="tag-link lang-tr">Bu aşamada tam kod: <code>fedit/</code> deposunda <a href="https://github.com/you/fedit/tree/ch01" target="_blank" rel="noreferrer"><code>git checkout ch01</code></a>.</p>
+<p class="tag-link lang-en">Full code at this point: <a href="https://github.com/jihlenburg/fedit/tree/ch01" target="_blank" rel="noreferrer"><code>git checkout ch01</code></a> in the <code>fedit/</code> repo.</p>
+<p class="tag-link lang-tr">Bu aşamada tam kod: <code>fedit/</code> deposunda <a href="https://github.com/jihlenburg/fedit/tree/ch01" target="_blank" rel="noreferrer"><code>git checkout ch01</code></a>.</p>
 
 <a class="mark-done" data-ch="1">Mark chapter 1 done</a>
 </section>
@@ -2429,8 +2429,8 @@ Tauri needs to deserialize the argument from JSON, and <code>&amp;str</code> can
   |                ^^^^ the trait `Deserialize&lt;'_&gt;` is not implemented for `&amp;str`</code></pre>
 Tauri parametreyi JSON'dan deserileştirmek zorunda, ama <code>&amp;str</code> sonuca sahip olamaz. <code>String</code>'i geri koy. Rust sana bir sınırda "sahipli mi, ödünç mü?" sorusunun ne demek olduğunu öğretti.</div>
 
-<p class="tag-link lang-en">Full code at this point: <a href="https://github.com/you/fedit/tree/ch03" target="_blank" rel="noreferrer"><code>git checkout ch03</code></a>.</p>
-<p class="tag-link lang-tr">Bu noktadaki tam kod: <a href="https://github.com/you/fedit/tree/ch03" target="_blank" rel="noreferrer"><code>git checkout ch03</code></a>.</p>
+<p class="tag-link lang-en">Full code at this point: <a href="https://github.com/jihlenburg/fedit/tree/ch03" target="_blank" rel="noreferrer"><code>git checkout ch03</code></a>.</p>
+<p class="tag-link lang-tr">Bu noktadaki tam kod: <a href="https://github.com/jihlenburg/fedit/tree/ch03" target="_blank" rel="noreferrer"><code>git checkout ch03</code></a>.</p>
 
 <a class="mark-done" data-ch="3">Mark chapter 3 done</a>
 </section>
@@ -2630,8 +2630,8 @@ fn echo(msg: String) -&gt; String {
   |                         ^^^ value borrowed here after move</code></pre>
 İki çözüm: <code>let copy = msg.clone();</code> (derin kopya) ya da referans al: <code>let copy = &amp;msg;</code>. Bitirince geri al.</div>
 
-<p class="tag-link lang-en">Full code at this point: <code>git checkout ch04</code>.</p>
-<p class="tag-link lang-tr">Bu noktadaki tam kod: <code>git checkout ch04</code>.</p>
+<p class="tag-link lang-en">Full code at this point: <a href="https://github.com/jihlenburg/fedit/tree/ch04" target="_blank" rel="noreferrer"><code>git checkout ch04</code></a>.</p>
+<p class="tag-link lang-tr">Bu noktadaki tam kod: <a href="https://github.com/jihlenburg/fedit/tree/ch04" target="_blank" rel="noreferrer"><code>git checkout ch04</code></a>.</p>
 
 <a class="mark-done" data-ch="4"><span class="lang-en">Mark chapter 4 done</span><span class="lang-tr">Bölüm 4'ü tamamlandı olarak işaretle</span></a>
 </section>
@@ -2810,8 +2810,8 @@ Kaydet, <code>cargo check</code> şunu der:
   |     ^^^^^^^^^^^^ expected `String`, found `Result&lt;String, String&gt;`</code></pre>
 Tabii ki — <code>?</code> olmadan <code>contents</code> hâlâ <code>Result</code> içinde sarılıdır. Geri koy. Her Rust eğitimi okuyucusu buna bir kere takılır.</div>
 
-<p class="tag-link lang-en">Full code at this point: <code>git checkout ch05</code>.</p>
-<p class="tag-link lang-tr">Bu noktadaki tam kod: <code>git checkout ch05</code>.</p>
+<p class="tag-link lang-en">Full code at this point: <a href="https://github.com/jihlenburg/fedit/tree/ch05" target="_blank" rel="noreferrer"><code>git checkout ch05</code></a>.</p>
+<p class="tag-link lang-tr">Bu noktadaki tam kod: <a href="https://github.com/jihlenburg/fedit/tree/ch05" target="_blank" rel="noreferrer"><code>git checkout ch05</code></a>.</p>
 
 <a class="mark-done" data-ch="5"><span class="lang-en">Mark chapter 5 done</span><span class="lang-tr">Bölüm 5'i tamamlandı olarak işaretle</span></a>
 </section>
@@ -3157,8 +3157,8 @@ Permissions associated with this command: dialog:allow-open</code></pre>
 İzni geri koy. Bu, özellik ekledikçe 1000 kez göreceğin hata mesajıdır. Okumayı öğren.
 </div>
 
-<p class="tag-link lang-en">Full code at this point: <code>git checkout ch07</code>.</p>
-<p class="tag-link lang-tr">Bu noktadaki tam kod: <code>git checkout ch07</code>.</p>
+<p class="tag-link lang-en">Full code at this point: <a href="https://github.com/jihlenburg/fedit/tree/ch07" target="_blank" rel="noreferrer"><code>git checkout ch07</code></a>.</p>
+<p class="tag-link lang-tr">Bu noktadaki tam kod: <a href="https://github.com/jihlenburg/fedit/tree/ch07" target="_blank" rel="noreferrer"><code>git checkout ch07</code></a>.</p>
 
 <a class="mark-done" data-ch="7"><span class="lang-en">Mark chapter 7 done</span><span class="lang-tr">Bölüm 7'yi tamamlandı olarak işaretle</span></a>
 </section>
@@ -3342,8 +3342,8 @@ fn read_file(path: String) -&gt; Result&lt;std::fs::File, String&gt; {
 Derleyici serde sözleşmesine işaret ediyor: komutlar serileştirilebilir bir şey döndürmeli. Geri al.
 </div>
 
-<p class="tag-link lang-en">Full code at this point: <code>git checkout ch08</code>.</p>
-<p class="tag-link lang-tr">Bu noktadaki tam kod: <code>git checkout ch08</code>.</p>
+<p class="tag-link lang-en">Full code at this point: <a href="https://github.com/jihlenburg/fedit/tree/ch08" target="_blank" rel="noreferrer"><code>git checkout ch08</code></a>.</p>
+<p class="tag-link lang-tr">Bu noktadaki tam kod: <a href="https://github.com/jihlenburg/fedit/tree/ch08" target="_blank" rel="noreferrer"><code>git checkout ch08</code></a>.</p>
 
 <a class="mark-done" data-ch="8"><span class="lang-en">Mark chapter 8 done</span><span class="lang-tr">Bölüm 8'i tamamlandı olarak işaretle</span></a>
 </section>
@@ -3621,8 +3621,8 @@ fn main() -> std::io::Result<()> {
 }">▶ Düzeltilmiş sürümü çalıştır</button>
 </div>
 
-<p class="tag-link lang-en">Full code at this point: <code>git checkout ch09</code>.</p>
-<p class="tag-link lang-tr">Bu noktadaki tam kod: <code>git checkout ch09</code>.</p>
+<p class="tag-link lang-en">Full code at this point: <a href="https://github.com/jihlenburg/fedit/tree/ch09" target="_blank" rel="noreferrer"><code>git checkout ch09</code></a>.</p>
+<p class="tag-link lang-tr">Bu noktadaki tam kod: <a href="https://github.com/jihlenburg/fedit/tree/ch09" target="_blank" rel="noreferrer"><code>git checkout ch09</code></a>.</p>
 
 <a class="mark-done" data-ch="9"><span class="lang-en">Mark chapter 9 done</span><span class="lang-tr">Bölüm 9'u tamamlandı olarak işaretle</span></a>
 </section>
@@ -4127,8 +4127,8 @@ Derleyici veri yarışını tür kontrolü zamanında yakaladı. Geri al.
 <p><strong>Tuzak — çift kilitleme.</strong> <code>state.lock().unwrap()</code> çağırıp guard'ı bir değişkene atar, sonra aynı fonksiyon içinde tekrar <code>state.lock().unwrap()</code> çağırırsan ikinci çağrı sonsuza kadar bloklar — kendinin hâlâ tuttuğu bir kilidi serbest bırakmasını bekliyorsun. Derleyici şunu söyler: <em>hiçbir şey</em> (bu bir tür hatası değil, çalışma zamanı kilitlenmesi). Çözüm: scope başına tek guard tut veya ilkini yeniden kilitlemeden önce <code>drop(g);</code> ile düşür.</p>
 </aside>
 
-<p class="tag-link lang-en">Full code at this point: <code>git checkout ch11</code>.</p>
-<p class="tag-link lang-tr">Bu noktadaki tam kod: <code>git checkout ch11</code>.</p>
+<p class="tag-link lang-en">Full code at this point: <a href="https://github.com/jihlenburg/fedit/tree/ch11" target="_blank" rel="noreferrer"><code>git checkout ch11</code></a>.</p>
+<p class="tag-link lang-tr">Bu noktadaki tam kod: <a href="https://github.com/jihlenburg/fedit/tree/ch11" target="_blank" rel="noreferrer"><code>git checkout ch11</code></a>.</p>
 
 <a class="mark-done" data-ch="11"><span class="lang-en">Mark chapter 11 done</span><span class="lang-tr">Bölüm 11'i tamamlandı olarak işaretle</span></a>
 </section>
@@ -4730,8 +4730,8 @@ Add the <code>&amp;mut</code> back. The method signature is the contract; the co
 <code>&amp;mut</code>'u geri ekle. Metot imzası sözleşmedir; derleyici bunu acımasızca uygular.
 </div>
 
-<p class="tag-link lang-en">Full code at this point: <code>git checkout ch12</code>.</p>
-<p class="tag-link lang-tr">Bu noktadaki tam kod: <code>git checkout ch12</code>.</p>
+<p class="tag-link lang-en">Full code at this point: <a href="https://github.com/jihlenburg/fedit/tree/ch12" target="_blank" rel="noreferrer"><code>git checkout ch12</code></a>.</p>
+<p class="tag-link lang-tr">Bu noktadaki tam kod: <a href="https://github.com/jihlenburg/fedit/tree/ch12" target="_blank" rel="noreferrer"><code>git checkout ch12</code></a>.</p>
 
 <a class="mark-done" data-ch="12"><span class="lang-en">Mark chapter 12 done</span><span class="lang-tr">Bölüm 12'yi tamamlandı olarak işaretle</span></a>
 </section>
@@ -5153,8 +5153,8 @@ fn main() {
 }">▶ Run on Rust Playground</button>
 </div>
 
-<p class="tag-link lang-en">Full code at this point: <code>git checkout ch13</code>.</p>
-<p class="tag-link lang-tr">Bu noktadaki tam kod: <code>git checkout ch13</code>.</p>
+<p class="tag-link lang-en">Full code at this point: <a href="https://github.com/jihlenburg/fedit/tree/ch13" target="_blank" rel="noreferrer"><code>git checkout ch13</code></a>.</p>
+<p class="tag-link lang-tr">Bu noktadaki tam kod: <a href="https://github.com/jihlenburg/fedit/tree/ch13" target="_blank" rel="noreferrer"><code>git checkout ch13</code></a>.</p>
 
 <a class="mark-done" data-ch="13"><span class="lang-en">Mark chapter 13 done</span><span class="lang-tr">Bölüm 13'ü tamamlandı olarak işaretle</span></a>
 </section>
@@ -5697,8 +5697,8 @@ enum FeditError {
 Derleyici tam da yeni bir kol isteyen <code>match</code>'i gösterir — string tipli bir hatanın seni sessizce yayına bırakacağı şey. <code>match</code>'e <code>FeditError::Todo =&gt; "Todo"</code> ekle, tamam.
 </div>
 
-<p class="tag-link lang-en">Full code at this point: <code>git checkout ch15</code>.</p>
-<p class="tag-link lang-tr">Bu noktadaki tam kod: <code>git checkout ch15</code>.</p>
+<p class="tag-link lang-en">Full code at this point: <a href="https://github.com/jihlenburg/fedit/tree/ch15" target="_blank" rel="noreferrer"><code>git checkout ch15</code></a>.</p>
+<p class="tag-link lang-tr">Bu noktadaki tam kod: <a href="https://github.com/jihlenburg/fedit/tree/ch15" target="_blank" rel="noreferrer"><code>git checkout ch15</code></a>.</p>
 
 <a class="mark-done" data-ch="15"><span class="lang-en">Mark chapter 15 done</span><span class="lang-tr">Bölüm 15'i tamamlandı olarak işaretle</span></a>
 </section>
@@ -6489,8 +6489,8 @@ self.recent.iter().cloned().collect()   // hâlâ .cloned() çağırıyor</code>
 <code>PathBuf</code>'u geri koy. Derleyici, tipte olmayan bir trait'i <em>gerektiren</em> bir metodu işaret ediyor. "Trait sınırları" ısırdığında işte bu demektir.
 </div>
 
-<p class="tag-link lang-en">Full code at this point: <code>git checkout ch16</code>.</p>
-<p class="tag-link lang-tr">Bu noktadaki tam kod: <code>git checkout ch16</code>.</p>
+<p class="tag-link lang-en">Full code at this point: <a href="https://github.com/jihlenburg/fedit/tree/ch16" target="_blank" rel="noreferrer"><code>git checkout ch16</code></a>.</p>
+<p class="tag-link lang-tr">Bu noktadaki tam kod: <a href="https://github.com/jihlenburg/fedit/tree/ch16" target="_blank" rel="noreferrer"><code>git checkout ch16</code></a>.</p>
 
 <a class="mark-done" data-ch="16"><span class="lang-en">Mark chapter 16 done</span><span class="lang-tr">Bölüm 16'yı tamamlandı olarak işaretle</span></a>
 </section>
@@ -6621,8 +6621,8 @@ This <em>compiles</em> (IDs are strings, not types). At runtime, <em>Open…</em
 Bu <em>derlenir</em> (ID'ler tiplerle değil, string'lerle ifade edilir). Çalışma zamanında <em>Open…</em> ve <em>Save</em> her ikisi de <code>fedit:menu-open</code> olayını yayar; <kbd>⌘O</kbd>'ya basınca bir dosya açılır… ama <kbd>⌘S</kbd>'de öyle. Ders: her fedit hatası derleme zamanında yakalanmaz. Farklı ID'ler kullan. Bazı hatalar hâlâ senin sorumluluğunda.
 </div>
 
-<p class="tag-link lang-en">Full code at this point: <code>git checkout ch17</code>.</p>
-<p class="tag-link lang-tr">Bu noktadaki tam kod: <code>git checkout ch17</code>.</p>
+<p class="tag-link lang-en">Full code at this point: <a href="https://github.com/jihlenburg/fedit/tree/ch17" target="_blank" rel="noreferrer"><code>git checkout ch17</code></a>.</p>
+<p class="tag-link lang-tr">Bu noktadaki tam kod: <a href="https://github.com/jihlenburg/fedit/tree/ch17" target="_blank" rel="noreferrer"><code>git checkout ch17</code></a>.</p>
 
 <details class="sidebar" id="sidebar-idioms">
 <summary class="lang-en">Rust: idioms — newtype, builder, type aliases, "parse don't validate"</summary>
