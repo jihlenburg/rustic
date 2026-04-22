@@ -1694,6 +1694,18 @@ details.concept-card .cc-body pre {
 }
 .cheat-card ul li { margin: 0.15rem 0; }
 .cheat-card ul code { font-size: 0.85rem; }
+.cheat-card .cheat-why {
+  margin: 0.4rem 0 0.5rem;
+  padding: 0.5rem 0.7rem;
+  background: var(--accent-soft, rgba(120, 80, 40, 0.06));
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+.cheat-card .cheat-why strong { color: var(--accent); }
+.cheat-card .cheat-why code { font-size: 0.82rem; }
 
 @media print {
   /* Print just the cheatsheet section on demand — hide chrome when a reader
@@ -1886,6 +1898,60 @@ table.compare-table td.concept {
 }
 .callout.rust-30 > p:last-child { margin-bottom: 0; font-size: 0.9rem; color: var(--muted); font-style: italic; }
 
+.callout.whistle-stop {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--accent);
+  border-radius: 12px;
+  padding: 1.2rem 1.35rem;
+  margin: 1.5rem 0 2rem;
+  box-shadow: 0 2px 12px -8px rgba(0,0,0,0.1);
+}
+.callout.whistle-stop h3 {
+  margin: 0 0 0.4rem;
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.callout.whistle-stop > .ws-lead { margin: 0 0 1rem; color: var(--muted); font-size: 0.92rem; }
+.callout.whistle-stop .ws-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.9rem;
+}
+.callout.whistle-stop .ws-item {
+  background: var(--sidebar-bg, rgba(200, 68, 27, 0.06));
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 0.7rem 0.85rem;
+}
+.callout.whistle-stop .ws-item > strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+}
+.callout.whistle-stop .ws-item pre {
+  margin: 0.35rem 0;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  border-radius: 6px;
+}
+.callout.whistle-stop .ws-item pre code { font-size: 0.78rem; }
+.callout.whistle-stop .ws-item p {
+  margin: 0.35rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.callout.whistle-stop .ws-item p a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+.callout.whistle-stop .ws-item p a:hover { text-decoration-thickness: 2px; }
+
 /* Mark-done button — make it feel like the pay-off at end of each chapter. */
 a.mark-done {
   display: inline-flex;
@@ -2019,6 +2085,7 @@ kbd {
       <a href="#cheatsheet" class="appendix-link" title="Cheatsheet / Hızlı başvuru"><span class="lang-en">Cheat</span><span class="lang-tr">Özet</span></a>
     </nav>
     <button id="lang-toggle" class="icon-btn" aria-label="Change language / Dili değiştir" title="English / Türkçe">TR</button>
+    <button id="reset-progress" class="icon-btn" aria-label="Reset chapters and achievements / Bölümleri ve başarıları sıfırla" title="Reset chapters + achievements / Bölümleri + başarıları sıfırla">↺</button>
     <button id="dark-toggle" class="icon-btn" aria-label="Toggle dark mode">🌓</button>
   </div>
 </header>
@@ -2248,8 +2315,188 @@ fn main() {
         None    => println!(&quot;no cats&quot;),
     }
 }"><span class="lang-en">▶ Run on Rust Playground</span><span class="lang-tr">▶ Rust Playground'da çalıştır</span></button>
-<p class="lang-en"><em>Don't worry if the syntax is strange.</em> By chapter 16 every line will feel obvious.</p>
-<p class="lang-tr"><em>Söz dizimi yabancı geliyorsa sorun değil.</em> 16. bölüme gelindiğinde her satır sana tanıdık gelecek.</p>
+<p class="lang-en"><em>Don't worry if the syntax is strange.</em> By chapter 16 every line will feel obvious. Need a translation <em>right now</em>? Jump to the <a href="#cheatsheet">one-page Cheatsheet</a> for a syntax map, or the <a href="#glossary">Glossary</a> for term-by-term definitions — both are linked in the header too.</p>
+<p class="lang-tr"><em>Söz dizimi yabancı geliyorsa sorun değil.</em> 16. bölüme gelindiğinde her satır sana tanıdık gelecek. <em>Şimdi</em> bir çeviriye mi ihtiyacın var? Sözdizimi haritası için tek sayfalık <a href="#cheatsheet">Hızlı başvuru</a>'ya, terim tanımları için <a href="#glossary">Sözlük</a>'e atla — ikisi de üst çubuktan da erişilebilir.</p>
+</div>
+
+<div class="callout whistle-stop lang-en">
+<h3>15-minute Rust whistle-stop</h3>
+<p class="ws-lead"><em>Read, don't run.</em> Ten boxes. By the end you can <em>read</em> most of the 30-line snippet above, even if you can't write Rust yet. Each box links to where the concept is taught in full.</p>
+<div class="ws-grid">
+
+  <div class="ws-item">
+    <strong>1. <code>let</code> — variable bindings</strong>
+<pre><code class="language-rust">let x = 5;          // immutable
+let mut y = 0;      // mutable
+let (a, b) = (1, 2); // destructure</code></pre>
+    <p>Rust flips the C++/Java default: <em>immutability is free, mutability costs a keyword</em>. This isn't stylistic — the compiler uses the <code>mut</code> signal to prove at compile time that nobody else is reading while you write. <code>let</code> also pattern-matches on the right-hand side, so destructuring isn't a separate syntax — it's the same binding form. → deeper: <a href="#cheatsheet">Cheatsheet §1</a></p>
+  </div>
+
+  <div class="ws-item">
+    <strong>2. <code>fn</code> — functions</strong>
+<pre><code class="language-rust">fn greet(name: &amp;str) -&gt; String {
+    format!("hi, {name}")
+}</code></pre>
+    <p>Type-after-name (<code>name: &amp;str</code>) is the same left-to-right shape as <code>let x: i32</code> and <code>struct Cat { name: String }</code> — one rule, everywhere. The bigger lesson is the missing <code>return</code>: in Rust <em>every block has a final expression</em>, and a function body is just a block. A trailing semicolon turns an expression into a statement and throws its value away — that's why <code>{ 5 }</code> returns <code>5</code> but <code>{ 5; }</code> returns <code>()</code>. → deeper: <a href="#cheatsheet">Cheatsheet §1</a></p>
+  </div>
+
+  <div class="ws-item">
+    <strong>3. <code>if</code> is an expression</strong>
+<pre><code class="language-rust">let label = if n &gt; 0 { "pos" } else { "neg" };</code></pre>
+    <p>Most languages split <em>expression</em> (has a value) from <em>statement</em> (doesn't). Rust collapses nearly everything into expressions — <code>if</code>, <code>match</code>, <code>loop { break val; }</code>, even bare blocks <code>{}</code>. So you assign the result of an <code>if</code> directly; no ternary. Both arms must return the same type because there's no hidden null to fall back to when types disagree. → deeper: <a href="#cheatsheet">Cheatsheet §2</a></p>
+  </div>
+
+  <div class="ws-item">
+    <strong>4. <code>match</code> — exhaustive switch</strong>
+<pre><code class="language-rust">match n {
+    0 | 1        =&gt; "small",
+    x if x &lt; 10 =&gt; "mid",
+    _            =&gt; "big",
+}</code></pre>
+    <p>C's <code>switch</code> falls through by default and crashes at runtime if nothing matches. Rust's <code>match</code> is <em>compile-time proven total</em>: add a new variant to an enum and every <code>match</code> that doesn't handle it becomes a compile error, not a runtime surprise. That's why enums + <code>match</code> replace most null-checking and "did I remember every case?" flag-passing you'd do in other languages. → deeper: <a href="#sidebar-match">sidebar-match</a>, <a href="#sidebar-pattern-depth">sidebar-pattern-depth</a></p>
+  </div>
+
+  <div class="ws-item">
+    <strong>5. <code>&amp;</code> and <code>&amp;mut</code> — borrows</strong>
+<pre><code class="language-rust">fn len(s: &amp;String) -&gt; usize { s.len() }
+fn push(s: &amp;mut String) { s.push('!') }</code></pre>
+    <p>In C/C++ a pointer is "here's an address, good luck." A Rust reference is "here's an address <em>plus a compile-time receipt</em> of whether you're sharing or owning access." The rule is XOR: <em>either</em> many <code>&amp;</code> readers <em>or</em> one <code>&amp;mut</code> writer, never both at the same time — that single sentence is the entire data-race story. No locks, no atomics, no "be careful": the compiler refuses to build the program if you break it. → deeper: <a href="#sidebar-borrow">sidebar-borrow</a>, <a href="#sidebar-ownership">sidebar-ownership</a></p>
+  </div>
+
+  <div class="ws-item">
+    <strong>6. <code>String</code> vs <code>&amp;str</code></strong>
+<pre><code class="language-rust">let owned: String = String::from("hi");
+let borrowed: &amp;str = "hi"; // string literal</code></pre>
+    <p>C++ has <code>std::string</code> (owned) vs <code>const char*</code> (view); Java hides the distinction and pays for it with a garbage collector. Rust forces the choice into the type system: <code>String</code> owns its heap bytes and will free them when it drops; <code>&amp;str</code> is a <em>borrowed</em> view and cannot outlive the thing it points into. Most APIs take <code>&amp;str</code> because "I'll read but not own" is the common case — and callers can pass either a literal or <code>&amp;owned_string</code>. → deeper: <a href="#sidebar-string-str">sidebar-string-str</a></p>
+  </div>
+
+  <div class="ws-item">
+    <strong>7. <code>Option</code> and <code>Result</code> — no null, no exceptions</strong>
+<pre><code class="language-rust">let maybe: Option&lt;i32&gt; = Some(5);   // or None
+let res: Result&lt;i32, Err&gt; = Ok(5);  // or Err(..)</code></pre>
+    <p>Tony Hoare called null his "billion-dollar mistake"; exceptions are nearly as expensive because they're invisible control flow. Rust replaces both with ordinary enums — <code>Option&lt;T&gt;</code> is either <code>Some(T)</code> or <code>None</code>, <code>Result&lt;T, E&gt;</code> is either <code>Ok(T)</code> or <code>Err(E)</code> — and the compiler forces you to acknowledge the empty/error case before you can touch the value. They feel magical because they're in the prelude, but they're not: you could write them yourself in four lines. → deeper: <a href="#sidebar-option">sidebar-option</a>, <a href="#sidebar-result">sidebar-result</a></p>
+  </div>
+
+  <div class="ws-item">
+    <strong>8. <code>struct</code> + <code>impl</code> — data + methods</strong>
+<pre><code class="language-rust">struct Cat { name: String, lives: u8 }
+impl Cat {
+    fn mood(&amp;self) -&gt; &amp;str {
+        if self.lives == 0 { "ghost" } else { "ok" }
+    }
+}</code></pre>
+    <p>C++ and Java conflate "what the data looks like" and "what you can do with it" inside one class body. Rust splits them on purpose: <code>struct</code> is <em>only</em> the memory layout; <code>impl</code> attaches behavior, and you can write as many <code>impl Cat</code> blocks as you want — even in different files. There's no inheritance, either; the polymorphism story is traits (covered later), which avoids the diamond problem by construction. <code>&amp;self</code> is the method's "this." → deeper: <a href="#sidebar-methods">sidebar-methods</a></p>
+  </div>
+
+  <div class="ws-item">
+    <strong>9. <code>.iter().map()</code> — iterator chains</strong>
+<pre><code class="language-rust">let v = vec![1, 2, 3];
+let doubled: Vec&lt;i32&gt; = v.iter()
+    .map(|x| x * 2)
+    .collect();</code></pre>
+    <p>These read like LINQ (C#), ranges (C++20) or JS array methods — but there's a crucial difference: Rust iterators are <em>lazy and zero-cost</em>. <code>.map(...).filter(...)</code> allocates <em>nothing</em> — it builds a state machine that LLVM usually compiles down to the same assembly as a hand-written <code>for</code> loop. You only pay for collection when you call <code>.collect()</code>. <code>|x| x * 2</code> is a closure (anonymous function); the pipes are where Rust writes <code>lambda:</code> or <code>=&gt;</code>. → deeper: <a href="#sidebar-iter">sidebar-iter</a>, <a href="#sidebar-closures">sidebar-closures</a></p>
+  </div>
+
+  <div class="ws-item">
+    <strong>10. <code>?</code> — early-return on failure</strong>
+<pre><code class="language-rust">fn read() -&gt; Result&lt;String, io::Error&gt; {
+    let s = std::fs::read_to_string("f")?;
+    Ok(s)
+}</code></pre>
+    <p>Exceptions in Java/Python are <em>unchecked</em> control flow: any call <em>might</em> throw and the signature doesn't tell you. Rust moves failure into the type — if a function can fail it says so by returning <code>Result&lt;T, E&gt;</code>. <code>?</code> is the compact propagator: on <code>Err</code> it returns from the current function with that error; on <code>Ok</code> it unwraps the value. It's the ergonomic sugar that makes "no exceptions" comfortable instead of ceremonial. → deeper: <a href="#sidebar-result">sidebar-result</a></p>
+  </div>
+
+</div>
+</div>
+
+<div class="callout whistle-stop lang-tr">
+<h3>15 dakikada Rust turu</h3>
+<p class="ws-lead"><em>Oku, çalıştırma.</em> On kutu. Sonunda yukarıdaki 30 satırlık parçanın çoğunu <em>okuyabilirsin</em> — henüz yazamasan bile. Her kutu, kavramın tam olarak öğretildiği yere bağlanır.</p>
+<div class="ws-grid">
+
+  <div class="ws-item">
+    <strong>1. <code>let</code> — değişken bağlamaları</strong>
+<pre><code class="language-rust">let x = 5;           // değiştirilemez
+let mut y = 0;       // değiştirilebilir
+let (a, b) = (1, 2); // ayrıştır</code></pre>
+    <p>Rust, C++/Java'nın varsayılanını tersine çevirir: <em>değiştirilemezlik bedavadır, değiştirilebilirlik bir anahtar sözcüğe mal olur</em>. Bu bir stil tercihi değil: derleyici <code>mut</code> işaretini kullanarak derleme zamanında sen yazarken başka kimsenin okumadığını kanıtlar. <code>let</code> ayrıca sağ taraf üzerinde desen eşler, yani ayrıştırma ayrı bir sözdizimi değil — aynı bağlama formudur. → daha derine: <a href="#cheatsheet">Hızlı başvuru §1</a></p>
+  </div>
+
+  <div class="ws-item">
+    <strong>2. <code>fn</code> — fonksiyonlar</strong>
+<pre><code class="language-rust">fn greet(name: &amp;str) -&gt; String {
+    format!("selam, {name}")
+}</code></pre>
+    <p>Ad-sonra-tip (<code>name: &amp;str</code>) yapısı <code>let x: i32</code> ve <code>struct Cat { name: String }</code> ile aynı soldan-sağa şekildir — tek kural, her yerde. Daha büyük ders, eksik olan <code>return</code>: Rust'ta <em>her bloğun bir son ifadesi vardır</em> ve fonksiyon gövdesi de bir bloktur. Sondaki noktalı virgül ifadeyi bir deyime çevirip değerini atar — <code>{ 5 }</code> bu yüzden <code>5</code> döner ama <code>{ 5; }</code> <code>()</code> döner. → daha derine: <a href="#cheatsheet">Hızlı başvuru §1</a></p>
+  </div>
+
+  <div class="ws-item">
+    <strong>3. <code>if</code> bir ifadedir</strong>
+<pre><code class="language-rust">let etiket = if n &gt; 0 { "poz" } else { "neg" };</code></pre>
+    <p>Çoğu dil <em>ifade</em> (bir değeri olan) ile <em>deyim</em> (olmayan) arasında ayrım yapar. Rust neredeyse her şeyi ifadeye indirger — <code>if</code>, <code>match</code>, <code>loop { break val; }</code>, hatta çıplak bloklar <code>{}</code>. Bu yüzden bir <code>if</code>'in sonucunu doğrudan atayabilirsin; üçlü operatöre gerek yok. İki kolun da aynı tipte olması şart çünkü tipler uyuşmadığında geri düşülecek gizli bir null yok. → daha derine: <a href="#cheatsheet">Hızlı başvuru §2</a></p>
+  </div>
+
+  <div class="ws-item">
+    <strong>4. <code>match</code> — kapsamlı switch</strong>
+<pre><code class="language-rust">match n {
+    0 | 1        =&gt; "küçük",
+    x if x &lt; 10 =&gt; "orta",
+    _            =&gt; "büyük",
+}</code></pre>
+    <p>C'nin <code>switch</code>'i varsayılan olarak düşüş yapar ve hiçbir şey eşleşmezse çalışma zamanında çöker. Rust'ın <code>match</code>'i <em>derleme zamanında kapsamlı olduğu ispatlanmıştır</em>: bir enum'a yeni bir varyant eklersen, onu ele almayan her <code>match</code> derleme hatası olur — çalışma zamanı sürprizi değil. Başka dillerde yaptığın null kontrollerinin ve "her durumu hatırladım mı?" bayrak-geçirme işlerinin çoğunu bu yüzden enum + <code>match</code> değiştirir. → daha derine: <a href="#sidebar-match">sidebar-match</a>, <a href="#sidebar-pattern-depth">sidebar-pattern-depth</a></p>
+  </div>
+
+  <div class="ws-item">
+    <strong>5. <code>&amp;</code> ve <code>&amp;mut</code> — ödünç alma</strong>
+<pre><code class="language-rust">fn len(s: &amp;String) -&gt; usize { s.len() }
+fn push(s: &amp;mut String) { s.push('!') }</code></pre>
+    <p>C/C++'ta pointer "işte bir adres, iyi şanslar" demektir. Rust'ta bir referans "işte bir adres <em>artı derleme zamanı makbuzu</em>: paylaşıyor musun, yoksa sahiplik mi alıyorsun?" demektir. Kural XOR'dur: <em>ya</em> birçok <code>&amp;</code> okuyucu <em>ya da</em> bir tek <code>&amp;mut</code> yazıcı, aynı anda ikisi birden asla olmaz — bu tek cümle tüm veri yarışı (data race) hikâyesidir. Kilit yok, atomik yok, "dikkat et" yok: kuralı kırarsan derleyici programı kurmayı reddeder. → daha derine: <a href="#sidebar-borrow">sidebar-borrow</a>, <a href="#sidebar-ownership">sidebar-ownership</a></p>
+  </div>
+
+  <div class="ws-item">
+    <strong>6. <code>String</code> ve <code>&amp;str</code></strong>
+<pre><code class="language-rust">let sahip: String = String::from("selam");
+let odunc: &amp;str = "selam"; // sabit</code></pre>
+    <p>C++'ta <code>std::string</code> (sahip) ile <code>const char*</code> (görünüm) ayrımı vardır; Java bu ayrımı gizler ve bedelini bir çöp toplayıcıyla öder. Rust bu seçimi tip sistemine zorlar: <code>String</code> yığın (heap) baytlarına <em>sahiptir</em> ve düştüğünde onları serbest bırakır; <code>&amp;str</code> <em>ödünç alınmış</em> bir görünümdür ve işaret ettiği şeyden daha uzun yaşayamaz. Çoğu API <code>&amp;str</code> alır çünkü "okurum ama sahip olmam" en yaygın durumdur — ve çağırıcılar ya bir sabit ya da <code>&amp;sahip_olunan_string</code> geçebilir. → daha derine: <a href="#sidebar-string-str">sidebar-string-str</a></p>
+  </div>
+
+  <div class="ws-item">
+    <strong>7. <code>Option</code> ve <code>Result</code> — null yok, istisna yok</strong>
+<pre><code class="language-rust">let belki: Option&lt;i32&gt; = Some(5);    // ya da None
+let sonuc: Result&lt;i32, Hata&gt; = Ok(5); // ya da Err(..)</code></pre>
+    <p>Tony Hoare null'a kendi "milyar dolarlık hatam" derdi; istisnalar da neredeyse aynı kadar pahalıdır çünkü görünmez akış kontrolüdür. Rust her ikisini de sıradan enum'larla değiştirir — <code>Option&lt;T&gt;</code> ya <code>Some(T)</code>'dir ya da <code>None</code>, <code>Result&lt;T, E&gt;</code> ya <code>Ok(T)</code>'dir ya da <code>Err(E)</code> — ve değere dokunmadan önce boş/hata durumunu kabul etmeni derleyici zorunlu tutar. Prelude'de oldukları için sihirli görünürler ama değiller: dört satırda kendin de yazabilirdin. → daha derine: <a href="#sidebar-option">sidebar-option</a>, <a href="#sidebar-result">sidebar-result</a></p>
+  </div>
+
+  <div class="ws-item">
+    <strong>8. <code>struct</code> + <code>impl</code> — veri + metotlar</strong>
+<pre><code class="language-rust">struct Kedi { ad: String, can: u8 }
+impl Kedi {
+    fn hal(&amp;self) -&gt; &amp;str {
+        if self.can == 0 { "hayalet" } else { "iyi" }
+    }
+}</code></pre>
+    <p>C++ ve Java "verinin nasıl göründüğü" ile "onunla ne yapabileceğini" tek bir sınıf gövdesinde birleştirir. Rust bunları bilinçli olarak ayırır: <code>struct</code> <em>yalnızca</em> bellek düzenidir; <code>impl</code> davranışı ekler ve aynı yapıya istediğin kadar <code>impl Cat</code> bloğu yazabilirsin — farklı dosyalarda bile. Kalıtım da yoktur; polimorfizm hikâyesi trait'lerdir (sonra gelecek) — bu da elmas problemini baştan dışarıda tutar. <code>&amp;self</code> metodun "this"idir. → daha derine: <a href="#sidebar-methods">sidebar-methods</a></p>
+  </div>
+
+  <div class="ws-item">
+    <strong>9. <code>.iter().map()</code> — iterator zincirleri</strong>
+<pre><code class="language-rust">let v = vec![1, 2, 3];
+let iki_kat: Vec&lt;i32&gt; = v.iter()
+    .map(|x| x * 2)
+    .collect();</code></pre>
+    <p>Bunlar LINQ (C#), ranges (C++20) ya da JS dizi metotları gibi okunur — ama kritik bir fark var: Rust iterator'ları <em>tembeldir ve sıfır maliyetlidir</em>. <code>.map(...).filter(...)</code> <em>hiç</em> ayırma yapmaz — LLVM'nin genellikle elle yazılmış bir <code>for</code> döngüsüyle aynı makine koduna derlediği bir durum makinesi kurar. Yalnızca <code>.collect()</code> çağırdığında toplama bedelini ödersin. <code>|x| x * 2</code> bir closure'dır (anonim fonksiyon); dikey çubuklar, Rust'ın <code>lambda:</code> ya da <code>=&gt;</code> yazdığı yerdir. → daha derine: <a href="#sidebar-iter">sidebar-iter</a>, <a href="#sidebar-closures">sidebar-closures</a></p>
+  </div>
+
+  <div class="ws-item">
+    <strong>10. <code>?</code> — başarısızlıkta erken dönüş</strong>
+<pre><code class="language-rust">fn oku() -&gt; Result&lt;String, io::Error&gt; {
+    let s = std::fs::read_to_string("f")?;
+    Ok(s)
+}</code></pre>
+    <p>Java/Python'da istisnalar <em>denetlenmeyen</em> akış kontrolüdür: herhangi bir çağrı <em>atabilir</em> ve imza sana söylemez. Rust başarısızlığı tipe taşır — bir fonksiyon başarısız olabiliyorsa, bunu <code>Result&lt;T, E&gt;</code> dönerek söyler. <code>?</code> kompakt yayıcıdır: <code>Err</code> durumunda mevcut fonksiyondan bu hatayla döner; <code>Ok</code> durumunda değeri çıkarır. "İstisna yok"u tören gibi değil, rahat kılan ergonomik şekerleme budur. → daha derine: <a href="#sidebar-result">sidebar-result</a></p>
+  </div>
+
+</div>
 </div>
 
 <div class="callout diff-primer">
@@ -18049,6 +18296,7 @@ let mut y = 0;
 let (a, b) = (1, 2);
 let Some(v) = maybe else { return; };
 let x = x + 1; // shadowing</code></pre>
+      <p class="cheat-why"><strong>Why it looks like this.</strong> <code>let</code> binds; it doesn't declare a type up front. The compiler infers the type from the right-hand side, so you rarely write one. <code>mut</code> is opt-in because Rust's default is <em>immutable</em> — that's the signal the borrow checker uses to prove nobody else can write while you read. <code>let &hellip; else</code> is "bind if the pattern matches, otherwise do <em>something</em> that diverges" (<code>return</code>, <code>panic!</code>, <code>continue</code>). Shadowing is a fresh binding with the same name — not mutation — so you can change the variable's type without breaking the "no reassignment" rule.</p>
       <ul>
         <li><code>let</code> &mdash; immutable by default</li>
         <li><code>let mut</code> &mdash; rebindable / in-place mutation</li>
@@ -18071,6 +18319,7 @@ match n {
     x if x &lt; 10 =&gt; "mid",
     _ =&gt; "big",
 }</code></pre>
+      <p class="cheat-why"><strong>Why it looks like this.</strong> In Rust almost everything is an <em>expression</em> (returns a value), so <code>if</code>, <code>match</code>, <code>loop { break v }</code>, and even a bare <code>{ &hellip; }</code> block can sit on the right-hand side of a <code>let</code>. <code>if let Some(v) = opt</code> is syntactic sugar for a one-arm <code>match</code>: bind <code>v</code> if the pattern matches, otherwise skip the body. <code>for</code> is not a C-style counter loop — it consumes any iterator. <code>match</code> is <em>exhaustive</em>: leave a case uncovered and the compiler refuses to build. Guards (<code>if &hellip;</code>) and or-patterns (<code>|</code>) let you fold conditions into the pattern instead of nesting <code>if</code>s inside each arm.</p>
       <ul>
         <li><code>if let</code> / <code>while let</code> &mdash; single-arm match</li>
         <li><code>0..10</code> exclusive, <code>0..=10</code> inclusive</li>
@@ -18093,6 +18342,7 @@ enum Shape {
 }
 let p = Point { x: 1.0, y: 2.0 };
 let s = Shape::Rect { w: 3.0, h: 4.0 };</code></pre>
+      <p class="cheat-why"><strong>Why it looks like this.</strong> A <code>struct</code> is <em>only</em> memory layout — no methods, no constructors, no inheritance. The three flavours exist because sometimes you want named fields (regular struct), sometimes an unnamed pair (tuple struct for newtypes / wrappers), sometimes just a type that signals "I exist" (unit struct, often for marker traits). <code>enum</code> is Rust's <em>sum type</em>: the value is exactly <em>one</em> of the listed variants, each can carry different data, and the compiler tracks which one it is. <code>Option</code> and <code>Result</code> are just enums — you could have written them yourself.</p>
       <ul>
         <li><code>Option&lt;T&gt;</code> &mdash; <code>Some(x)</code> / <code>None</code></li>
         <li><code>Result&lt;T, E&gt;</code> &mdash; <code>Ok(x)</code> / <code>Err(e)</code></li>
@@ -18112,6 +18362,7 @@ impl Area for Point { fn area(&amp;self) -&gt; f32 { 0.0 } }
 fn biggest&lt;T&gt;(xs: &amp;[T]) -&gt; &amp;T where T: Ord { &hellip; }
 fn make() -&gt; impl Area { Point::new(0.0, 0.0) }
 fn dynamic(a: &amp;dyn Area) { a.area(); }</code></pre>
+      <p class="cheat-why"><strong>Why it looks like this.</strong> Since <code>struct</code> can't carry methods, <code>impl Point</code> attaches them separately. A <em>trait</em> is Rust's interface: a set of method signatures a type can promise to implement. <code>impl Area for Point</code> says "<code>Point</code> fulfills the <code>Area</code> contract." There's no inheritance; polymorphism comes in two flavours: <code>impl Trait</code> at a return / parameter position = <em>static dispatch</em> (monomorphised at compile time, zero cost), <code>dyn Trait</code> = <em>dynamic dispatch</em> (vtable lookup, like a C++ virtual call). <code>where</code> is just a more readable place to put the <code>T: Ord</code> bound.</p>
       <ul>
         <li><code>impl Foo</code> &mdash; inherent methods</li>
         <li><code>impl Trait for Foo</code> &mdash; trait implementation</li>
@@ -18131,6 +18382,7 @@ let n: i32 = 7;              // Copy, no move
 
 fn longest&lt;'a&gt;(x: &amp;'a str, y: &amp;'a str) -&gt; &amp;'a str { x }
 static MSG: &amp;'static str = "forever";</code></pre>
+      <p class="cheat-why"><strong>Why it looks like this.</strong> Every value has exactly <em>one owner</em>; when the owner goes out of scope, the value is dropped (freed). Assigning or passing it <em>moves</em> ownership — the old binding becomes unusable. <code>.clone()</code> is the explicit "yes, duplicate the heap contents" escape hatch; tiny types like <code>i32</code> implement <code>Copy</code> and skip the whole dance. A reference <code>&amp;T</code> lets you look without taking ownership. Lifetimes like <code>'a</code> are <em>names</em> the compiler uses to check that a reference can't outlive what it points to — you only write them when the rules can't be inferred. <code>'static</code> = "lives for the whole program."</p>
       <ul>
         <li><code>&amp;T</code> &mdash; many readers, no writer</li>
         <li><code>&amp;mut T</code> &mdash; one writer, no readers</li>
@@ -18155,6 +18407,7 @@ enum MyError {
     #[error("parse")] Parse(std::num::ParseIntError),
     #[error("empty")] Empty,
 }</code></pre>
+      <p class="cheat-why"><strong>Why it looks like this.</strong> Rust has no exceptions: failure is a <em>value</em>, not control flow. A function that can fail returns <code>Result&lt;T, E&gt;</code>, and the caller <em>must</em> handle both arms. <code>?</code> is the sugar: on <code>Err</code>, return from the current function with that error; on <code>Ok</code>, unwrap. Your error types are almost always enums — one variant per distinct failure. <code>thiserror</code> is a helper crate that derives <code>impl Error</code> + <code>Display</code> so you don't hand-write them; <code>#[from]</code> auto-generates a <code>From</code> conversion so <code>?</code> can silently lift an <code>io::Error</code> into <code>MyError::Io</code>. <code>.ok_or()</code> bridges <code>Option</code> into the same machinery.</p>
       <ul>
         <li><code>?</code> &mdash; early-return on <code>Err</code>/<code>None</code></li>
         <li><code>#[from]</code> &mdash; auto <code>From</code> conversion</li>
@@ -18173,6 +18426,7 @@ let sum: i32 = v.iter().sum();
 let prod = v.iter().fold(1, |acc, x| acc * x);
 for (i, x) in v.iter().enumerate() { &hellip; }
 let pairs: Vec&lt;_&gt; = a.iter().zip(b.iter()).collect();</code></pre>
+      <p class="cheat-why"><strong>Why it looks like this.</strong> Iterator chains are <em>lazy</em>: each adapter (<code>.map</code>, <code>.filter</code>, <code>.zip</code>) returns a new iterator <em>type</em>, doing no work until something consumes it. <code>.collect()</code>, <code>.sum()</code>, <code>.fold()</code>, and <code>for</code> loops are the consumers that finally run the pipeline. The three entry points — <code>.iter()</code>, <code>.iter_mut()</code>, <code>.into_iter()</code> — correspond exactly to "borrow shared," "borrow mutable," "consume the collection." LLVM typically inlines the whole chain into a flat loop, so the abstraction is free at runtime. The turbofish <code>::&lt;Vec&lt;_&gt;&gt;</code> only appears when the compiler can't guess what you're collecting into.</p>
       <ul>
         <li><code>.iter()</code> borrow / <code>.into_iter()</code> own / <code>.iter_mut()</code></li>
         <li><code>.take(n)</code> / <code>.skip(n)</code> &mdash; slice a stream</li>
@@ -18189,6 +18443,7 @@ struct Id(u32);
 
 #[derive(serde::Serialize, serde::Deserialize)]
 struct Msg { text: String }</code></pre>
+      <p class="cheat-why"><strong>Why it looks like this.</strong> Rust doesn't auto-implement anything: a fresh <code>struct</code> can't even be printed with <code>{:?}</code> or compared with <code>==</code> until you opt in. <code>#[derive(&hellip;)]</code> is a macro that writes the boilerplate impls for you at compile time. Derive is "please generate the obvious version"; if you need custom behaviour, write <code>impl Debug for &hellip;</code> yourself. <code>Copy</code> only works if every field is also <code>Copy</code> (no <code>String</code>, no <code>Vec</code>, no heap). <code>Serialize</code>/<code>Deserialize</code> come from the third-party <code>serde</code> crate — derive is how other crates plug into your types.</p>
       <ul>
         <li><code>Debug</code> &mdash; <code>{:?}</code> printing, always add</li>
         <li><code>Clone</code> &mdash; explicit <code>.clone()</code></li>
@@ -18221,6 +18476,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 const n = await invoke("add", { item: "hi" });
 await listen("changed", (e) =&gt; console.log(e.payload));</code></pre>
+      <p class="cheat-why"><strong>Why it looks like this.</strong> <code>#[tauri::command]</code> is a macro that generates a bridge: it accepts serializable arguments from JS (<code>invoke("name", { &hellip; })</code>), calls your Rust function, and sends the return value back. Because the frontend lives in a different process, shared mutable state can't be a plain global; Tauri gives you <code>State&lt;T&gt;</code>, normally wrapping a <code>Mutex</code>. The JS <code>invoke</code> is always async because crossing the process boundary takes time. Events flow the other way: <code>app.emit(&hellip;)</code> in Rust pushes a payload, <code>listen(&hellip;)</code> in JS receives it. Arg names are snake_case in Rust but camelCase on the wire.</p>
       <ul>
         <li><code>#[tauri::command]</code> &mdash; exposes Rust fn to JS</li>
         <li><code>State&lt;T&gt;</code> &mdash; shared app state (wrap in <code>Mutex</code>)</li>
@@ -18249,6 +18505,7 @@ json = ["dep:serde_json"]
 [dependencies]
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", optional = true }</code></pre>
+      <p class="cheat-why"><strong>Why it looks like this.</strong> <code>cargo</code> is the driver around <code>rustc</code>: it reads <code>Cargo.toml</code>, resolves and downloads dependencies from crates.io, runs the compiler in the right order, and caches the output in <code>target/</code>. <code>cargo check</code> skips the slow codegen stage — it type-checks and borrow-checks only, which is what you want in a fast inner loop. <code>cargo clippy</code> runs an extra lint pass that catches idiom issues the compiler doesn't care about (<code>-D warnings</code> promotes them to errors for CI). Feature flags are compile-time toggles: each flag can pull in extra dependencies or activate <code>#[cfg(feature = "&hellip;")]</code> blocks, so the same crate can ship several differently-sized builds.</p>
       <ul>
         <li><code>cargo check</code> &mdash; fastest feedback loop</li>
         <li><code>cargo clippy</code> &mdash; lint, catches idiom issues</li>
@@ -18268,6 +18525,7 @@ let mut y = 0;
 let (a, b) = (1, 2);
 let Some(v) = maybe else { return; };
 let x = x + 1; // golgeleme</code></pre>
+      <p class="cheat-why"><strong>Neden bu sekilde.</strong> <code>let</code> baglar; bastan tur bildirmez. Derleyici sag taraftan turu cikarir, bu yuzden nadiren kendin yazarsin. <code>mut</code> opt-in'dir cunku Rust'in varsayilani <em>degismez</em>dir — borrow checker bu sinyali kullanarak sen okurken baskasinin yazamayacagini ispatlar. <code>let &hellip; else</code> "desen eslesirse bagla, yoksa <em>sapitan bir sey</em> yap" (<code>return</code>, <code>panic!</code>, <code>continue</code>) demektir. Golgeleme mutasyon degil, ayni ada sahip taze bir baglamadir; boylece "yeniden atama yok" kuralini bozmadan degiskenin turunu degistirebilirsin.</p>
       <ul>
         <li><code>let</code> &mdash; varsayilan olarak degismez</li>
         <li><code>let mut</code> &mdash; yeniden atanabilir / yerinde degisim</li>
@@ -18290,6 +18548,7 @@ match n {
     x if x &lt; 10 =&gt; "orta",
     _ =&gt; "buyuk",
 }</code></pre>
+      <p class="cheat-why"><strong>Neden bu sekilde.</strong> Rust'ta neredeyse her sey bir <em>ifade</em>dir (bir deger doner), bu yuzden <code>if</code>, <code>match</code>, <code>loop { break v }</code>, hatta ciplak bir <code>{ &hellip; }</code> bloku bile bir <code>let</code>'in sag tarafinda durabilir. <code>if let Some(v) = opt</code> tek kollu bir <code>match</code>'in sozdizim sekeridir: desen eslesirse <code>v</code>'yi bagla, yoksa govdeyi atla. <code>for</code> C tipi bir sayac dongusu degil — herhangi bir iterator'u tuketir. <code>match</code> <em>kapsamlidir</em>: bir durumu ele almazsan derleyici kurmayi reddeder. Korumalar (<code>if &hellip;</code>) ve veya-desenleri (<code>|</code>) kosullari her kolun icinde <code>if</code>'le ic ice koymak yerine desenin icine katlar.</p>
       <ul>
         <li><code>if let</code> / <code>while let</code> &mdash; tek kollu match</li>
         <li><code>0..10</code> haric, <code>0..=10</code> dahil</li>
@@ -18312,6 +18571,7 @@ enum Shape {
 }
 let p = Point { x: 1.0, y: 2.0 };
 let s = Shape::Rect { w: 3.0, h: 4.0 };</code></pre>
+      <p class="cheat-why"><strong>Neden bu sekilde.</strong> Bir <code>struct</code> <em>yalnizca</em> bellek duzenidir — metot, kurucu ya da kalitim yok. Uc tur olmasinin sebebi: bazen isimli alanlar istersin (normal struct), bazen isimsiz bir cift (tuple struct, newtype / sarmalayici icin), bazen de "varim" demek icin bir tur (birim struct, cogunlukla marker trait'ler icin). <code>enum</code> Rust'in <em>toplam tipi</em>dir (sum type): deger listedeki <em>tam olarak bir</em> varyanttir, her biri farkli veri tasiyabilir ve derleyici hangisi oldugunu izler. <code>Option</code> ve <code>Result</code> de birer enum — kendin de yazabilirdin.</p>
       <ul>
         <li><code>Option&lt;T&gt;</code> &mdash; <code>Some(x)</code> / <code>None</code></li>
         <li><code>Result&lt;T, E&gt;</code> &mdash; <code>Ok(x)</code> / <code>Err(e)</code></li>
@@ -18331,6 +18591,7 @@ impl Area for Point { fn area(&amp;self) -&gt; f32 { 0.0 } }
 fn biggest&lt;T&gt;(xs: &amp;[T]) -&gt; &amp;T where T: Ord { &hellip; }
 fn make() -&gt; impl Area { Point::new(0.0, 0.0) }
 fn dynamic(a: &amp;dyn Area) { a.area(); }</code></pre>
+      <p class="cheat-why"><strong>Neden bu sekilde.</strong> <code>struct</code> metot tasiyamadigi icin <code>impl Point</code> onlari ayri olarak ekler. Bir <em>trait</em> Rust'in arayuzudur: bir turun uygulayabilecegi metot imzalari kumesi. <code>impl Area for Point</code> "<code>Point</code>, <code>Area</code> sozlesmesini yerine getiriyor" demektir. Kalitim yok; polimorfizm iki cesittir: <code>impl Trait</code> donus / parametre konumunda = <em>statik dagitim</em> (derleme zamaninda monomorfize, sifir maliyet), <code>dyn Trait</code> = <em>dinamik dagitim</em> (vtable arama, C++ sanal cagri gibi). <code>where</code> <code>T: Ord</code> kisitini koymak icin daha okunakli bir yerdir.</p>
       <ul>
         <li><code>impl Foo</code> &mdash; kendine ait metotlar</li>
         <li><code>impl Trait for Foo</code> &mdash; trait gerceklemesi</li>
@@ -18350,6 +18611,7 @@ let n: i32 = 7;              // Copy, tasima yok
 
 fn longest&lt;'a&gt;(x: &amp;'a str, y: &amp;'a str) -&gt; &amp;'a str { x }
 static MSG: &amp;'static str = "sonsuza dek";</code></pre>
+      <p class="cheat-why"><strong>Neden bu sekilde.</strong> Her degerin tam olarak <em>bir sahibi</em> vardir; sahip kapsamdan ciktiginda deger dusurulur (serbest birakilir). Atama veya geciste sahiplik <em>tasinir</em> — eski baglama artik kullanilamaz. <code>.clone()</code> "evet, heap icerigini kopyala" kacis yoludur; <code>i32</code> gibi kucuk turler <code>Copy</code> uygular ve bu dansi atlar. Bir referans <code>&amp;T</code> sahipligi almadan bakmani saglar. <code>'a</code> gibi yasam sureleri, bir referansin isaret ettigi seyden daha uzun yasamadigini denetlemek icin derleyicinin kullandigi <em>isimlerdir</em> — yalnizca kurallar cikarilamadiginda yazarsin. <code>'static</code> = "tum program boyunca yasar."</p>
       <ul>
         <li><code>&amp;T</code> &mdash; cok okuyucu, yazici yok</li>
         <li><code>&amp;mut T</code> &mdash; tek yazici, okuyucu yok</li>
@@ -18374,6 +18636,7 @@ enum MyError {
     #[error("parse")] Parse(std::num::ParseIntError),
     #[error("empty")] Empty,
 }</code></pre>
+      <p class="cheat-why"><strong>Neden bu sekilde.</strong> Rust'ta istisna yoktur: basarisizlik akis kontrolu degil bir <em>deger</em>dir. Basarisiz olabilecek bir fonksiyon <code>Result&lt;T, E&gt;</code> doner ve cagirici iki kolu da ele almak <em>zorundadir</em>. <code>?</code> sekerdir: <code>Err</code>'de mevcut fonksiyondan bu hatayla doner; <code>Ok</code>'de degeri cikarir. Hata turun neredeyse her zaman enum'dur — her belirgin basarisizlik icin bir varyant. <code>thiserror</code> <code>impl Error</code> + <code>Display</code>'i elle yazmamak icin yardimci bir crate'dir; <code>#[from]</code> bir <code>From</code> donusumu uretir, boylece <code>?</code> sessizce bir <code>io::Error</code>'u <code>MyError::Io</code>'ya yukseltir. <code>.ok_or()</code> <code>Option</code>'u ayni makineye koprur.</p>
       <ul>
         <li><code>?</code> &mdash; <code>Err</code>/<code>None</code> olunca erken cikis</li>
         <li><code>#[from]</code> &mdash; otomatik <code>From</code> donusumu</li>
@@ -18392,6 +18655,7 @@ let sum: i32 = v.iter().sum();
 let prod = v.iter().fold(1, |acc, x| acc * x);
 for (i, x) in v.iter().enumerate() { &hellip; }
 let pairs: Vec&lt;_&gt; = a.iter().zip(b.iter()).collect();</code></pre>
+      <p class="cheat-why"><strong>Neden bu sekilde.</strong> Iterator zincirleri <em>tembeldir</em>: her adaptor (<code>.map</code>, <code>.filter</code>, <code>.zip</code>) yeni bir iterator <em>tipi</em> doner, bir tuketici cikana kadar is yapmaz. <code>.collect()</code>, <code>.sum()</code>, <code>.fold()</code> ve <code>for</code> donguleri nihayet hatti calistiran tuketicilerdir. Uc baslangic — <code>.iter()</code>, <code>.iter_mut()</code>, <code>.into_iter()</code> — tam olarak "paylasimli odunc al," "degistirilebilir odunc al," "koleksiyonu tuket"e karsilik gelir. LLVM genellikle tum zinciri duz bir dongu icine satir-ici hale getirir; yani soyutlama calisma zamaninda bedavadir. Turbofish <code>::&lt;Vec&lt;_&gt;&gt;</code> yalnizca derleyici neye topladigini cikaramadiginda gorunur.</p>
       <ul>
         <li><code>.iter()</code> odunc / <code>.into_iter()</code> sahip / <code>.iter_mut()</code></li>
         <li><code>.take(n)</code> / <code>.skip(n)</code> &mdash; akisi dilimle</li>
@@ -18408,6 +18672,7 @@ struct Id(u32);
 
 #[derive(serde::Serialize, serde::Deserialize)]
 struct Msg { text: String }</code></pre>
+      <p class="cheat-why"><strong>Neden bu sekilde.</strong> Rust hicbir seyi otomatik uygulamaz: taze bir <code>struct</code> opt-in etmeden <code>{:?}</code> ile yazdirilamaz ya da <code>==</code> ile karsilastirilamaz. <code>#[derive(&hellip;)]</code> sablon impl'leri derleme zamaninda senin icin yazan bir makrodur. Derive "lutfen bariz surumu uret" demektir; ozel davranis istiyorsan <code>impl Debug for &hellip;</code>'u kendin yazarsin. <code>Copy</code> yalnizca her alan da <code>Copy</code> ise calisir (<code>String</code>, <code>Vec</code> ya da heap yok). <code>Serialize</code>/<code>Deserialize</code> ucuncu taraf <code>serde</code> crate'inden gelir — derive, diger crate'lerin kendi turlerine nasil baglandigidir.</p>
       <ul>
         <li><code>Debug</code> &mdash; <code>{:?}</code> yazdirma, her zaman ekle</li>
         <li><code>Clone</code> &mdash; acik <code>.clone()</code></li>
@@ -18440,6 +18705,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 const n = await invoke("add", { item: "hi" });
 await listen("changed", (e) =&gt; console.log(e.payload));</code></pre>
+      <p class="cheat-why"><strong>Neden bu sekilde.</strong> <code>#[tauri::command]</code> bir kopru ureten bir makrodur: JS'ten serilestirilebilir argumanlar kabul eder (<code>invoke("name", { &hellip; })</code>), Rust fonksiyonunu cagirir ve donus degerini geri gonderir. Frontend farkli bir surecte yasadigindan paylasilan degistirilebilir durum duz bir global olamaz; Tauri <code>State&lt;T&gt;</code> verir, normalde bir <code>Mutex</code>'i sarar. JS <code>invoke</code>'u her zaman async'tir cunku surec sinirini gecmek zaman alir. Olaylar ters yonde akar: Rust'taki <code>app.emit(&hellip;)</code> bir yuk gonderir, JS'teki <code>listen(&hellip;)</code> alir. Argument adlari Rust'ta snake_case'tir ama telde camelCase'e donusur.</p>
       <ul>
         <li><code>#[tauri::command]</code> &mdash; Rust fn'yi JS'e acar</li>
         <li><code>State&lt;T&gt;</code> &mdash; paylasilan durum (<code>Mutex</code> ile sar)</li>
@@ -18468,6 +18734,7 @@ json = ["dep:serde_json"]
 [dependencies]
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", optional = true }</code></pre>
+      <p class="cheat-why"><strong>Neden bu sekilde.</strong> <code>cargo</code>, <code>rustc</code>'nin etrafindaki surucudur: <code>Cargo.toml</code>'u okur, bagimliliklari crates.io'dan coz-up indirir, derleyiciyi dogru sirada calistirir ve ciktiyi <code>target/</code>'da onbelleklestirir. <code>cargo check</code> yavas codegen asamasini atlar — yalnizca tur ve odunc denetimi yapar; hizli ic dongude istedigin budur. <code>cargo clippy</code> derleyicinin umursamadigi deyim sorunlarini yakalayan ekstra bir lint gecisi calistirir (<code>-D warnings</code> onlari CI icin hataya yukseltir). Ozellik bayraklari derleme zamani acilir anahtarlardir: her bayrak ekstra bagimliliklari cekip <code>#[cfg(feature = "&hellip;")]</code> bloklarini etkinlestirebilir, boylece ayni crate birkac farkli boyutta build cikarabilir.</p>
       <ul>
         <li><code>cargo check</code> &mdash; en hizli geri bildirim</li>
         <li><code>cargo clippy</code> &mdash; lint, deyim sorunlarini yakalar</li>
@@ -18746,6 +19013,23 @@ serde_json = { version = "1", optional = true }</code></pre>
   };
   renderBadges();
   saveBadges();
+
+  // Reset chapters + achievements. Confirm bilingually, clear the two
+  // progress keys, leave theme/language/sidebar-open alone, then reload
+  // so every derived UI state reinitialises from an empty slate.
+  const resetBtn = document.getElementById("reset-progress");
+  if (resetBtn) resetBtn.addEventListener("click", () => {
+    const lang = getLang();
+    const msg = lang === "tr"
+      ? "Tüm bölüm işaretleri ve kazanılan başarılar sıfırlansın mı? (Tema ve dil korunur.)"
+      : "Reset all chapter checkmarks and earned achievements? (Theme and language are kept.)";
+    if (!confirm(msg)) return;
+    try {
+      localStorage.removeItem(LS_DONE);
+      localStorage.removeItem(LS_BADGES);
+    } catch (_) {}
+    location.reload();
+  });
 
   // Extend mark-done click: TOC tick + badge sync. Runs after the original handler.
   document.querySelectorAll(".mark-done").forEach(btn => {
