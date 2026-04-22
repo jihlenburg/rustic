@@ -1991,6 +1991,21 @@ html[data-theme="dark"] a.mark-done.checked::before { color: #7fd98a; }
   font-style: italic;
   margin-top: 1.75rem;
 }
+.page-version {
+  margin: 3rem 0 1.5rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--rule);
+  text-align: right;
+  font-size: 0.78rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+.page-version a {
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--muted);
+}
+.page-version a:hover { color: var(--accent); border-bottom-color: var(--accent); }
 .tag-link code {
   background: var(--surface);
   padding: 0.1em 0.45em;
@@ -18745,6 +18760,11 @@ serde_json = { version = "1", optional = true }</code></pre>
 
   </div>
 </section>
+
+<footer class="page-version" role="contentinfo">
+  <span class="lang-en">v1.0.0 · <a href="https://github.com/jihlenburg/rustic/releases/tag/v1.0.0" target="_blank" rel="noreferrer">release notes</a></span>
+  <span class="lang-tr">v1.0.0 · <a href="https://github.com/jihlenburg/rustic/releases/tag/v1.0.0" target="_blank" rel="noreferrer">sürüm notları</a></span>
+</footer>
 
 </main>
 </div>
